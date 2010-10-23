@@ -1,0 +1,16 @@
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\bin\Release\joystick.dll
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\bin\Release\joystick.pdb
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\joystick.Properties.Resources.resources
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\joystick.csproj.GenerateResource.Cache
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\joystick.dll
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\joystick.pdb
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Release\maxCustomControl.joystickEventArgs.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\bin\Release\joystick.dll
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\bin\Release\joystick.pdb
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\maxCustomControl.joystickEventArgs.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\joystick.Properties.Resources.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\joystick.csproj.GenerateResource.Cache
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\joystick.dll
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Release\joystick.pdb

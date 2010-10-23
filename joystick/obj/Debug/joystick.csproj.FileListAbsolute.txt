@@ -1,0 +1,33 @@
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\bin\Debug\joystick.exe
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\bin\Debug\joystick.pdb
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\joystick.Form1.resources
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\joystick.Properties.Resources.resources
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\joystick.csproj.GenerateResource.Cache
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\joystick.exe
+C:\Documents and Settings\Jason\Local Settings\Application Data\Temporary Projects\joystick\obj\Debug\joystick.pdb
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\joystick.exe
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\joystick.pdb
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\bin\Debug\joystick.exe
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\bin\Debug\joystick.pdb
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\joystick.csproj.GenerateResource.Cache
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\maxCustomControl.joystickEventArgs.resources
+C:\Documents and Settings\Jason\My Documents\Visual Studio 2008\Projects\joystick\joystick\obj\Debug\joystick.Properties.Resources.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\joystick.exe
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\joystick.pdb
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\bin\Debug\joystick.exe
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\bin\Debug\joystick.pdb
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\maxCustomControl.joystickEventArgs.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\joystick.Properties.Resources.resources
+C:\Users\Jason\Desktop\work\c#_projects\joystick\joystick\obj\Debug\joystick.csproj.GenerateResource.Cache
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\bin\Debug\joystick.dll
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\bin\Debug\joystick.pdb
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\ResolveAssemblyReference.cache
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\maxCustomControl.joystickEventArgs.resources
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\joystick.Properties.Resources.resources
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\GenerateResource-ResGen.read.1.tlog
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\GenerateResource-ResGen.write.1.tlog
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\joystick.dll
+D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\joystick\obj\Debug\joystick.pdb

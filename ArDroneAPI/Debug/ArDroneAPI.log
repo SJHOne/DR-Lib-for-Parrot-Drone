@@ -1,0 +1,190 @@
+﻿Build started 10/20/2010 7:26:33 PM.
+     1>Project "D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ArDroneAPI\ArDroneAPI.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\ArDroneAPI.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\ArDroneAPI.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ID:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32 /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\win32 /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Common /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB /ID:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ArDroneAPI\ /ID:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK /ZI /nologo /W3 /WX- /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\ardrone_api.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\AT\ardrone_at.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Control\ardrone_control.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Control\ardrone_control_ack.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Control\ardrone_control_configuration.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Control\ardrone_control_soft_update.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\UI\ardrone_input.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Navdata\ardrone_navdata_client.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Control\ardrone_navdata_control.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Navdata\ardrone_navdata_file.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\ardrone_time.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\UI\ardrone_tool_ui.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec_api.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec_Buffer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec_Memory.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec_Sorted_List.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\ATcodec\ATcodec_Tree.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Video\buffer_to_picture_stage.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Com\config_serial.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Com\config_wifi.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\iniparser3.0b\src\dictionary.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\filter.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\iniparser3.0b\src\iniparser.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\maths.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\matrices.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\matrix3d.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Navdata\navdata.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\P263\p263_codec.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\P263\p263_gob_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\P263\p263_huffman.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\P263\p263_mb_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\P263\p263_picture_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\time.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\UVLC\uvlc.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\UVLC\uvlc_codec.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\UVLC\uvlc_gob_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\UVLC\uvlc_mb_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\UVLC\uvlc_picture_layer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_codec.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Video\video_com_stage.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_controller.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_dct.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_huffman.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_macroblock.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_mem32.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_packetizer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_picture.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\video_quantizer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\ardrone_tool\Video\video_stage_recorder.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\Platform\x86\video_utils.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\Soft\Lib\Maths\vision_math.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\Stages\vlib_stage_decode.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VLIB\Stages\vlib_stage_encode.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api_error.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api_io_multi_stage.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api_stage.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api_supervisor.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Api\vp_api_thread_helper.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32\vp_com.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32\vp_com_config_itf.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\vp_com_error.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32\vp_com_socket.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32\vp_com_socket_utils.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Com\win32\vp_com_wifi.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\win32\vp_os_delay.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\vp_os_error_handling.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\vp_os_malloc.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\win32\vp_os_signal.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Os\win32\vp_os_thread.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_buffer_to_picture.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_configs.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_frame_pipe.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_io_buffer.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_io_com.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_io_console.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_io_file.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_o_sdl.c D:\ARDrone_SDK\ARDrone_SDK\ARDroneLib\VP_SDK\VP_Stages\vp_stages_yuv2rgb.c
+         vp_stages_yuv2rgb.c
+         vp_stages_o_sdl.c
+         vp_stages_io_file.c
+         vp_stages_io_console.c
+         vp_stages_io_com.c
+         vp_stages_io_buffer.c
+         vp_stages_frame_pipe.c
+         vp_stages_configs.c
+         vp_stages_buffer_to_picture.c
+         vp_os_thread.c
+         vp_os_signal.c
+         vp_os_malloc.c
+         vp_os_error_handling.c
+         vp_os_delay.c
+         vp_com_wifi.c
+         vp_com_socket_utils.c
+         vp_com_socket.c
+         vp_com_error.c
+         vp_com_config_itf.c
+         vp_com.c
+         Generating Code...
+         Compiling...
+         vp_api_thread_helper.c
+         vp_api_supervisor.c
+         vp_api_stage.c
+         vp_api_io_multi_stage.c
+         vp_api_error.c
+         vp_api.c
+         vlib_stage_encode.c
+         vlib_stage_decode.c
+         vision_math.c
+         video_utils.c
+         video_stage_recorder.c
+         video_quantizer.c
+         video_picture.c
+         video_packetizer.c
+         video_mem32.c
+     1>d:\ardrone_sdk\ardrone_sdk\ardronelib\vlib\video_mem32.c(39): warning C4013: 'bswap' undefined; assuming extern returning int
+         video_macroblock.c
+         video_huffman.c
+         video_dct.c
+         video_controller.c
+         video_com_stage.c
+         Generating Code...
+         Compiling...
+         video_codec.c
+         uvlc_picture_layer.c
+         uvlc_mb_layer.c
+         uvlc_gob_layer.c
+         uvlc_codec.c
+     1>d:\ardrone_sdk\ardrone_sdk\ardronelib\vlib\uvlc\uvlc_codec.c(269): warning C4013: 'clz' undefined; assuming extern returning int
+         uvlc.c
+     1>d:\ardrone_sdk\ardrone_sdk\ardronelib\vlib\uvlc\uvlc.c(29): warning C4013: 'clz' undefined; assuming extern returning int
+         time.c
+         p263_picture_layer.c
+         p263_mb_layer.c
+         p263_huffman.c
+         p263_gob_layer.c
+         p263_codec.c
+         navdata.c
+         matrix3d.c
+         matrices.c
+         maths.c
+         iniparser.c
+         filter.c
+         dictionary.c
+         config_wifi.c
+         Generating Code...
+         Compiling...
+         config_serial.c
+         buffer_to_picture_stage.c
+         ATcodec_Tree.c
+         ATcodec_Sorted_List.c
+         ATcodec_Memory.c
+         ATcodec_Buffer.c
+         ATcodec_api.c
+         ATcodec.c
+         ardrone_tool_ui.c
+         ardrone_time.c
+         ardrone_navdata_file.c
+         ardrone_navdata_control.c
+         ardrone_navdata_client.c
+         ardrone_input.c
+         ardrone_control_soft_update.c
+         ardrone_control_configuration.c
+         ardrone_control_ack.c
+         ardrone_control.c
+         ardrone_at.c
+         ardrone_api.c
+         Generating Code...
+       Lib:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\Debug\ArDroneAPI.lib" /NOLOGO Debug\ardrone_api.obj
+         Debug\ardrone_at.obj
+         Debug\ardrone_control.obj
+         Debug\ardrone_control_ack.obj
+         Debug\ardrone_control_configuration.obj
+         Debug\ardrone_control_soft_update.obj
+         Debug\ardrone_input.obj
+         Debug\ardrone_navdata_client.obj
+         Debug\ardrone_navdata_control.obj
+         Debug\ardrone_navdata_file.obj
+         Debug\ardrone_time.obj
+         Debug\ardrone_tool_ui.obj
+         Debug\ATcodec.obj
+         Debug\ATcodec_api.obj
+         Debug\ATcodec_Buffer.obj
+         Debug\ATcodec_Memory.obj
+         Debug\ATcodec_Sorted_List.obj
+         Debug\ATcodec_Tree.obj
+         Debug\buffer_to_picture_stage.obj
+         Debug\config_serial.obj
+         Debug\config_wifi.obj
+         Debug\dictionary.obj
+         Debug\filter.obj
+         Debug\iniparser.obj
+         Debug\maths.obj
+         Debug\matrices.obj
+         Debug\matrix3d.obj
+         Debug\navdata.obj
+         Debug\p263_codec.obj
+         Debug\p263_gob_layer.obj
+         Debug\p263_huffman.obj
+         Debug\p263_mb_layer.obj
+         Debug\p263_picture_layer.obj
+         Debug\time.obj
+         Debug\uvlc.obj
+         Debug\uvlc_codec.obj
+         Debug\uvlc_gob_layer.obj
+         Debug\uvlc_mb_layer.obj
+         Debug\uvlc_picture_layer.obj
+         Debug\video_codec.obj
+         Debug\video_com_stage.obj
+         Debug\video_controller.obj
+         Debug\video_dct.obj
+         Debug\video_huffman.obj
+         Debug\video_macroblock.obj
+         Debug\video_mem32.obj
+         Debug\video_packetizer.obj
+         Debug\video_picture.obj
+         Debug\video_quantizer.obj
+         Debug\video_stage_recorder.obj
+         Debug\video_utils.obj
+         Debug\vision_math.obj
+         Debug\vlib_stage_decode.obj
+         Debug\vlib_stage_encode.obj
+         Debug\vp_api.obj
+         Debug\vp_api_error.obj
+         Debug\vp_api_io_multi_stage.obj
+         Debug\vp_api_stage.obj
+         Debug\vp_api_supervisor.obj
+         Debug\vp_api_thread_helper.obj
+         Debug\vp_com.obj
+         Debug\vp_com_config_itf.obj
+         Debug\vp_com_error.obj
+         Debug\vp_com_socket.obj
+         Debug\vp_com_socket_utils.obj
+         Debug\vp_com_wifi.obj
+         Debug\vp_os_delay.obj
+         Debug\vp_os_error_handling.obj
+         Debug\vp_os_malloc.obj
+         Debug\vp_os_signal.obj
+         Debug\vp_os_thread.obj
+         Debug\vp_stages_buffer_to_picture.obj
+         Debug\vp_stages_configs.obj
+         Debug\vp_stages_frame_pipe.obj
+         Debug\vp_stages_io_buffer.obj
+         Debug\vp_stages_io_com.obj
+         Debug\vp_stages_io_console.obj
+         Debug\vp_stages_io_file.obj
+         Debug\vp_stages_o_sdl.obj
+         Debug\vp_stages_yuv2rgb.obj
+     1>time.obj : warning LNK4006: _gettimeofday already defined in video_stage_recorder.obj; second definition ignored
+     1>ardrone_navdata_file.obj : warning LNK4006: _gettimeofday already defined in video_stage_recorder.obj; second definition ignored
+         ArDroneAPI.vcxproj -> D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\Debug\ArDroneAPI.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\ArDroneAPI.unsuccessfulbuild".
+         Touching "Debug\ArDroneAPI.lastbuildstate".
+     1>Done Building Project "D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ArDroneAPI\ArDroneAPI.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:41.42
