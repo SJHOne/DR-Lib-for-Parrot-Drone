@@ -1,8 +1,0 @@
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\ResolveAssemblyReference.cache
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\GenerateResource.read.1.tlog
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\GenerateResource.write.1.tlog
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\AviationInstruments.AvionicsInstrumentsControlsRessources.resources
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\bin\Debug\AviationInstruments.dll
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\bin\Debug\AviationInstruments.pdb
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\AviationInstruments.dll
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\AviationInstruments\obj\Debug\AviationInstruments.pdb

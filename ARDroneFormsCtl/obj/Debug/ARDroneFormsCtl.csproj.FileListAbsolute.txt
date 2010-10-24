@@ -1,8 +1,0 @@
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\ResolveAssemblyReference.cache
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\ARDroneFormsCtl.ARDroneCtl.resources
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\GenerateResource.read.1.tlog
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\GenerateResource.write.1.tlog
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\bin\Debug\ARDroneFormsCtl.dll
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\bin\Debug\ARDroneFormsCtl.pdb
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\ARDroneFormsCtl.dll
-D:\ARDrone_SDK\ARDrone_SDK\Examples\Win32\VCProjects\ARDrone\ARDroneFormsCtl\obj\Debug\ARDroneFormsCtl.pdb

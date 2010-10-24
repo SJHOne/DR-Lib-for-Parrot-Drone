@@ -1,0 +1,6 @@
+*.suo
+*.sdf
+bin
+obj
+**/bin
+**/obj
