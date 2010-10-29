@@ -52,6 +52,7 @@
             this.textBoxYAxis = new System.Windows.Forms.TextBox();
             this.textBoxXAxis = new System.Windows.Forms.TextBox();
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
+            this.checkBoxCameraSwap = new System.Windows.Forms.CheckBox();
             this.checkBoxHover = new System.Windows.Forms.CheckBox();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
             this.labelEmergencyStatus = new System.Windows.Forms.Label();
@@ -71,7 +72,6 @@
             this.buttonHover = new System.Windows.Forms.Button();
             this.timerStartDelay = new System.Windows.Forms.Timer(this.components);
             this.arDroneControl = new ARDroneFormsControl.ARDroneControl();
-            this.checkBoxCameraSwap = new System.Windows.Forms.CheckBox();
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.SuspendLayout();
@@ -308,6 +308,17 @@
             this.groupBoxInput.TabStop = false;
             this.groupBoxInput.Text = "Input";
             // 
+            // checkBoxCameraSwap
+            // 
+            this.checkBoxCameraSwap.AutoSize = true;
+            this.checkBoxCameraSwap.Enabled = false;
+            this.checkBoxCameraSwap.Location = new System.Drawing.Point(104, 177);
+            this.checkBoxCameraSwap.Name = "checkBoxCameraSwap";
+            this.checkBoxCameraSwap.Size = new System.Drawing.Size(62, 17);
+            this.checkBoxCameraSwap.TabIndex = 33;
+            this.checkBoxCameraSwap.Text = "Camera";
+            this.checkBoxCameraSwap.UseVisualStyleBackColor = true;
+            // 
             // checkBoxHover
             // 
             this.checkBoxHover.AutoSize = true;
@@ -492,17 +503,6 @@
             this.arDroneControl.Size = new System.Drawing.Size(358, 270);
             this.arDroneControl.TabIndex = 4;
             // 
-            // checkBoxCameraSwap
-            // 
-            this.checkBoxCameraSwap.AutoSize = true;
-            this.checkBoxCameraSwap.Enabled = false;
-            this.checkBoxCameraSwap.Location = new System.Drawing.Point(104, 177);
-            this.checkBoxCameraSwap.Name = "checkBoxCameraSwap";
-            this.checkBoxCameraSwap.Size = new System.Drawing.Size(62, 17);
-            this.checkBoxCameraSwap.TabIndex = 33;
-            this.checkBoxCameraSwap.Text = "Camera";
-            this.checkBoxCameraSwap.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -524,7 +524,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "AR Drone .Net Control Test";
+            this.Text = "Drone Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
