@@ -1,6 +1,7 @@
-*.ipch
 *.suo
 *.sdf
+*.ipch
+*.opensdf
 bin
 obj
 **/bin

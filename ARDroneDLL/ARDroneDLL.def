@@ -12,9 +12,10 @@ EXPORTS
    GetVX @10
    GetVY @11
    GetVZ @12
-   SendFlatTrim @13
-   SendEmergency @14
-   SendTakeoff @15
-   SendLand @16
-   SetProgressCmd @17
-
+   ChangeToBottomCamera @13
+   ChangeToFrontCamera @14
+   SendFlatTrim @15
+   SendEmergency @16
+   SendTakeoff @17
+   SendLand @18
+   SetProgressCmd @19

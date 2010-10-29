@@ -28,7 +28,13 @@ namespace ARDroneFormsControl
 {
     public partial class ARDroneControl : UserControl
     {
-        public class DroneNavEventArgs : EventArgs
+        public enum CameraType
+        {
+            FrontCamera,
+            BottomCamera
+        }
+
+        public class DroneData : EventArgs
         {
             public string DroneState { get; private set; }
             public int BatteryLevel { get; private set; }
@@ -40,7 +46,20 @@ namespace ARDroneFormsControl
             public double vY { get; private set; }
             public double vZ { get; private set; }
 
-            public DroneNavEventArgs(string droneState, int batteryLevel, double theta, double phi, double psi, int altitude, double vx, double vy, double vz)
+            public DroneData()
+            {
+                DroneState = "";
+                BatteryLevel = 0;
+                Theta = 0.0f;
+                Phi = 0.0f;
+                Psi = 0.0f;
+                Altitude = 0;
+                vX = 0.0;
+                vY = 0.0;
+                vZ = 0.0;
+            }
+
+            public DroneData(string droneState, int batteryLevel, double theta, double phi, double psi, int altitude, double vx, double vy, double vz)
             {
                 DroneState = droneState;
                 BatteryLevel = batteryLevel;
@@ -51,6 +70,11 @@ namespace ARDroneFormsControl
                 vX = vx;
                 vY = vy;
                 vZ = vz;
+            }
+
+            public override String ToString()
+            {
+                return "Drone state: " + DroneState + " , Theta: " + Theta + " , Phi: " + Phi + " , Psi: " + Psi + " , Altitude: " + Altitude + " , vX: " + vX + " , vY: " + vY + " , vZ: " + vZ;
             }
         }
 
@@ -105,6 +129,12 @@ namespace ARDroneFormsControl
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern int SetProgressCmd(bool bhovering, float roll, float pitch, float gaz, float yaw);
 
+        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
+        static extern int ChangeToFrontCamera();
+
+        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
+        static extern int ChangeToBottomCamera();
+
         /*
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern double GetPitch();
@@ -119,8 +149,17 @@ namespace ARDroneFormsControl
         static extern double GetGaz();
         */
 
-        public delegate void DroneNavDelegate(DroneNavEventArgs a);
+        public delegate void DroneNavDelegate(DroneData data);
         public event DroneNavDelegate DroneEvent;
+
+        private CameraType currentCameraType = CameraType.FrontCamera;
+
+        private float currentRoll = 0.0f;
+        private float currentPitch = 0.0f;
+        private float currentGaz = 0.0f;
+        private float currentYaw = 0.0f;
+
+        private float thresholdBetweenSettingCommands = 0.03f;
 
         public ARDroneControl()
         {
@@ -129,19 +168,44 @@ namespace ARDroneFormsControl
 
         public int Connect()
         {
-            int i = InitDrone(this.Handle);
-            
-            if (i == 0)
+            int resultValue = InitDrone(this.Handle);
+
+            if (resultValue == 0)
             {
                 StartThread();
             }
-            return i;
+
+            ChangeToFrontCamera();
+            return resultValue;
         }
 
         public bool Shutdown()
         {
             StopThread();
             return true;
+        }
+
+        public int SwapCamera()
+        {
+            int resultValue = 0;
+
+            if (currentCameraType == CameraType.FrontCamera)
+            {
+                resultValue = ChangeToBottomCamera();
+                currentCameraType = CameraType.BottomCamera;
+            }
+            else
+            {
+                resultValue = ChangeToFrontCamera();
+                currentCameraType = CameraType.FrontCamera;
+            }
+
+            return resultValue;
+        }
+
+        public DroneData GetCurrentDroneData()
+        {
+            return new DroneData(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ());
         }
 
         public int FlatTrim()
@@ -164,12 +228,38 @@ namespace ARDroneFormsControl
             return SendLand();
         }
 
-        public int SendCommand(bool bhovering, float roll, float pitch, float gaz, float yaw)
+        public int SendCommand(bool hovering, float roll, float pitch, float gaz, float yaw)
         {
-            return SetProgressCmd(bhovering, roll, pitch, gaz, yaw); 
+            if (Math.Abs(roll - currentRoll) + Math.Abs(pitch - currentPitch) + Math.Abs(yaw - currentYaw) + Math.Abs(gaz - currentGaz) > thresholdBetweenSettingCommands ||
+                ((currentRoll != 0.0f && roll == 0.0f) && (currentPitch != 0.0f && pitch == 0.0f) && (currentYaw != 0.0f && yaw == 0.0f) && (currentGaz != 0.0f && gaz == 0.0f)))
+            {
+                currentRoll = roll;
+                currentPitch = pitch;
+                currentYaw = yaw;
+                currentGaz = gaz;
+                Console.WriteLine("Hovering: " + hovering.ToString() + ", Roll: " + roll.ToString() + ", Roll: " + roll.ToString() + ", Pitch: " + pitch.ToString() + ", Gaz: " + gaz.ToString() + ", Yaw: " + yaw.ToString());
+
+                return SetProgressCmd(hovering, roll, pitch, gaz, yaw);
+            }
+
+            return 0;
         }
 
+        public bool IsRunning
+        {
+            get
+            {
+                return isThreadRunning;
+            }
+        }
 
+        public CameraType CurrentCameraType
+        {
+            get
+            {
+                return currentCameraType;
+            }
+        }
         
         // Threading
 
@@ -237,22 +327,7 @@ namespace ARDroneFormsControl
         {
             if (DroneEvent != null)
             {
-                DroneEvent(new DroneNavEventArgs(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ()));
-            }
-        }
-
-        public bool IsRunning
-        {
-            get {
-                return isThreadRunning;
-            }
-        }
-
-        public int BatteryLevel
-        {
-            get
-            {
-                return GetBatteryLevel();
+                DroneEvent(new DroneData(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ()));
             }
         }
     }

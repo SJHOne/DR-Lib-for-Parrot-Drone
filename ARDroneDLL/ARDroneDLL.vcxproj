@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -107,14 +107,12 @@
     <ClCompile Include="$(ProjectDir)\ardrone_tool_win32.c" />
     <ClCompile Include="$(ProjectDir)\custom_code.c" />
     <ClCompile Include="$(ProjectDir)\UI\directx_rendering.cpp" />
-    <ClCompile Include="$(ProjectDir)\UI\gamepad.cpp" />
     <ClCompile Include="$(ProjectDir)\Navdata\navdata.c" />
     <ClCompile Include="$(ProjectDir)\Video\video_stage.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(ProjectDir)\custom_code.h" />
     <ClInclude Include="$(ProjectDir)\UI\directx_rendering.h" />
-    <ClInclude Include="$(ProjectDir)\UI\gamepad.h" />
     <ClInclude Include="$(ProjectDir)\Navdata\navdata.h" />
     <ClInclude Include="$(ProjectDir)\UI\ui.h" />
     <ClInclude Include="$(ProjectDir)\Video\video_stage.h" />

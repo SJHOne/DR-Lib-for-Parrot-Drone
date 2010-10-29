@@ -24,9 +24,6 @@
     <ClCompile Include="$(ProjectDir)\UI\directx_rendering.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="$(ProjectDir)\UI\gamepad.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="$(ProjectDir)\Navdata\navdata.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -39,9 +36,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="$(ProjectDir)\UI\directx_rendering.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="$(ProjectDir)\UI\gamepad.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="$(ProjectDir)\Navdata\navdata.h">

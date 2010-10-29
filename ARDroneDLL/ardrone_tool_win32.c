@@ -540,6 +540,16 @@ int sdk_demo_stop=0;
 		return  (VP_SUCCEEDED(res) && ardrone_tool_exit() == FALSE); 
 	}
 
+	int _stdcall ChangeToFrontCamera() {
+		ardrone_at_zap(ZAP_CHANNEL_HORI);
+		return 0;
+	}
+
+	int _stdcall ChangeToBottomCamera() {
+		ardrone_at_zap(ZAP_CHANNEL_VERT);
+		return 0;
+	}
+
 	int _stdcall SendFlatTrim()
 	{
 		ardrone_at_set_flat_trim();
@@ -602,7 +612,6 @@ int sdk_demo_stop=0;
 		//ardrone_at_set_progress_cmd((hovering)? 0:1, roll, pitch, gaz, yaw);
 	  
 	  
-	  /* Bye bye */
 	  return VP_SUCCEEDED(res) ? 0 : -1;
 	}
 
@@ -618,5 +627,3 @@ int sdk_demo_stop=0;
 	double _stdcall GetVX() { return vX;}
 	double _stdcall GetVY() { return vY;}
 	double _stdcall GetVZ() { return vZ;}
-
-

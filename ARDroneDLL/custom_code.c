@@ -36,7 +36,6 @@
 	#include <VP_Os/vp_os_signal.h>
 
 //Local project
-	#include <UI/gamepad.h>
 	#include <Video/video_stage.h>
 	#include <UI/directx_rendering.h>
 
@@ -59,10 +58,6 @@ C_RESULT ardrone_tool_init_custom(HWND vidWnd, int argc, char **argv)
 		vp_os_mutex_init(&consoleMutex);
 		//system("cls");
 
-	/* Registering for a new device of game controller */
-		ardrone_tool_input_add( &dx_keyboard );
-		ardrone_tool_input_add( &dx_gamepad );
-	
 	/* Start all threads of your application */
 		START_THREAD( directx_renderer_thread , vidWnd);
 		START_THREAD( video_stage, NULL );
@@ -79,10 +74,6 @@ C_RESULT ardrone_tool_shutdown_custom()
 {
   /* Relinquish all threads of your application */
   JOIN_THREAD( video_stage );
-
-  /* Unregistering for the current device */
-  ardrone_tool_input_remove( &dx_gamepad );
-  ardrone_tool_input_remove( &dx_keyboard );
 
   vp_os_mutex_destroy(&consoleMutex);
 
