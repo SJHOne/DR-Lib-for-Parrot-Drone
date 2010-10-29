@@ -1,3 +1,4 @@
+*.ipch
 *.suo
 *.sdf
 bin
