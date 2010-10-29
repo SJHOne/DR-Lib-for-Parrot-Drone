@@ -1,6 +1,6 @@
-﻿namespace ARDroneFormsCtl
+﻿namespace ARDroneFormsControl
 {
-    partial class ARDroneCtl
+    partial class ARDroneControl
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,12 @@
         {
             this.SuspendLayout();
             // 
-            // ARDroneCtl
+            // ARDroneControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "ARDroneCtl";
-            this.Load += new System.EventHandler(this.ARDroneCtl_Load);
+            this.Name = "ARDroneControl";
             this.ResumeLayout(false);
-
         }
 
         #endregion

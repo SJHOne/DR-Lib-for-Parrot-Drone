@@ -14,62 +14,112 @@ namespace TestDLL
 {
     public partial class MainForm : Form
     {
+        private bool isFlying = false;
+        private bool connected = false;
        
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            button1.Enabled = false;
-            joystickControl2.bgColor = Color.LemonChiffon;
-            joystickControl2.gridColor = Color.DarkKhaki;
-            arDroneCtl1.StatusOutput = tbOutput;
+            buttonShutdown.Enabled = false;
         }
 
-        private void bConnect_Click(object sender, EventArgs e)
-        {
-            int i = arDroneCtl1.Connect();
 
-            if (i == 0)
+        private void Connect()
+        {
+            if (connected) { return; }
+
+            int connectResult = arDroneControl.Connect();
+
+            if (connectResult == 0)
             {
-                tbOutput.AppendText("Connected to Drone\r\n");
-                
-                bConnect.Enabled = false;
-                button1.Enabled = true;
+                textboxOutput.AppendText("Connected to Drone\r\n");
+
+                timerBattery.Start();
+
+                buttonConnect.Enabled = false;
+                buttonShutdown.Enabled = true;
+
+                connected = true;
             }
             else
             {
-                tbOutput.AppendText("InitDrone() returned " + i.ToString() + "\r\n");
+                textboxOutput.AppendText("InitDrone() returned " + connectResult.ToString() + "\r\n");
             }
+        }
+
+        private void Disconnect()
+        {
+            if (!connected) { return; }
+
+            if (arDroneControl.Shutdown())
+            {
+                textboxOutput.AppendText("Shutdown Drone\r\n");
+                buttonConnect.Enabled = true;
+                buttonShutdown.Enabled = false;
+
+                connected = false;
+            }
+            else
+            {
+                textboxOutput.AppendText("Error shutting down Drone\r\n");
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Disconnect();
+        }
+
+        private void buttonConnect_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        private void buttonShutdown_Click(object sender, EventArgs e)
+        {
+            Disconnect();
+        }        
+
+
+        private void buttonStartStop_Click(object sender, EventArgs e)
+        {
+            if (!isFlying)
+            {
+                arDroneControl.Takeoff();
+            }
+            else
+            {
+                arDroneControl.Land();
+            }
+
+            isFlying = !isFlying;
+        }
+
+        private void buttonEmergency_Click(object sender, EventArgs e)
+        {
+            arDroneControl.Emergency();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (arDroneCtl1.Shutdown())
-            {
-                tbOutput.AppendText("Shutdown Drone\r\n");
-                bConnect.Enabled = true;
-                button1.Enabled = false;
-
-            }
-            else
-            {
-                tbOutput.AppendText("Error shutting down Drone\r\n");
-            }
+            arDroneControl.FlatTrim();
         }
-        
-        private bool Fly = false;
 
-        private void button4_Click(object sender, EventArgs e)
+        private void buttonChangeCamera_Click(object sender, EventArgs e)
         {
-            if (!Fly)
-                arDroneCtl1.Takeoff();
-            else
-                arDroneCtl1.Land();
-   
-            Fly = !Fly;
+            
+        }
+
+        private void timerBattery_Tick(object sender, EventArgs e)
+        {
+            int batteryLevel = arDroneControl.BatteryLevel;
+            String batteryLevelText = batteryLevel + "%";
+
+            labelBattery.Text = batteryLevelText;
         }
     }
 }

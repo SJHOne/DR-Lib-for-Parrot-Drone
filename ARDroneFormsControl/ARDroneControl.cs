@@ -5,10 +5,11 @@
 // Created by Stephen Hobley - October 2010
 // http://www.stephenhobley.com
 //
-// <add your names here>
+// Edited by Thomas Endres
 // 
 //
 ////////////////////////////////////////////////////////////////////////////////////////
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,14 +20,40 @@ using System.Text;
 using System.Windows.Forms;
 
 using System.Runtime.InteropServices;
-using System.Diagnostics; // TODO Move the output strings to a window?
+using System.Diagnostics;
 
 using System.Threading;
 
-namespace ARDroneFormsCtl
+namespace ARDroneFormsControl
 {
-    public partial class ARDroneCtl : UserControl
+    public partial class ARDroneControl : UserControl
     {
+        public class DroneNavEventArgs : EventArgs
+        {
+            public string DroneState { get; private set; }
+            public int BatteryLevel { get; private set; }
+            public double Theta { get; private set; }
+            public double Phi { get; private set; }
+            public double Psi { get; private set; }
+            public int Altitude { get; private set; }
+            public double vX { get; private set; }
+            public double vY { get; private set; }
+            public double vZ { get; private set; }
+
+            public DroneNavEventArgs(string droneState, int batteryLevel, double theta, double phi, double psi, int altitude, double vx, double vy, double vz)
+            {
+                DroneState = droneState;
+                BatteryLevel = batteryLevel;
+                Theta = theta;
+                Phi = phi;
+                Psi = psi;
+                Altitude = altitude;
+                vX = vx;
+                vY = vy;
+                vZ = vz;
+            }
+        }
+
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern int InitDrone(IntPtr vidHandle);
 
@@ -35,8 +62,6 @@ namespace ARDroneFormsCtl
 
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern bool ShutdownDrone();
-
-         // double vX, vY, vZ;
 
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern string GetDroneState();
@@ -80,7 +105,6 @@ namespace ARDroneFormsCtl
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern int SetProgressCmd(bool bhovering, float roll, float pitch, float gaz, float yaw);
 
-
         /*
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern double GetPitch();
@@ -95,25 +119,10 @@ namespace ARDroneFormsCtl
         static extern double GetGaz();
         */
 
-        private TextBox tbOutput = null;
+        public delegate void DroneNavDelegate(DroneNavEventArgs a);
+        public event DroneNavDelegate DroneEvent;
 
-        /// <summary>
-        /// Set a textbox to receive updates
-        /// </summary>
-        public TextBox StatusOutput
-        {
-            set { tbOutput = value; }
-        }
-        
-        /// <summary>
-        /// Returns true if the drone is connected and running
-        /// </summary>
-        public bool IsRunning
-        {
-            get { return bThreadRunning; }
-        }
-
-        public ARDroneCtl()
+        public ARDroneControl()
         {
             InitializeComponent();
         }
@@ -133,11 +142,6 @@ namespace ARDroneFormsCtl
         {
             StopThread();
             return true;
-        }
- 
-        private void ARDroneCtl_Load(object sender, EventArgs e)
-        {
-
         }
 
         public int FlatTrim()
@@ -160,39 +164,40 @@ namespace ARDroneFormsCtl
             return SendLand();
         }
 
-        public int ProgressCmd(bool bhovering, float roll, float pitch, float gaz, float yaw)
+        public int SendCommand(bool bhovering, float roll, float pitch, float gaz, float yaw)
         {
             return SetProgressCmd(bhovering, roll, pitch, gaz, yaw); 
         }
+
+
         
-        // THREADING -------------------------------------------------------------
+        // Threading
 
         delegate void StringParameterDelegate(string value);
         readonly object stateLock = new object();
         
-        bool bThreadRunning = false;
-
-        bool bTerminate = false;
+        bool isThreadRunning = false;
+        bool shouldThreadBeTerminated = false;
 
         void StartThread()
         {
             lock (stateLock)
             {
-                bTerminate = false;
+                shouldThreadBeTerminated = false;
             }
 
-            Thread t = new Thread(new ThreadStart(ThreadJob));
-            t.IsBackground = true;
-            t.Start();
+            Thread thread = new Thread(new ThreadStart(ThreadJob));
+            thread.IsBackground = true;
+            thread.Start();
 
-            bThreadRunning = true;
+            isThreadRunning = true;
         }
 
         void StopThread()
         {
             lock (stateLock)
             {
-                bTerminate = true;
+                shouldThreadBeTerminated = true;
             }
        
         }
@@ -200,99 +205,55 @@ namespace ARDroneFormsCtl
         void ThreadJob()
         {
             bool localStop = false;
-
             lock (stateLock)
             {
-                localStop = bTerminate;
+                localStop = shouldThreadBeTerminated;
             }
 
-            UpdateStatus("Starting loop");
+            SendEvent("Starting loop");
             
             // Keep calling update till we are told to stop
             while (!localStop && UpdateDrone())
             {
                 lock (stateLock)
                 {
-                    localStop = bTerminate;
+                    localStop = shouldThreadBeTerminated;
                 }
 
                 Thread.Sleep(100);
             }
-            
-            UpdateStatus("Loop finished");
+
+            SendEvent("Loop finished");
 
             if (ShutdownDrone() == false)
-                UpdateStatus("Error shutting down");
-
-            bThreadRunning = false;
-        }
-
-        void UpdateStatus(string value)
-        {
-            if (tbOutput != null)
             {
-                if (InvokeRequired)
-                {
-                    // We're not in the UI thread, so we need to call BeginInvoke
-                    BeginInvoke(new StringParameterDelegate(UpdateStatus), new object[] { value });
-                    return;
-                }
-
-                // Must be on the UI thread if we've got this far
-                tbOutput.AppendText(value + "\r\n");
+                SendEvent("Error shutting down");
             }
-        }
-        
-        void NavEvent(string val)
-        {
-            if (tbOutput != null)
-            {
-                if (InvokeRequired)
-                {
-                    // We're not in the UI thread, so we need to call BeginInvoke
-                    BeginInvoke(new StringParameterDelegate(NavEvent), new object[] { val });
-                    return;
-                }
 
-                // Must be on the UI thread if we've got this far
-                OnDroneNavEvent(new DroneNavEventArgs(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ()));
+            isThreadRunning = false;
+        }
+
+        private void SendEvent(string val)
+        {
+            if (DroneEvent != null)
+            {
+                DroneEvent(new DroneNavEventArgs(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ()));
             }
         }
 
-        public event DroneNavDelegate OnDroneNavEvent;
-
-    }
-
-    //--------------------------------------------------------------------------------------------------
-    public delegate void DroneNavDelegate(DroneNavEventArgs a);
-    
-    public class DroneNavEventArgs : EventArgs
-    {
-        public string DroneState { get; private set; }
-        public int BatteryLevel { get; private set; }
-        public double Theta { get; private set; }
-        public double Phi { get; private set; }
-        public double Psi { get; private set; }
-        public int Altitude { get; private set; }
-        public double vX { get; private set; }
-        public double vY { get; private set; }
-        public double vZ { get; private set; }
-
-        // DroneNavEventArgs constructor
-        public DroneNavEventArgs(string droneState, int batteryLevel, double theta, double phi,
-                                 double psi, int altitude, double vx, double vy, double vz)
+        public bool IsRunning
         {
-            DroneState = droneState;
-            BatteryLevel = batteryLevel;
-            Theta = theta;
-            Phi = phi;
-            Psi = psi;
-            Altitude = altitude;
-            vX = vx;
-            vY = vy;
-            vZ = vz;
+            get {
+                return isThreadRunning;
+            }
+        }
+
+        public int BatteryLevel
+        {
+            get
+            {
+                return GetBatteryLevel();
+            }
         }
     }
-
-
 }

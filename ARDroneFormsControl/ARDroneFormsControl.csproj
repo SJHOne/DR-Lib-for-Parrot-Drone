@@ -43,18 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ARDroneCtl.cs">
+    <Compile Include="ARDroneControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ARDroneCtl.Designer.cs">
-      <DependentUpon>ARDroneCtl.cs</DependentUpon>
+    <Compile Include="ARDroneControl.Designer.cs">
+      <DependentUpon>ARDroneControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ARDroneCtl.resx">
-      <DependentUpon>ARDroneCtl.cs</DependentUpon>
+    <EmbeddedResource Include="ARDroneControl.resx">
+      <DependentUpon>ARDroneControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
