@@ -36,6 +36,8 @@ namespace ARDrone
             checkBoxLand.Checked = inputState.Land;
             checkBoxEmergency.Checked = inputState.Emergency;
             checkBoxFlatTrim.Checked = inputState.FlatTrim;
+            checkBoxHover.Checked = inputState.Hover;
+            checkBoxCameraSwap.Checked = inputState.CameraSwap;
         }
     }
 }

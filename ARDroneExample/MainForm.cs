@@ -195,6 +195,8 @@ namespace ARDrone
 
         private void UpdateUI()
         {
+            input.SetFlags(isConnected, isEmergency, isFlying, isHovering);
+
             if (isConnected)
             {
                 buttonShutdown.Enabled = true;
@@ -398,9 +400,9 @@ namespace ARDrone
                 FlatTrim();
             }
 
-            float roll = inputState.Roll / 2.0f;
-            float pitch = inputState.Pitch / 2.0f;
-            float yaw = inputState.Yaw / 3.0f;
+            float roll = inputState.Roll / 1.0f;
+            float pitch = inputState.Pitch / 1.0f;
+            float yaw = inputState.Yaw / 2.0f;
             float gaz = inputState.Gaz / 2.0f;
 
             Navigate(roll, pitch, yaw, gaz);

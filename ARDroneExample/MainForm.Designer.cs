@@ -71,16 +71,25 @@
             this.labelBatteryStatusInfo = new System.Windows.Forms.Label();
             this.buttonHover = new System.Windows.Forms.Button();
             this.timerStartDelay = new System.Windows.Forms.Timer(this.components);
+            this.panelRight = new System.Windows.Forms.Panel();
+            this.panelBottom = new System.Windows.Forms.Panel();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.panelCenter = new System.Windows.Forms.Panel();
             this.arDroneControl = new ARDroneFormsControl.ARDroneControl();
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
+            this.panelRight.SuspendLayout();
+            this.panelBottom.SuspendLayout();
+            this.panelTop.SuspendLayout();
+            this.panelCenter.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(13, 6);
+            this.buttonConnect.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonConnect.Location = new System.Drawing.Point(0, 0);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(75, 23);
+            this.buttonConnect.Size = new System.Drawing.Size(75, 25);
             this.buttonConnect.TabIndex = 0;
             this.buttonConnect.Text = "Startup";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -91,7 +100,7 @@
             this.textboxOutput.BackColor = System.Drawing.SystemColors.MenuText;
             this.textboxOutput.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textboxOutput.ForeColor = System.Drawing.Color.Yellow;
-            this.textboxOutput.Location = new System.Drawing.Point(12, 369);
+            this.textboxOutput.Location = new System.Drawing.Point(1, 3);
             this.textboxOutput.Multiline = true;
             this.textboxOutput.Name = "textboxOutput";
             this.textboxOutput.ReadOnly = true;
@@ -100,9 +109,10 @@
             // 
             // buttonShutdown
             // 
-            this.buttonShutdown.Location = new System.Drawing.Point(295, 5);
+            this.buttonShutdown.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonShutdown.Location = new System.Drawing.Point(392, 0);
             this.buttonShutdown.Name = "buttonShutdown";
-            this.buttonShutdown.Size = new System.Drawing.Size(75, 23);
+            this.buttonShutdown.Size = new System.Drawing.Size(75, 25);
             this.buttonShutdown.TabIndex = 2;
             this.buttonShutdown.Text = "Shutdown";
             this.buttonShutdown.UseVisualStyleBackColor = true;
@@ -110,7 +120,7 @@
             // 
             // buttonEmergency
             // 
-            this.buttonEmergency.Location = new System.Drawing.Point(157, 310);
+            this.buttonEmergency.Location = new System.Drawing.Point(361, 67);
             this.buttonEmergency.Name = "buttonEmergency";
             this.buttonEmergency.Size = new System.Drawing.Size(107, 23);
             this.buttonEmergency.TabIndex = 7;
@@ -120,7 +130,7 @@
             // 
             // buttonChangeCamera
             // 
-            this.buttonChangeCamera.Location = new System.Drawing.Point(12, 311);
+            this.buttonChangeCamera.Location = new System.Drawing.Point(361, 137);
             this.buttonChangeCamera.Name = "buttonChangeCamera";
             this.buttonChangeCamera.Size = new System.Drawing.Size(107, 23);
             this.buttonChangeCamera.TabIndex = 8;
@@ -130,9 +140,9 @@
             // 
             // buttonStartStop
             // 
-            this.buttonStartStop.Location = new System.Drawing.Point(270, 311);
+            this.buttonStartStop.Location = new System.Drawing.Point(361, 3);
             this.buttonStartStop.Name = "buttonStartStop";
-            this.buttonStartStop.Size = new System.Drawing.Size(100, 23);
+            this.buttonStartStop.Size = new System.Drawing.Size(107, 23);
             this.buttonStartStop.TabIndex = 9;
             this.buttonStartStop.Text = "Take off";
             this.buttonStartStop.UseVisualStyleBackColor = true;
@@ -140,7 +150,7 @@
             // 
             // buttonFlattrim
             // 
-            this.buttonFlattrim.Location = new System.Drawing.Point(157, 340);
+            this.buttonFlattrim.Location = new System.Drawing.Point(361, 92);
             this.buttonFlattrim.Name = "buttonFlattrim";
             this.buttonFlattrim.Size = new System.Drawing.Size(107, 23);
             this.buttonFlattrim.TabIndex = 17;
@@ -155,14 +165,15 @@
             // 
             // labelCamera
             // 
-            this.labelCamera.AutoSize = true;
+            this.labelCamera.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCamera.ForeColor = System.Drawing.Color.Goldenrod;
-            this.labelCamera.Location = new System.Drawing.Point(151, 11);
+            this.labelCamera.Location = new System.Drawing.Point(75, 0);
             this.labelCamera.Name = "labelCamera";
-            this.labelCamera.Size = new System.Drawing.Size(69, 16);
+            this.labelCamera.Size = new System.Drawing.Size(317, 25);
             this.labelCamera.TabIndex = 19;
             this.labelCamera.Text = "No picture";
+            this.labelCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timerInputUpdate
             // 
@@ -301,7 +312,7 @@
             this.groupBoxInput.Controls.Add(this.labelZAxis);
             this.groupBoxInput.Controls.Add(this.labelYAxis);
             this.groupBoxInput.Controls.Add(this.labelRAxis);
-            this.groupBoxInput.Location = new System.Drawing.Point(376, 35);
+            this.groupBoxInput.Location = new System.Drawing.Point(3, 6);
             this.groupBoxInput.Name = "groupBoxInput";
             this.groupBoxInput.Size = new System.Drawing.Size(184, 206);
             this.groupBoxInput.TabIndex = 32;
@@ -346,7 +357,7 @@
             this.groupBoxStatus.Controls.Add(this.labelAltitudeStatusInfo);
             this.groupBoxStatus.Controls.Add(this.labelCameraStatusInfo);
             this.groupBoxStatus.Controls.Add(this.labelBatteryStatusInfo);
-            this.groupBoxStatus.Location = new System.Drawing.Point(376, 247);
+            this.groupBoxStatus.Location = new System.Drawing.Point(3, 218);
             this.groupBoxStatus.Name = "groupBoxStatus";
             this.groupBoxStatus.Size = new System.Drawing.Size(184, 180);
             this.groupBoxStatus.TabIndex = 33;
@@ -481,9 +492,9 @@
             // 
             // buttonHover
             // 
-            this.buttonHover.Location = new System.Drawing.Point(270, 340);
+            this.buttonHover.Location = new System.Drawing.Point(361, 27);
             this.buttonHover.Name = "buttonHover";
-            this.buttonHover.Size = new System.Drawing.Size(100, 23);
+            this.buttonHover.Size = new System.Drawing.Size(107, 23);
             this.buttonHover.TabIndex = 34;
             this.buttonHover.Text = "Hover";
             this.buttonHover.UseVisualStyleBackColor = true;
@@ -494,13 +505,58 @@
             this.timerStartDelay.Interval = 250;
             this.timerStartDelay.Tick += new System.EventHandler(this.timerStartDelay_Tick);
             // 
+            // panelRight
+            // 
+            this.panelRight.Controls.Add(this.groupBoxInput);
+            this.panelRight.Controls.Add(this.groupBoxStatus);
+            this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelRight.Location = new System.Drawing.Point(467, 0);
+            this.panelRight.Name = "panelRight";
+            this.panelRight.Size = new System.Drawing.Size(192, 540);
+            this.panelRight.TabIndex = 35;
+            // 
+            // panelBottom
+            // 
+            this.panelBottom.Controls.Add(this.textboxOutput);
+            this.panelBottom.Controls.Add(this.buttonEmergency);
+            this.panelBottom.Controls.Add(this.buttonHover);
+            this.panelBottom.Controls.Add(this.buttonStartStop);
+            this.panelBottom.Controls.Add(this.buttonFlattrim);
+            this.panelBottom.Controls.Add(this.buttonChangeCamera);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.Location = new System.Drawing.Point(0, 376);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(467, 164);
+            this.panelBottom.TabIndex = 36;
+            // 
+            // panelTop
+            // 
+            this.panelTop.Controls.Add(this.labelCamera);
+            this.panelTop.Controls.Add(this.buttonConnect);
+            this.panelTop.Controls.Add(this.buttonShutdown);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(467, 25);
+            this.panelTop.TabIndex = 37;
+            // 
+            // panelCenter
+            // 
+            this.panelCenter.Controls.Add(this.arDroneControl);
+            this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCenter.Location = new System.Drawing.Point(0, 25);
+            this.panelCenter.Name = "panelCenter";
+            this.panelCenter.Size = new System.Drawing.Size(467, 351);
+            this.panelCenter.TabIndex = 38;
+            // 
             // arDroneControl
             // 
             this.arDroneControl.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.arDroneControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.arDroneControl.Location = new System.Drawing.Point(12, 35);
+            this.arDroneControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.arDroneControl.Location = new System.Drawing.Point(0, 0);
             this.arDroneControl.Name = "arDroneControl";
-            this.arDroneControl.Size = new System.Drawing.Size(358, 270);
+            this.arDroneControl.Size = new System.Drawing.Size(467, 351);
             this.arDroneControl.TabIndex = 4;
             // 
             // MainForm
@@ -508,21 +564,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(566, 540);
-            this.Controls.Add(this.buttonHover);
-            this.Controls.Add(this.groupBoxStatus);
-            this.Controls.Add(this.groupBoxInput);
-            this.Controls.Add(this.labelCamera);
-            this.Controls.Add(this.buttonFlattrim);
-            this.Controls.Add(this.buttonStartStop);
-            this.Controls.Add(this.buttonChangeCamera);
-            this.Controls.Add(this.buttonEmergency);
-            this.Controls.Add(this.arDroneControl);
-            this.Controls.Add(this.buttonShutdown);
-            this.Controls.Add(this.textboxOutput);
-            this.Controls.Add(this.buttonConnect);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+            this.ClientSize = new System.Drawing.Size(659, 540);
+            this.Controls.Add(this.panelCenter);
+            this.Controls.Add(this.panelTop);
+            this.Controls.Add(this.panelBottom);
+            this.Controls.Add(this.panelRight);
+            this.MinimumSize = new System.Drawing.Size(675, 578);
             this.Name = "MainForm";
             this.Text = "Drone Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -530,8 +577,12 @@
             this.groupBoxInput.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
+            this.panelRight.ResumeLayout(false);
+            this.panelBottom.ResumeLayout(false);
+            this.panelBottom.PerformLayout();
+            this.panelTop.ResumeLayout(false);
+            this.panelCenter.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -540,7 +591,6 @@
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.TextBox textboxOutput;
         private System.Windows.Forms.Button buttonShutdown;
-        private ARDroneFormsControl.ARDroneControl arDroneControl;
         private System.Windows.Forms.Button buttonEmergency;
         private System.Windows.Forms.Button buttonChangeCamera;
         private System.Windows.Forms.Button buttonStartStop;
@@ -580,6 +630,11 @@
         private System.Windows.Forms.Label labelEmergencyStatusInfo;
         private System.Windows.Forms.CheckBox checkBoxHover;
         private System.Windows.Forms.CheckBox checkBoxCameraSwap;
+        private System.Windows.Forms.Panel panelRight;
+        private System.Windows.Forms.Panel panelBottom;
+        private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.Panel panelCenter;
+        private ARDroneFormsControl.ARDroneControl arDroneControl;
     }
 }
 

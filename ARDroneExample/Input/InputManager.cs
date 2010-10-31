@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Microsoft.DirectX.DirectInput;
+
+using WiimoteLib;
 
 namespace ARDrone.Input
 {
     class InputManager
     {
-        private ArrayList inputDevices = null;
+        private List<GenericInput> inputDevices = null;
 
         public InputManager(System.Windows.Forms.Form form)
         {
-            inputDevices = new ArrayList();
-
+            inputDevices = new List<GenericInput>();
             CreateJoystickInputDevices(form);
         }
 
@@ -20,6 +21,7 @@ namespace ARDrone.Input
         {
             AddKeyboardDevices(form);
             AddJoystickDevices(form);
+            AddWiimoteDevices();
         }
 
         private void AddKeyboardDevices(System.Windows.Forms.Form form)
@@ -49,21 +51,50 @@ namespace ARDrone.Input
                 DeviceInstance deviceInstance = (DeviceInstance)gameControllerList.Current;
 
                 Device device = new Device(deviceInstance.InstanceGuid);
-                device.SetCooperativeLevel(form, CooperativeLevelFlags.Background | CooperativeLevelFlags.NonExclusive);
-                device.SetDataFormat(DeviceDataFormat.Joystick);
-                device.Acquire();
 
-                JoystickInput input = new JoystickInput(device);
-                inputDevices.Add(input);
+                if (device.DeviceInformation.ProductGuid != new Guid("0306057e-0000-0000-0000-504944564944"))       // Wiimotes are excluded
+                {
+                    device.SetCooperativeLevel(form, CooperativeLevelFlags.Background | CooperativeLevelFlags.NonExclusive);
+                    device.SetDataFormat(DeviceDataFormat.Joystick);
+                    device.Acquire();
+
+                    JoystickInput input = new JoystickInput(device);
+                    inputDevices.Add(input);
+                }
             }
         }
 
+        private void AddWiimoteDevices()
+        {
+            WiimoteCollection wiiMoteCollection = new WiimoteCollection();
+
+            try
+            {
+                wiiMoteCollection.FindAllWiimotes();
+            }
+            catch (WiimoteNotFoundException)
+            {
+                Console.WriteLine("Wiimote not found error");
+            }
+            catch (WiimoteException)
+            {
+                Console.WriteLine("Wiimote error");
+            }
+
+            foreach (Wiimote wiimote in wiiMoteCollection)
+            {
+                WiimoteInput wiimoteInput = new WiimoteInput(wiimote);
+                inputDevices.Add(wiimoteInput);
+
+                wiimote.SetLEDs(false, false, false, false);
+            }
+        }
 
         public void Dispose()
         {
             for (int i = 0; i < inputDevices.Count; i++)
             {
-                ((JoystickInput)inputDevices[i]).Dispose();
+                inputDevices[i].Dispose();
             }
         }
 
@@ -73,7 +104,7 @@ namespace ARDrone.Input
 
             for (int i = 0; i < inputDevices.Count; i++)
             {
-                currentInputState = ((Input)inputDevices[i]).GetCurrentState();
+                currentInputState = inputDevices[i].GetCurrentState();
 
                 if (currentInputState.Roll != 0.0f || currentInputState.Pitch != 0.0f || currentInputState.Yaw != 0.0f || currentInputState.Gaz != 0.0f ||
                     currentInputState.CameraSwap || currentInputState.TakeOff || currentInputState.Land || currentInputState.Hover || currentInputState.Emergency || currentInputState.FlatTrim)
@@ -83,6 +114,18 @@ namespace ARDrone.Input
             }
 
             return currentInputState;
+        }
+
+        public void SetFlags(bool isConnected, bool isEmergency, bool isFlying, bool isHovering)
+        {
+            for (int i = 0; i < inputDevices.Count; i++)
+            {
+                if (inputDevices[i] is WiimoteInput)
+                {
+                    WiimoteInput wiimoteInput = (WiimoteInput)inputDevices[i];
+                    wiimoteInput.SetLEDs(isConnected, isEmergency, isFlying, isHovering);
+                }
+            }
         }
     }
 }

@@ -42,6 +42,8 @@
             this.checkBoxTakeOff = new System.Windows.Forms.CheckBox();
             this.checkBoxEmergency = new System.Windows.Forms.CheckBox();
             this.checkBoxFlatTrim = new System.Windows.Forms.CheckBox();
+            this.checkBoxCameraSwap = new System.Windows.Forms.CheckBox();
+            this.checkBoxHover = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // timerJoystickUpdate
@@ -165,11 +167,35 @@
             this.checkBoxFlatTrim.Text = "Flat trim";
             this.checkBoxFlatTrim.UseVisualStyleBackColor = true;
             // 
+            // checkBoxCameraSwap
+            // 
+            this.checkBoxCameraSwap.AutoSize = true;
+            this.checkBoxCameraSwap.Enabled = false;
+            this.checkBoxCameraSwap.Location = new System.Drawing.Point(103, 170);
+            this.checkBoxCameraSwap.Name = "checkBoxCameraSwap";
+            this.checkBoxCameraSwap.Size = new System.Drawing.Size(62, 17);
+            this.checkBoxCameraSwap.TabIndex = 35;
+            this.checkBoxCameraSwap.Text = "Camera";
+            this.checkBoxCameraSwap.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxHover
+            // 
+            this.checkBoxHover.AutoSize = true;
+            this.checkBoxHover.Enabled = false;
+            this.checkBoxHover.Location = new System.Drawing.Point(12, 170);
+            this.checkBoxHover.Name = "checkBoxHover";
+            this.checkBoxHover.Size = new System.Drawing.Size(55, 17);
+            this.checkBoxHover.TabIndex = 34;
+            this.checkBoxHover.Text = "Hover";
+            this.checkBoxHover.UseVisualStyleBackColor = true;
+            // 
             // InputTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(172, 175);
+            this.ClientSize = new System.Drawing.Size(172, 195);
+            this.Controls.Add(this.checkBoxCameraSwap);
+            this.Controls.Add(this.checkBoxHover);
             this.Controls.Add(this.checkBoxFlatTrim);
             this.Controls.Add(this.checkBoxEmergency);
             this.Controls.Add(this.checkBoxTakeOff);
@@ -207,6 +233,8 @@
         private System.Windows.Forms.CheckBox checkBoxTakeOff;
         private System.Windows.Forms.CheckBox checkBoxEmergency;
         private System.Windows.Forms.CheckBox checkBoxFlatTrim;
+        private System.Windows.Forms.CheckBox checkBoxCameraSwap;
+        private System.Windows.Forms.CheckBox checkBoxHover;
     }
 }
 

@@ -7,114 +7,95 @@ using Microsoft.DirectX.DirectInput;
 
 namespace ARDrone.Input
 {
-    class JoystickInput : Input
+    public class JoystickInput : GenericInput
     {
-        private ArrayList buttonsPressedBefore = new ArrayList();
+        enum Axis
+        {
+            Axis_X, Axis_Y, Axis_R, Axis_POV_1
+        }
+        enum Button
+        {
+            Button_1, Button_2, Button_3, Button_4, Button_5,
+            Button_6, Button_7, Button_8, Button_9, Button_10,
+            Button_11, Button_12, Button_13, Button_14, Button_15
+        }
 
-        public JoystickInput(Device device)
+        Device device = null;
+
+        public JoystickInput(Device device) : base()
         {
             this.device = device;
 
-            mapping = new InputMapping();
+            List<String> validAxes = new List<String>();
+            foreach (Axis axis in Enum.GetValues(typeof(Axis)))
+            {
+                validAxes.Add(axis.ToString());
+            }
+
+            List<String> validButtons = new List<String>();
+            foreach (Button button in Enum.GetValues(typeof(Button)))
+            {
+                validButtons.Add(button.ToString());
+            }
+
+            mapping = new InputMapping(validButtons, validAxes);
             if (device.Properties.ProductName == "T.Flight Stick X")
             {
-                mapping.RollAxisMapping = "x"; mapping.PitchAxisMapping = "y"; mapping.YawAxisMapping = "r"; mapping.GazAxisMapping = "z";
-                mapping.CameraSwapButton = "11";
-                mapping.TakeOffButton = "4"; mapping.LandButton = "4"; mapping.HoverButton = "10";
-                mapping.EmergencyButton = "2"; mapping.FlatTrimButton = "5";
+                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, Axis.Axis_R, Axis.Axis_POV_1);
+                mapping.SetButtonMappings(Button.Button_11, Button.Button_4, Button.Button_4, Button.Button_10, Button.Button_2, Button.Button_5);
             }
             else
             {
-                mapping.RollAxisMapping = "x"; mapping.PitchAxisMapping = "y"; mapping.YawAxisMapping = "1-3"; mapping.GazAxisMapping = "2-4";
-                mapping.CameraSwapButton = "6";
-                mapping.TakeOffButton = "10"; mapping.LandButton = "10"; mapping.HoverButton = "8";
-                mapping.EmergencyButton = "5"; mapping.FlatTrimButton = "9";
+                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, "Button_1-Button_3", "Button_2-Button_4");
+                mapping.SetButtonMappings(Button.Button_6, Button.Button_10, Button.Button_10, Button.Button_8, Button.Button_5, Button.Button_9);
             }
         }
 
-        
-        public override InputState GetCurrentState()
+        public override void Dispose()
+        {
+            device.Unacquire();
+        }
+
+        public override List<String> GetPressedButtons()
         {
             JoystickState state = device.CurrentJoystickState;
 
-            float xAxisValue = calculateFloatValue(state.X);
-            float yAxisValue = calculateFloatValue(state.Y);
-            float rAxisValue = calculateFloatValue(state.Rz);
-            float zAxisValue = calculatePOVValue(device.CurrentJoystickState.GetPointOfView()[0]);
-
-            ArrayList buttonsPressed = new ArrayList();
+            List<String> buttonsPressed = new List<String>();
             byte[] buttons = state.GetButtons();
             for (int j = 0; j < buttons.Length; j++)
             {
                 if (buttons[j] != 0)
                 {
-                    buttonsPressed.Add(j + 1);
+                    buttonsPressed.Add("Button_" + (j + 1));
                 }
             }
 
-            float roll = getAxisValue(mapping.RollAxisMapping, xAxisValue, yAxisValue, rAxisValue, zAxisValue, buttonsPressed);
-            float pitch = getAxisValue(mapping.PitchAxisMapping, xAxisValue, yAxisValue, rAxisValue, zAxisValue, buttonsPressed);
-            float yaw = getAxisValue(mapping.YawAxisMapping, xAxisValue, yAxisValue, rAxisValue, zAxisValue, buttonsPressed);
-            float gaz = getAxisValue(mapping.GazAxisMapping, xAxisValue, yAxisValue, rAxisValue, zAxisValue, buttonsPressed);
-
-            bool cameraSwap = getFlightButtonValue(mapping.CameraSwapButton, buttonsPressed);
-            bool takeOff = getFlightButtonValue(mapping.TakeOffButton, buttonsPressed);
-            bool land = getFlightButtonValue(mapping.LandButton, buttonsPressed);
-            bool hover = getFlightButtonValue(mapping.HoverButton, buttonsPressed);
-            bool emergency = getFlightButtonValue(mapping.EmergencyButton, buttonsPressed);
-            bool flatTrim = getFlightButtonValue(mapping.FlatTrimButton, buttonsPressed);
-
-            buttonsPressedBefore = buttonsPressed;
-
-            return new InputState(roll, pitch, yaw, gaz, cameraSwap, takeOff, land, hover, emergency, flatTrim);
+            return buttonsPressed;
         }
 
-        private float calculateFloatValue(int input)
+        public override Dictionary<String, float> GetAxisValues()
         {
-            float fpValue = ((float)(input - short.MaxValue) / (float)short.MaxValue);
+            JoystickState state = device.CurrentJoystickState;
 
-            if (fpValue > 1) return 1.0f;
-            if (fpValue < -1) return -1.0f;
-            return fpValue;
+            Dictionary<String, float> axisValues = new Dictionary<String, float>();
+            axisValues[Axis.Axis_X.ToString()] = GetFloatValue(state.X);
+            axisValues[Axis.Axis_Y.ToString()] = GetFloatValue(state.Y);
+            axisValues[Axis.Axis_R.ToString()] = GetFloatValue(state.Rz);
+            axisValues[Axis.Axis_POV_1.ToString()] = CalculatePOVValue(state.GetPointOfView()[0]);
+
+            return axisValues;
         }
 
-        private float calculatePOVValue(int povInput)
+        private float GetFloatValue(int input)
+        {
+            return (float)(input - short.MaxValue) / (float)short.MaxValue;
+        }
+
+        private float CalculatePOVValue(int povInput)
         {
             if (povInput == -1 || povInput == 9000 || povInput == 27000) return 0.0f;
             else if (povInput == 0 || povInput == 4500 || povInput == 31500) return 1.0f;
             else return -1.0f;
-        }
-
-        private float getAxisValue(String mapping, float xAxisValue, float yAxisValue, float rAxisValue, float zAxisValue, ArrayList buttonsPressed)
-        {
-            float value = 0.0f;
-            if (mapping == "x") { value = xAxisValue; }
-            else if (mapping == "y") { value = yAxisValue; }
-            else if (mapping == "r") { value = rAxisValue; }
-            else if (mapping == "z") { value = zAxisValue; }
-            else
-            {
-                String[] mappingValues = mapping.Split('-');
-                int firstButtonNumber = Int32.Parse(mappingValues[0]);
-                int secondButtonNumber = Int32.Parse(mappingValues[1]);
-
-                if (buttonsPressed.Contains(firstButtonNumber))
-                {
-                    value = -1.0f;
-                }
-                else if (buttonsPressed.Contains(secondButtonNumber))
-                {
-                    value = 1.0f;
-                }
-            }
-
-            return value;
-        }
-
-        private bool getFlightButtonValue(String mapping, ArrayList buttonsPressed)
-        {
-            int buttonNumber = Int32.Parse(mapping);
-            return buttonsPressed.Contains(buttonNumber) && !buttonsPressedBefore.Contains(buttonNumber);
         }
     }
 }

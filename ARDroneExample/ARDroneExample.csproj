@@ -52,6 +52,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WiimoteLib">
+      <HintPath>lib\WiimoteLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InputTestForm.cs">
@@ -60,11 +63,12 @@
     <Compile Include="InputTestForm.designer.cs">
       <DependentUpon>InputTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\GenericInput.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Input\JoystickInput.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
+    <Compile Include="Input\WiimoteInput.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

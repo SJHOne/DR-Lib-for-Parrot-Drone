@@ -7,83 +7,58 @@ using Microsoft.DirectX.DirectInput;
 
 namespace ARDrone.Input
 {
-    class KeyboardInput : Input
+    class KeyboardInput : GenericInput
     {
         private ArrayList keysPressedBefore = new ArrayList();
 
-        public KeyboardInput(Device device)
+        Device device = null;
+
+        public KeyboardInput(Device device) : base()
         {
             this.device = device;
 
-            mapping = new InputMapping();
-            mapping.RollAxisMapping = "A-D"; mapping.PitchAxisMapping = "W-S"; mapping.YawAxisMapping = "LeftArrow-RightArrow"; mapping.GazAxisMapping = "DownArrow-UpArrow";
-            mapping.CameraSwapButton = "C";
-            mapping.TakeOffButton = "Return"; mapping.LandButton = "Return"; mapping.HoverButton = "NumPad0";
-            mapping.EmergencyButton = "Space"; mapping.FlatTrimButton = "F";
+            List<String> validAxes = new List<String>();
+            List<String> validButtons = new List<String>();
+            foreach (Key key in Enum.GetValues(typeof(Key)))
+            {
+                if (!validButtons.Contains(key.ToString()))
+                {
+                    validButtons.Add(key.ToString());
+                }
+            }
+
+            mapping = new InputMapping(validButtons, validAxes);
+            mapping.SetAxisMappings("A-D", "W-S", "LeftArrow-Right", "DownArrow-Up");
+            mapping.SetButtonMappings("C", "Return", "Return", "NumPad0", "Space", "F");
         }
 
-        public override InputState GetCurrentState()
+        public override void Dispose()
+        {
+            device.Unacquire();
+        }
+
+        public override List<String> GetPressedButtons()
         {
             KeyboardState state = device.GetCurrentKeyboardState();
 
-            float roll = getAxisValue(mapping.RollAxisMapping, state);
-            float pitch = getAxisValue(mapping.PitchAxisMapping, state);
-            float yaw = getAxisValue(mapping.YawAxisMapping, state);
-            float gaz = getAxisValue(mapping.GazAxisMapping, state);
+            List<String> buttonsPressed = new List<String>();
+            foreach (Key key in Enum.GetValues(typeof(Key)))
+            {
+                if (state[key])
+                {
+                    if (!buttonsPressed.Contains(key.ToString()))
+                    {
+                        buttonsPressed.Add(key.ToString());
+                    }
+                }
+            }
 
-            bool cameraSwap = isFlightButtonPressed(mapping.CameraSwapButton, state);
-            bool takeOff = isFlightButtonPressed(mapping.TakeOffButton, state);
-            bool land = isFlightButtonPressed(mapping.LandButton, state);
-            bool hover = isFlightButtonPressed(mapping.HoverButton, state);
-            bool emergency = isFlightButtonPressed(mapping.EmergencyButton, state);
-            bool flatTrim = isFlightButtonPressed(mapping.FlatTrimButton, state);
-
-            keysPressedBefore = new ArrayList();
-            if (cameraSwap) { keysPressedBefore.Add(mapping.CameraSwapButton); }
-            if (takeOff) { keysPressedBefore.Add(mapping.TakeOffButton); }
-            if (land) { keysPressedBefore.Add(mapping.LandButton); }
-            if (hover) { keysPressedBefore.Add(mapping.HoverButton); }
-            if (emergency) { keysPressedBefore.Add(mapping.EmergencyButton); }
-            if (flatTrim) { keysPressedBefore.Add(mapping.FlatTrimButton); }
-
-            return new InputState(roll, pitch, yaw, gaz, cameraSwap, takeOff, land, hover, emergency, flatTrim);
+            return buttonsPressed;
         }
 
-        private float getAxisValue(String mapping, KeyboardState state)
+        public override Dictionary<String, float> GetAxisValues()
         {
-            float value = 0.0f;
-            String[] mappingValues = mapping.Split('-');
-            Key firstKeyValue = getKeyFromString(mappingValues[0]);
-            Key secondKeyValue = getKeyFromString(mappingValues[1]);
-
-            if (state[firstKeyValue] == true)
-            {
-                value = -1.0f;
-            }
-            else if (state[secondKeyValue] == true)
-            {
-                value = 1.0f;
-            }
-
-            return value;
-        }
-
-        private bool isFlightButtonPressed(String mapping, KeyboardState state)
-        {
-            Key keyValue = getKeyFromString(mapping);
-            return state[keyValue] && !keysPressedBefore.Contains(mapping);
-        }
-
-        private Key getKeyFromString(String keyText)
-        {
-            try
-            {
-                return (Key)Enum.Parse(typeof(Key), keyText);
-            }
-            catch (Exception)
-            {
-                return Key.Yen;
-            }
+            return new Dictionary<String, float>();
         }
     }
 }
