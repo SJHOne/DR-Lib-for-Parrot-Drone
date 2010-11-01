@@ -27,6 +27,11 @@ namespace ARDroneFormsControl
 {
     public partial class ARDroneControl : UserControl
     {
+        private Size frontCameraPictureSize = new Size(320, 240);
+        private Size bottomCameraPictureSize = new Size(160, 120);
+
+        private const int totalCameraWidth = 640;
+
         public enum CameraType
         {
             FrontCamera,
@@ -179,11 +184,15 @@ namespace ARDroneFormsControl
             }
 
             ChangeToFrontCamera();
+            timerVideo.Enabled = true;
+
             return resultValue;
         }
 
         public bool Shutdown()
         {
+            timerVideo.Enabled = false;
+
             StopThread();
             return true;
         }
@@ -229,65 +238,6 @@ namespace ARDroneFormsControl
         public int Land()
         {
             return SendLand();
-        }
-
-        public Image GetDisplayedImage()
-        {
-            try
-            {
-                int width = 320;
-                int stride = 320;
-                int height = 240;
-                int bytesPerPixel = 3;
-                int length = (width + stride) * height * bytesPerPixel;
-
-                // Get initial image
-                byte[] buffer = new byte[length];
-                IntPtr beginPtr = GetCurrentImage();
-                Marshal.Copy(beginPtr, buffer, 0, length);
-                Bitmap bitmap = new Bitmap(width + stride, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, width + stride, height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                Marshal.Copy(buffer, 0, bitmapData.Scan0, length);
-                bitmap.UnlockBits(bitmapData);
-
-                // Cut to half width
-                Bitmap cutBitmap = new Bitmap(width, height);
-                Graphics graphics = Graphics.FromImage(cutBitmap);
-                graphics.DrawImage(bitmap, new Rectangle(0, 0, width, height), new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
-                bitmap.Dispose();
-
-                // BGR to RGB
-                bitmapData = cutBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-                stride = bitmapData.Stride;
-                System.IntPtr Scan0 = bitmapData.Scan0;
-                unsafe
-                {
-                    byte* pictureBytes = (byte*)(void*)Scan0;
-                    int offset = stride - cutBitmap.Width * 3;
-                    int lineWidth = cutBitmap.Width * 3;
-                    byte swap;
-                    for (int y = 0; y < cutBitmap.Height; ++y)
-                    {
-                        for (int x = 0; x < lineWidth; x += 3)
-                        {
-                            swap = (byte)pictureBytes[2];
-                            pictureBytes[2] = (byte)(pictureBytes[0]);
-                            pictureBytes[0] = swap;
-                            pictureBytes += 3;
-                        }
-                        pictureBytes += offset;
-                    }
-                }
-                cutBitmap.UnlockBits(bitmapData);
-
-                return cutBitmap;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-
-            }
-            return null;
         }
 
         public int SendCommand(bool hovering, float roll, float pitch, float gaz, float yaw)
@@ -392,5 +342,85 @@ namespace ARDroneFormsControl
                 DroneEvent(new DroneData(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ()));
             }
         }
+
+        private void UpdateVideo()
+        {
+            Image image = GetDisplayedImage();
+
+            if (image != null)
+            {
+                Image oldImage = pictureBoxVideo.Image;
+                pictureBoxVideo.Image = image;
+                if (oldImage != null)
+                {
+                    oldImage.Dispose();
+                }
+            }
+        }
+
+        private Image GetDisplayedImage()
+        {
+            try
+            {
+                int width = CurrentCameraType == CameraType.FrontCamera ? frontCameraPictureSize.Width : bottomCameraPictureSize.Width;
+                int stride = totalCameraWidth - (CurrentCameraType == CameraType.FrontCamera ? frontCameraPictureSize.Width : bottomCameraPictureSize.Width);
+                int height = CurrentCameraType == CameraType.FrontCamera ? frontCameraPictureSize.Height : bottomCameraPictureSize.Height;
+                int bytesPerPixel = 3;
+                int length = (width + stride) * height * bytesPerPixel;
+
+                // Get initial image
+                byte[] buffer = new byte[length];
+                IntPtr beginPtr = GetCurrentImage();
+                Marshal.Copy(beginPtr, buffer, 0, length);
+                Bitmap bitmap = new Bitmap(width + stride, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, width + stride, height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                Marshal.Copy(buffer, 0, bitmapData.Scan0, length);
+                bitmap.UnlockBits(bitmapData);
+
+                // Cut to half width
+                Bitmap cutBitmap = new Bitmap(width, height);
+                Graphics graphics = Graphics.FromImage(cutBitmap);
+                graphics.DrawImage(bitmap, new Rectangle(0, 0, width, height), new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
+                bitmap.Dispose();
+
+                // BGR to RGB
+                bitmapData = cutBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                stride = bitmapData.Stride;
+                System.IntPtr Scan0 = bitmapData.Scan0;
+                unsafe
+                {
+                    byte* pictureBytes = (byte*)(void*)Scan0;
+                    int offset = stride - cutBitmap.Width * 3;
+                    int lineWidth = cutBitmap.Width * 3;
+                    byte swap;
+                    for (int y = 0; y < cutBitmap.Height; ++y)
+                    {
+                        for (int x = 0; x < lineWidth; x += 3)
+                        {
+                            swap = (byte)pictureBytes[2];
+                            pictureBytes[2] = (byte)(pictureBytes[0]);
+                            pictureBytes[0] = swap;
+                            pictureBytes += 3;
+                        }
+                        pictureBytes += offset;
+                    }
+                }
+                cutBitmap.UnlockBits(bitmapData);
+
+                return cutBitmap;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            return null;
+        }
+
+        private void timerVideo_Tick(object sender, EventArgs e)
+        {
+            UpdateVideo();
+        }
+
     }
 }

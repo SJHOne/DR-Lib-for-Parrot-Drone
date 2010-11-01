@@ -22,10 +22,6 @@
 
 #include <custom_code.h>
 
-
-
-
-
 /*---------------------------------------------------------------------------------------------------------------------
 Function taking the drone control state stored as an integer, and prints in a string 
 the names of the set control bits.

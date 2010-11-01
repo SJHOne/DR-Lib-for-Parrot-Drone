@@ -21,9 +21,6 @@
     <ClCompile Include="$(ProjectDir)\custom_code.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="$(ProjectDir)\UI\directx_rendering.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="$(ProjectDir)\Navdata\navdata.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -33,9 +30,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(ProjectDir)\custom_code.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="$(ProjectDir)\UI\directx_rendering.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="$(ProjectDir)\Navdata\navdata.h">

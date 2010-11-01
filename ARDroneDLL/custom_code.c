@@ -59,7 +59,6 @@ C_RESULT ardrone_tool_init_custom(HWND vidWnd, int argc, char **argv)
 		//system("cls");
 
 	/* Start all threads of your application */
-		START_THREAD( directx_renderer_thread , vidWnd);
 		START_THREAD( video_stage, NULL );
   
   return C_OK;
@@ -103,7 +102,6 @@ BEGIN_THREAD_TABLE
   THREAD_TABLE_ENTRY( ardrone_control, 20 )
   THREAD_TABLE_ENTRY( navdata_update, 20 )
   THREAD_TABLE_ENTRY( video_stage, 20 )
-  THREAD_TABLE_ENTRY( directx_renderer_thread, 20 )
 END_THREAD_TABLE
 
 

@@ -354,19 +354,6 @@ namespace ARDrone
 
         private void timerInputUpdate_Tick(object sender, EventArgs e)
         {
-            Image currentImage = arDroneControl.GetDisplayedImage();
-            if (currentImage != null)
-            {
-                Image oldImage = pictureBox1.Image;
-                pictureBox1.Image = currentImage;
-                if (oldImage != null)
-                {
-                    oldImage.Dispose();
-                }
-            }
-
-
-
             InputState inputState = input.GetCurrentState();
 
             textBoxXAxis.Text = inputState.Roll.ToString();

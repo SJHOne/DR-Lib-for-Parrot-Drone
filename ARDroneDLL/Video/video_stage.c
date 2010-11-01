@@ -81,11 +81,7 @@ C_RESULT output_rendering_device_stage_open( void *cfg, vp_api_io_data_t *in, vp
 	return (VP_SUCCESS);
 }
 
-
-
 extern uint8_t * FrameBuffer;
-
-
 
 /*****************************************************************************/
 /*
@@ -101,27 +97,7 @@ C_RESULT output_rendering_device_stage_transform( void *cfg, vp_api_io_data_t *i
  
   /* Get a reference to the last decoded picture */
   pixbuf_data      = (uint8_t*)in->buffers[0];
-  
-		
-  
-  
-			/** ======= INSERT USER CODE HERE ========== **/
-		
-				// Send the decoded video frame to the DirectX renderer.
-				// This is an example; do here whatever you want to do
-				//  with the decoded frame.
-  
-				/* Send the actual video resolution to the rendering module */
-				//D3DChangeTextureSize(vec->controller.width,vec->controller.height);
-				/* Send video picture to the rendering module */
-				//D3DChangeTexture(pixbuf_data);
 
-			/** ======= INSERT USER CODE HERE ========== **/
-		
-
-
-  
-  
   vp_os_mutex_unlock(&video_update_lock);
   return (VP_SUCCESS);
 }
