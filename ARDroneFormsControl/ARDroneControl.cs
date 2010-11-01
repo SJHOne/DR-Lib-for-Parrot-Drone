@@ -235,51 +235,50 @@ namespace ARDroneFormsControl
         {
             try
             {
-                //int length = 76800;
-                int width = 640;
-                int height = 480;
+                int width = 320;
+                int stride = 320;
+                int height = 240;
                 int bytesPerPixel = 3;
-                int length = width * height * bytesPerPixel;
+                int length = (width + stride) * height * bytesPerPixel;
 
+                // Get initial image
                 byte[] buffer = new byte[length];
                 IntPtr beginPtr = GetCurrentImage();
                 Marshal.Copy(beginPtr, buffer, 0, length);
-
-                //PixelFormat.Format24bppRGB
-
-                Bitmap bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, width, height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                Bitmap bitmap = new Bitmap(width + stride, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, width + stride, height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 Marshal.Copy(buffer, 0, bitmapData.Scan0, length);
                 bitmap.UnlockBits(bitmapData);
 
-                Bitmap cutBitmap = new Bitmap(320, 240);
+                // Cut to half width
+                Bitmap cutBitmap = new Bitmap(width, height);
                 Graphics graphics = Graphics.FromImage(cutBitmap);
-                graphics.DrawImage(bitmap, new Rectangle(0, 0, 320, 240), new Rectangle(0, 0, 320, 240), GraphicsUnit.Pixel);
+                graphics.DrawImage(bitmap, new Rectangle(0, 0, width, height), new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
                 bitmap.Dispose();
 
-                BitmapData bmData = cutBitmap.LockBits(new Rectangle(0, 0, 320, 240), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-                int stride = bmData.Stride;
-                System.IntPtr Scan0 = bmData.Scan0;
+                // BGR to RGB
+                bitmapData = cutBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                stride = bitmapData.Stride;
+                System.IntPtr Scan0 = bitmapData.Scan0;
                 unsafe
                 {
-                    byte* p = (byte*)(void*)Scan0;
-                    int nOffset = stride - cutBitmap.Width * 3;
-                    int nWidth = cutBitmap.Width * 3;
+                    byte* pictureBytes = (byte*)(void*)Scan0;
+                    int offset = stride - cutBitmap.Width * 3;
+                    int lineWidth = cutBitmap.Width * 3;
                     byte swap;
                     for (int y = 0; y < cutBitmap.Height; ++y)
                     {
-                        for (int x = 0; x < nWidth; x += 3)
+                        for (int x = 0; x < lineWidth; x += 3)
                         {
-                            swap = (byte)p[2];
-                            p[2] = (byte)(p[0]);
-                            p[0] = swap;
-                            p += 3;
+                            swap = (byte)pictureBytes[2];
+                            pictureBytes[2] = (byte)(pictureBytes[0]);
+                            pictureBytes[0] = swap;
+                            pictureBytes += 3;
                         }
-                        p += nOffset;
+                        pictureBytes += offset;
                     }
                 }
-                cutBitmap.UnlockBits(bmData);
+                cutBitmap.UnlockBits(bitmapData);
 
                 return cutBitmap;
             }
