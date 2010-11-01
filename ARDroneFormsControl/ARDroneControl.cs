@@ -220,6 +220,24 @@ namespace ARDroneFormsControl
             return new DroneData(GetDroneState(), GetBatteryLevel(), GetTheta(), GetPhi(), GetPsi(), GetAltitude(), GetVX(), GetVY(), GetVZ());
         }
 
+        public Image GetDisplayedImage()
+        {
+            if (pictureBoxVideo.Image == null)
+            {
+                return null;
+            }
+            else
+            {
+                Bitmap bitmap = (Bitmap)pictureBoxVideo.Image;
+
+                Bitmap clonedBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+                Graphics graphics = Graphics.FromImage(clonedBitmap);
+                graphics.DrawImage(bitmap, 0, 0);
+
+                return clonedBitmap;
+            }
+        }
+
         public int FlatTrim()
         {
             return SendFlatTrim();
@@ -345,7 +363,7 @@ namespace ARDroneFormsControl
 
         private void UpdateVideo()
         {
-            Image image = GetDisplayedImage();
+            Image image = GetDisplayImage();
 
             if (image != null)
             {
@@ -358,7 +376,7 @@ namespace ARDroneFormsControl
             }
         }
 
-        private Image GetDisplayedImage()
+        private Image GetDisplayImage()
         {
             try
             {
