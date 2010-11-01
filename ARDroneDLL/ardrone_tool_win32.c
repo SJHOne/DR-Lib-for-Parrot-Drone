@@ -368,15 +368,6 @@ int test_drone_connection()
 		if(VP_FAILED(vp_com_open(wifi_com(), &ftp_client2, &ftp_read, &ftp_write)))
 			{ vp_com_close(wifi_com(), &ftp_client2); return -7; }
 
-	/* Gets the data */
-		received_bytes = sizeof(buffer);
-		ftp_read(&ftp_client2,(int8_t*)buffer,&received_bytes);
-		if (received_bytes>0) {
-			buffer[min(received_bytes,sizeof(buffer)-1)]=0;
-			printf("Drone version %s detected ... press <Enter> to start the application.\n",buffer);
-			getchar();
-		}
-	
 	/* Clean up */
 		vp_com_close(wifi_com(), &ftp_client);
 		vp_com_close(wifi_com(), &ftp_client2);
