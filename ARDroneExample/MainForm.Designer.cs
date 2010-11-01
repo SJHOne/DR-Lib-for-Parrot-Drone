@@ -72,6 +72,7 @@
             this.buttonHover = new System.Windows.Forms.Button();
             this.timerStartDelay = new System.Windows.Forms.Timer(this.components);
             this.panelRight = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelCenter = new System.Windows.Forms.Panel();
@@ -79,6 +80,7 @@
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.panelRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelBottom.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelCenter.SuspendLayout();
@@ -110,7 +112,7 @@
             // buttonShutdown
             // 
             this.buttonShutdown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonShutdown.Location = new System.Drawing.Point(392, 0);
+            this.buttonShutdown.Location = new System.Drawing.Point(565, 0);
             this.buttonShutdown.Name = "buttonShutdown";
             this.buttonShutdown.Size = new System.Drawing.Size(75, 25);
             this.buttonShutdown.TabIndex = 2;
@@ -170,7 +172,7 @@
             this.labelCamera.ForeColor = System.Drawing.Color.Goldenrod;
             this.labelCamera.Location = new System.Drawing.Point(75, 0);
             this.labelCamera.Name = "labelCamera";
-            this.labelCamera.Size = new System.Drawing.Size(317, 25);
+            this.labelCamera.Size = new System.Drawing.Size(490, 25);
             this.labelCamera.TabIndex = 19;
             this.labelCamera.Text = "No picture";
             this.labelCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -510,10 +512,20 @@
             this.panelRight.Controls.Add(this.groupBoxInput);
             this.panelRight.Controls.Add(this.groupBoxStatus);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRight.Location = new System.Drawing.Point(467, 0);
+            this.panelRight.Location = new System.Drawing.Point(640, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(192, 540);
+            this.panelRight.Size = new System.Drawing.Size(390, 429);
             this.panelRight.TabIndex = 35;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pictureBox1.Location = new System.Drawing.Point(320, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(320, 240);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 34;
+            this.pictureBox1.TabStop = false;
             // 
             // panelBottom
             // 
@@ -524,9 +536,9 @@
             this.panelBottom.Controls.Add(this.buttonFlattrim);
             this.panelBottom.Controls.Add(this.buttonChangeCamera);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 376);
+            this.panelBottom.Location = new System.Drawing.Point(0, 265);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(467, 164);
+            this.panelBottom.Size = new System.Drawing.Size(640, 164);
             this.panelBottom.TabIndex = 36;
             // 
             // panelTop
@@ -537,26 +549,27 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(467, 25);
+            this.panelTop.Size = new System.Drawing.Size(640, 25);
             this.panelTop.TabIndex = 37;
             // 
             // panelCenter
             // 
+            this.panelCenter.Controls.Add(this.pictureBox1);
             this.panelCenter.Controls.Add(this.arDroneControl);
             this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCenter.Location = new System.Drawing.Point(0, 25);
             this.panelCenter.Name = "panelCenter";
-            this.panelCenter.Size = new System.Drawing.Size(467, 351);
+            this.panelCenter.Size = new System.Drawing.Size(640, 240);
             this.panelCenter.TabIndex = 38;
             // 
             // arDroneControl
             // 
             this.arDroneControl.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.arDroneControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.arDroneControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.arDroneControl.Dock = System.Windows.Forms.DockStyle.Left;
             this.arDroneControl.Location = new System.Drawing.Point(0, 0);
             this.arDroneControl.Name = "arDroneControl";
-            this.arDroneControl.Size = new System.Drawing.Size(467, 351);
+            this.arDroneControl.Size = new System.Drawing.Size(320, 240);
             this.arDroneControl.TabIndex = 4;
             // 
             // MainForm
@@ -564,12 +577,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(659, 540);
+            this.ClientSize = new System.Drawing.Size(1030, 429);
             this.Controls.Add(this.panelCenter);
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelRight);
-            this.MinimumSize = new System.Drawing.Size(675, 578);
             this.Name = "MainForm";
             this.Text = "Drone Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -578,6 +590,7 @@
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.panelRight.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
             this.panelTop.ResumeLayout(false);
@@ -635,6 +648,7 @@
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelCenter;
         private ARDroneFormsControl.ARDroneControl arDroneControl;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

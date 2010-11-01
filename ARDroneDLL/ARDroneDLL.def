@@ -19,3 +19,4 @@ EXPORTS
    SendTakeoff @17
    SendLand @18
    SetProgressCmd @19
+   GetCurrentImage @20

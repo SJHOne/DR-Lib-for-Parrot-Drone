@@ -13,16 +13,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-using System.Runtime.InteropServices;
 using System.Diagnostics;
-
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Data;
+using System.IO;
+using System.Text;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ARDroneFormsControl
 {
@@ -149,6 +148,10 @@ namespace ARDroneFormsControl
         static extern double GetGaz();
         */
 
+        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
+        static extern IntPtr GetCurrentImage();
+
+
         public delegate void DroneNavDelegate(DroneData data);
         public event DroneNavDelegate DroneEvent;
 
@@ -226,6 +229,66 @@ namespace ARDroneFormsControl
         public int Land()
         {
             return SendLand();
+        }
+
+        public Image GetDisplayedImage()
+        {
+            try
+            {
+                //int length = 76800;
+                int width = 640;
+                int height = 480;
+                int bytesPerPixel = 3;
+                int length = width * height * bytesPerPixel;
+
+                byte[] buffer = new byte[length];
+                IntPtr beginPtr = GetCurrentImage();
+                Marshal.Copy(beginPtr, buffer, 0, length);
+
+                //PixelFormat.Format24bppRGB
+
+                Bitmap bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, width, height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                Marshal.Copy(buffer, 0, bitmapData.Scan0, length);
+                bitmap.UnlockBits(bitmapData);
+
+                Bitmap cutBitmap = new Bitmap(320, 240);
+                Graphics graphics = Graphics.FromImage(cutBitmap);
+                graphics.DrawImage(bitmap, new Rectangle(0, 0, 320, 240), new Rectangle(0, 0, 320, 240), GraphicsUnit.Pixel);
+                bitmap.Dispose();
+
+                BitmapData bmData = cutBitmap.LockBits(new Rectangle(0, 0, 320, 240), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                int stride = bmData.Stride;
+                System.IntPtr Scan0 = bmData.Scan0;
+                unsafe
+                {
+                    byte* p = (byte*)(void*)Scan0;
+                    int nOffset = stride - cutBitmap.Width * 3;
+                    int nWidth = cutBitmap.Width * 3;
+                    byte swap;
+                    for (int y = 0; y < cutBitmap.Height; ++y)
+                    {
+                        for (int x = 0; x < nWidth; x += 3)
+                        {
+                            swap = (byte)p[2];
+                            p[2] = (byte)(p[0]);
+                            p[0] = swap;
+                            p += 3;
+                        }
+                        p += nOffset;
+                    }
+                }
+                cutBitmap.UnlockBits(bmData);
+
+                return cutBitmap;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            return null;
         }
 
         public int SendCommand(bool hovering, float roll, float pitch, float gaz, float yaw)
