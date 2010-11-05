@@ -121,20 +121,6 @@ namespace ARDroneUI
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern int ChangeToBottomCamera();
 
-        /*
-        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
-        static extern double GetPitch();
-
-        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
-        static extern double GetRoll();
-
-        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
-        static extern double GetYaw();
-
-        [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
-        static extern double GetGaz();
-        */
-
         [DllImport(@"..\ARDroneDLL\ARDroneDLL.dll")]
         static extern IntPtr GetCurrentImage();
 
