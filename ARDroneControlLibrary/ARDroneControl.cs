@@ -148,7 +148,7 @@ namespace ARDroneUI
 
         private CameraType currentCameraType = CameraType.FrontCamera;
 
-        private bool droneEnabled = false;
+        private bool droneEnabled = true;
 
         private float currentRoll = 0.0f;
         private float currentPitch = 0.0f;
@@ -463,7 +463,6 @@ namespace ARDroneUI
         delegate void StringParameterDelegate(string value);
         readonly object stateLock = new object();
 
-        bool isThreadRunning = false;
         bool shouldThreadBeTerminated = false;
 
         void StartThread()
@@ -476,8 +475,6 @@ namespace ARDroneUI
             Thread thread = new Thread(new ThreadStart(ThreadJob));
             thread.IsBackground = true;
             thread.Start();
-
-            isThreadRunning = true;
         }
 
         void StopThread()
@@ -515,8 +512,6 @@ namespace ARDroneUI
             {
                 SendEvent("Error shutting down");
             }
-
-            isThreadRunning = false;
         }
 
         private void SendEvent(string val)

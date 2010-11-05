@@ -84,7 +84,7 @@ namespace ARDroneUI
 
         private void Takeoff()
         {
-            if (arDroneControl.CanTakeoff) { return; }
+            if (!arDroneControl.CanTakeoff) { return; }
 
             arDroneControl.Takeoff();
             AddOutput("Taking off");
@@ -168,7 +168,7 @@ namespace ARDroneUI
             if (arDroneControl.CanChangeCamera) { buttonCommandChangeCamera.Enabled = true; } else { buttonCommandChangeCamera.Enabled = false; }
 
             if (!arDroneControl.IsFlying) { buttonCommandTakeoff.Text = "Take off"; } else { buttonCommandTakeoff.Text = "Land"; }
-            if (!arDroneControl.IsHovering) { buttonCommandTakeoff.Text = "Start hover"; } else { buttonCommandTakeoff.Text = "Stop hover"; }
+            if (!arDroneControl.IsHovering) { buttonCommandHover.Text = "Start hover"; } else { buttonCommandHover.Text = "Stop hover"; }
         }
 
         private void UpdateStatus()
