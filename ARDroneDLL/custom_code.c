@@ -52,7 +52,7 @@
 The delegate object calls this method during initialization of an 
 ARDrone application 
 --------------------------------------------------------------------*/
-C_RESULT ardrone_tool_init_custom(HWND vidWnd, int argc, char **argv)
+C_RESULT ardrone_tool_init_custom(int argc, char **argv)
 {
 	/* Change the console title */
 		vp_os_mutex_init(&consoleMutex);

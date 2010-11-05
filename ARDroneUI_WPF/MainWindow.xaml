@@ -1,0 +1,64 @@
+﻿<Window x:Class="ARDroneUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="587" Width="688" MinWidth="688" MinHeight="587" WindowStyle="ToolWindow" BorderBrush="#FF232300" BorderThickness="1" Background="#FFF0F0F0" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Canvas DockPanel.Dock="Right" Width="192" Margin="5">
+                <GroupBox Header="Input" Canvas.Left="0" Canvas.Top="0" Height="208" Width="192">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Label Content="Roll" Height="28" HorizontalAlignment="Left" Margin="11,11,0,0" VerticalAlignment="Top" />
+                        <Label Content="Pitch" Height="28" HorizontalAlignment="Left" Margin="11,31,0,0" VerticalAlignment="Top" />
+                        <Label Content="Yaw" Height="28" HorizontalAlignment="Left" Margin="11,51,0,0" VerticalAlignment="Top" />
+                        <Label Content="Gaz" Height="28" HorizontalAlignment="Left" Margin="11,71,0,0" VerticalAlignment="Top" />
+                        <Label Content="+0.000" Height="28" HorizontalAlignment="Left" Margin="105,11,0,146" VerticalAlignment="Top" Name="labelInputRoll" />
+                        <Label Content="+0.000" Height="28" HorizontalAlignment="Left" Margin="105,31,0,0" VerticalAlignment="Top" Name="labelInputPitch" />
+                        <Label Content="+0.000" Height="28" HorizontalAlignment="Left" Margin="105,51,0,0" VerticalAlignment="Top" Name="labelInputYaw" />
+                        <Label Content="+0.000" Height="28" HorizontalAlignment="Left" Margin="105,71,0,0" VerticalAlignment="Top" Name="labelInputGaz"/>
+                        <CheckBox Content="Take off" Height="16" HorizontalAlignment="Left" Margin="8,107,0,0" Name="checkBoxInputTakeoff" VerticalAlignment="Top" />
+                        <CheckBox Content="Land" Height="16" HorizontalAlignment="Left" Margin="8,129,0,0" Name="checkBoxInputLand" VerticalAlignment="Top" />
+                        <CheckBox Content="Emergency" Height="16" HorizontalAlignment="Left" Margin="98,107,0,0" Name="checkBoxInputEmergency" VerticalAlignment="Top" />
+                        <CheckBox Content="Flat trim" Height="16" HorizontalAlignment="Left" Margin="98,129,0,0" Name="checkBoxInputFlatTrim" VerticalAlignment="Top" />
+                        <CheckBox Content="Hover" Height="16" HorizontalAlignment="Left" Margin="8,151,0,0" Name="checkBoxInputHover" VerticalAlignment="Top" />
+                        <CheckBox Content="Camera" Height="16" HorizontalAlignment="Left" Margin="98,151,0,0" Name="checkBoxInputChangeCamera" VerticalAlignment="Top" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Status" Canvas.Left="0" Canvas.Top="213" Height="211" Width="192">
+                    <Grid>
+                        <Label Content="Battery status" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,2,0,0" />
+                        <Label Content="Camera shown" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,22,0,0" />
+                        <Label Content="Altitude" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,42,0,0" />
+                        <Label Content="Connected" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,77,0,82" />
+                        <Label Content="Flying" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,97,0,0"  />
+                        <Label Content="Hovering" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,117,0,0" />
+                        <Label Content="Emergency" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,137,0,0" />
+
+                        <Label Content="N/A" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,2,0,0" Name="labelStatusBattery" />
+                        <Label Content="none" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,22,0,0" Name="labelStatusCamera" />
+                        <Label Content="N/A" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,42,0,0" Name="labelStatusAltitude"/>
+                        <Label Content="false" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,77,0,82" Name="labelStatusConnected"/>
+                        <Label Content="false" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,97,0,0" Name="labelStatusFlying"/>
+                        <Label Content="false" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,117,0,0" Name="labelStatusHovering"/>
+                        <Label Content="false" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,137,0,0" Name="labelStatusEmergency"/>
+                    </Grid>
+                </GroupBox>
+            </Canvas>
+            <DockPanel LastChildFill="True" DockPanel.Dock="Top" Margin="5">
+                <Button Content="Startup" Height="23" Name="buttonConnect" Width="75" Canvas.Left="113" Canvas.Top="28" DockPanel.Dock="Left" Click="buttonConnect_Click" />
+                <Button Content="Shutdown" Height="23" Name="buttonShutdown" Width="75" Canvas.Left="113" Canvas.Top="57" DockPanel.Dock="Right" Click="buttonShutdown_Click" />
+                <Label HorizontalAlignment="Center" Foreground="Goldenrod" FontFamily="Microsoft Sans Serif" FontSize="12" Name="labelCamera">No picture</Label>
+            </DockPanel>
+            <Canvas DockPanel.Dock="Bottom" Height="165" Margin="3">
+                <ScrollViewer Width="355" Height="168" Name="scrollViewerOutput" VerticalScrollBarVisibility="Auto">
+                    <TextBox Canvas.Left="0" Canvas.Top="0" Name="textBoxOutput" AcceptsReturn="True" IsReadOnly="True" Foreground="Yellow" Background="Black" />
+                </ScrollViewer>
+                <Button Canvas.Left="361" Canvas.Top="1" Content="Take off" Height="22" Name="buttonCommandTakeoff" Width="94" Click="buttonCommandTakeoff_Click" />
+                <Button Canvas.Left="361" Canvas.Top="29" Content="Hover" Height="22" Name="buttonCommandHover" Width="94" Click="buttonCommandHover_Click" />
+                <Button Canvas.Left="361" Canvas.Top="69" Content="Emergency" Height="22" Name="buttonCommandEmergency" Width="94" Click="buttonCommandEmergency_Click" />
+                <Button Canvas.Left="361" Canvas.Top="97" Content="Flat trim" Height="22" Name="buttonCommandFlatTrim" Width="94" Click="buttonCommandFlatTrim_Click" />                
+                <Button Canvas.Left="361" Canvas.Top="137" Content="Change camera" Height="22" Name="buttonCommandChangeCamera" Width="94" Click="buttonCommandChangeCamera_Click" />
+            </Canvas>
+            <Image Canvas.Left="49" Canvas.Top="33" Name="imageVideo" Stretch="Fill" />
+        </DockPanel>
+    </Grid>
+</Window>

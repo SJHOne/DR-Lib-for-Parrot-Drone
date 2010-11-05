@@ -172,7 +172,7 @@ C_RESULT ardrone_tool_setup_com( const char* ssid )
 
 /*---------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------*/
-C_RESULT ardrone_tool_init(HWND vidWnd, int argc, char **argv)
+C_RESULT ardrone_tool_init(int argc, char **argv)
 {
 	C_RESULT res;
 
@@ -187,7 +187,7 @@ C_RESULT ardrone_tool_init(HWND vidWnd, int argc, char **argv)
 	ardrone_navdata_client_init();
 
 	// Init custom tool
-	res = ardrone_tool_init_custom(vidWnd, argc, argv);
+	res = ardrone_tool_init_custom(argc, argv);
 
    //Opens a connection to AT port.
 	ardrone_at_open();
@@ -458,7 +458,7 @@ int sdk_demo_stop=0;
 	int hovering = 0;
 	int start = 0;
 
-	int _stdcall InitDrone(HWND vidWnd) // TODO : Should SSID be passed in here?
+	int _stdcall InitDrone() // TODO : Should SSID be passed in here?
 	{
 		
 	  C_RESULT res;					// functions return value
@@ -501,7 +501,7 @@ int sdk_demo_stop=0;
 		}
 
 		/* Initialises ARDroneTool */
-		res = ardrone_tool_init(vidWnd, 0, NULL);
+		res = ardrone_tool_init(0, NULL);
 		if(FAILED(res))
 		{
 			return -4;
