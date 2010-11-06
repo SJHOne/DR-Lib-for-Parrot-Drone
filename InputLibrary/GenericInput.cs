@@ -8,6 +8,18 @@ namespace InputLibrary
     public abstract class GenericInput
     {
         protected InputMapping mapping = null;
+
+        public InputMapping Mapping
+        {
+            get { return mapping; }
+            set { mapping = value; } // <<< SJH TODO - copy the validation strings from the previous object 
+        }
+
+        public virtual string DeviceName
+        { 
+            get { return string.Empty; } 
+        }
+
         List<String> buttonsPressedBefore = new List<String>();
 
         public GenericInput()

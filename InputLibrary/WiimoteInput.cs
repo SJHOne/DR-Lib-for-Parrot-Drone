@@ -31,6 +31,17 @@ namespace InputLibrary
 
         Wiimote wiimote = null;
 
+        public override string DeviceName
+        {
+            get
+            {
+                if (wiimote == null)
+                    return string.Empty;
+                else
+                    return wiimote.HIDDevicePath;  // Should this be .ID instead?
+            }
+        }
+
         public WiimoteInput(Wiimote wiimote) : base()
         {
             wiimote.WiimoteChanged += wiimote_WiimoteChanged;

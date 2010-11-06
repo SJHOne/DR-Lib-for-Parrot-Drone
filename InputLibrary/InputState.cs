@@ -49,6 +49,16 @@ namespace InputLibrary
         private String hoverButton = "";
         private String emergencyButton = "";
         private String flatTrimButton = "";
+        
+        private bool skipValidation = false;
+
+        public InputMapping()
+        {
+            this.validButtons = new List<String>();
+            this.validAxes = new List<String>();
+
+            skipValidation = true; // We will be using the serializer
+        }
 
         public InputMapping(List<String> validButtons, List<String> validAxes)
         {
@@ -74,6 +84,7 @@ namespace InputLibrary
             if (this.validButtons == null) { this.validButtons = new List<String>(); }
             if (this.validAxes == null) { this.validAxes = new List<String>(); }
         }
+
 
         public void SetAxisMappings(Object rollAxisMapping, Object pitchAxisMapping, Object yawAxisMapping, Object gazAxisMapping)
         {
@@ -116,7 +127,7 @@ namespace InputLibrary
             get { return rollAxisMapping; }
             set
             {
-                if (!isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
+                if (!skipValidation && !isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
                 rollAxisMapping = value;
             }
         }
@@ -126,7 +137,7 @@ namespace InputLibrary
             get { return pitchAxisMapping; }
             set
             {
-                if (!isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
+                if (!skipValidation && !isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
                 pitchAxisMapping = value;
             }
         }
@@ -136,7 +147,7 @@ namespace InputLibrary
             get { return yawAxisMapping; }
             set
             {
-                if (!isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
+                if (!skipValidation && !isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
                 yawAxisMapping = value;
             }
         }
@@ -146,7 +157,7 @@ namespace InputLibrary
             get { return gazAxisMapping; }
             set
             {
-                if (!isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
+                if (!skipValidation && !isValidAxis(value)) { throw new Exception("Value is not a valid axis value"); }
                 gazAxisMapping = value;
             }
         }
@@ -156,7 +167,7 @@ namespace InputLibrary
             get { return cameraSwapButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 cameraSwapButton = value;
             }
         }
@@ -166,7 +177,7 @@ namespace InputLibrary
             get { return takeOffButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 takeOffButton = value;
             }
         }
@@ -176,7 +187,7 @@ namespace InputLibrary
             get { return landButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 landButton = value;
             }
         }
@@ -186,7 +197,7 @@ namespace InputLibrary
             get { return hoverButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 hoverButton = value;
             }
         }
@@ -196,7 +207,7 @@ namespace InputLibrary
             get { return emergencyButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 emergencyButton = value;
             }
         }
@@ -206,9 +217,14 @@ namespace InputLibrary
             get { return flatTrimButton; }
             set
             {
-                if (!isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
+                if (!skipValidation && !isValidButton(value)) { throw new Exception("Value is not a valid button value"); }
                 flatTrimButton = value;
             }
+        }
+        
+        public String DeviceName
+        {
+            get;set;
         }
     }
 }

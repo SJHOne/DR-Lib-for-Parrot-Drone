@@ -76,6 +76,7 @@
             this.panelCenter = new System.Windows.Forms.Panel();
             this.pictureBoxVideo = new System.Windows.Forms.PictureBox();
             this.timerVideoUpdate = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.panelRight.SuspendLayout();
@@ -503,6 +504,7 @@
             // 
             // panelRight
             // 
+            this.panelRight.Controls.Add(this.button1);
             this.panelRight.Controls.Add(this.groupBoxInput);
             this.panelRight.Controls.Add(this.groupBoxStatus);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
@@ -559,6 +561,16 @@
             // 
             this.timerVideoUpdate.Interval = 50;
             this.timerVideoUpdate.Tick += new System.EventHandler(this.timerVideoUpdate_Tick);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(47, 388);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(107, 23);
+            this.button1.TabIndex = 35;
+            this.button1.Text = "Input Settings";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -637,6 +649,7 @@
         private System.Windows.Forms.Label labelInputGaz;
         private System.Windows.Forms.Label labelInputPitch;
         private System.Windows.Forms.Label labelInputYaw;
+        private System.Windows.Forms.Button button1;
     }
 }
 

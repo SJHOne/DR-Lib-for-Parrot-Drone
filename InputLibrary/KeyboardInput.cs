@@ -13,6 +13,31 @@ namespace InputLibrary
 
         Device device = null;
 
+        /// <summary>
+        /// Added to support serialization
+        /// </summary>
+        public KeyboardInput()
+            : base()
+        {
+            List<String> validAxes = new List<String>();
+            List<String> validButtons = new List<String>();
+            foreach (Key key in Enum.GetValues(typeof(Key)))
+            {
+                if (!validButtons.Contains(key.ToString()))
+                {
+                    validButtons.Add(key.ToString());
+                }
+            }
+        }
+
+        public override string DeviceName
+        {
+            get
+            {
+                return "Keyboard";
+            }
+        }
+
         public KeyboardInput(Device device) : base()
         {
             this.device = device;

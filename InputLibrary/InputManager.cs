@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.DirectX.DirectInput;
-
+using System.Windows.Forms;
+using System.IO;
+using System.Xml.Serialization;
 using WiimoteLib;
 
 namespace InputLibrary
@@ -10,6 +12,11 @@ namespace InputLibrary
     public class InputManager
     {
         private List<GenericInput> inputDevices = null;
+        
+        public List<GenericInput> InputDevices
+        {
+            get { return inputDevices; }
+        }
 
         public InputManager(IntPtr windowHandle)
         {
@@ -127,5 +134,87 @@ namespace InputLibrary
                 }
             }
         }
+
+        public void SaveInputDevices()
+        {
+            List<InputMapping> inputDeviceData = new List<InputMapping>();
+            foreach (GenericInput g in inputDevices)
+            {
+                g.Mapping.DeviceName = g.DeviceName;
+                inputDeviceData.Add(g.Mapping);
+            }
+
+            System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(inputDeviceData.GetType());
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
+            saveFileDialog1.Filter = "Mapping File (*.XML)|*.xml";
+            saveFileDialog1.FilterIndex = 1;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                using (System.IO.TextWriter textWriter = new System.IO.StreamWriter(saveFileDialog1.FileName))
+                {
+                    x.Serialize(textWriter, inputDeviceData);
+                    textWriter.Close();
+                }
+            }
+
+            
+        }
+
+        public void LoadInputDevices()
+        {
+            List<InputMapping> inputDeviceData = new List<InputMapping>();
+
+            OpenFileDialog fileDialog1 = new OpenFileDialog();
+            fileDialog1.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
+            fileDialog1.Filter = "Mapping File (*.XML)|*.xml";
+            fileDialog1.FilterIndex = 1;
+
+            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                using (TextReader textReader = new StreamReader(fileDialog1.FileName))
+                {
+                    XmlSerializer deserializer = new XmlSerializer(typeof(List<InputMapping>));
+                    inputDeviceData = (List<InputMapping>)deserializer.Deserialize(textReader);
+                    textReader.Close();
+                }
+            }
+
+            foreach (GenericInput g in inputDevices)
+            {
+                foreach (InputMapping im in inputDeviceData)
+                {
+                    if (im.DeviceName == g.DeviceName)
+                        g.Mapping = im;
+                }
+            }
+        }
+
+        public void ShowSettingsDialog()
+        {
+            ConfigInput ci = new ConfigInput(this);
+            ci.ShowDialog();
+        }
+
+    }
+
+    public class ControllerData
+    {
+        ControllerData(){}
+
+        public string DeviceType;
+
+        public string Pitch;
+        public string Roll;
+        public string Yaw;
+        public string Gaz;
+
+        public string Takeoff;
+        public string Land;
+        public string Emergency;
+        public string Camera;
+        public string FlatTrim;
     }
 }

@@ -22,6 +22,17 @@ namespace InputLibrary
 
         Device device = null;
 
+        public override string DeviceName
+        {
+            get
+            {
+                if (device == null)
+                    return string.Empty;
+                else
+                    return device.Properties.ProductName;
+            }
+        }
+
         public JoystickInput(Device device) : base()
         {
             this.device = device;
