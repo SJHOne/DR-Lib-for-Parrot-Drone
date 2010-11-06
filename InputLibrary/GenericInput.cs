@@ -12,7 +12,13 @@ namespace InputLibrary
         public InputMapping Mapping
         {
             get { return mapping; }
-            set { mapping = value; } // <<< SJH TODO - copy the validation strings from the previous object 
+            set {
+
+                // Copy the validation strings from the previous object 
+                value.CopyValidation(mapping);
+                value.SkipValidation = false;
+                mapping = value;
+            } 
         }
 
         public virtual string DeviceName
