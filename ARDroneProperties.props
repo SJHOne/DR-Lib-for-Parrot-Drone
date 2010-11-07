@@ -2,8 +2,8 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <WinSDKDir>C:\Program Files\Microsoft SDKs\Windows\v7.1</WinSDKDir>
-    <SDLDir>C:\Programs\Programmieren\Libraries\SDL</SDLDir>
-    <DXSDKDir>C:\Program Files (x86)\Microsoft DirectX SDK</DXSDKDir>
+    <SDLDir>D:\ARDrone_SDK\SDL-1.2.14</SDLDir>
+    <DXSDKDir>D:\ARDrone_SDK\DX SDK</DXSDKDir>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
