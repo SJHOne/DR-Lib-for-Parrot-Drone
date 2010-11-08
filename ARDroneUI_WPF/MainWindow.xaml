@@ -42,6 +42,21 @@
                         <Label Name="labelStatusEmergency" Content="false" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,137,0,0"  Height="28" />
                     </Grid>
                 </GroupBox>
+
+                <GroupBox Header="Video" Canvas.Top="425" Canvas.Left="0" Width="192" Height="110" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*" />
+                            <ColumnDefinition Width="26*" />
+                            <ColumnDefinition Width="7*" />
+                            <ColumnDefinition Width="67*" />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Content="Compress video" Height="16" HorizontalAlignment="Left" Margin="7,11,0,0" Name="checkBoxVideoCompress" VerticalAlignment="Top" Grid.ColumnSpan="3" />
+                        <Button Name="buttonVideoStart" Content="Start Video" Height="23" HorizontalAlignment="Left" Margin="6,36,0,0" VerticalAlignment="Top" Width="82" Click="buttonVideoStart_Click" Grid.ColumnSpan="2" />
+                        <Button Name="buttonVideoEnd" Content="End Video" Height="23" HorizontalAlignment="Right" Margin="0,36,6,0" VerticalAlignment="Top" Width="80" Click="buttonVideoEnd_Click" Grid.ColumnSpan="3" Grid.Column="1" />
+                        <Label Content="Idling..." Height="28" HorizontalAlignment="Left" Margin="6,59,0,0" Name="labelVideoStatus" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="168" />
+                    </Grid>
+                </GroupBox>
             </Canvas>
             <DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
                 <Button Name="buttonConnect" Content="Startup"  Width="75" Height="23" Canvas.Left="113" Canvas.Top="28" DockPanel.Dock="Left" Click="buttonConnect_Click" />

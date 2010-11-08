@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARDroneUI_Forms", "ARDroneU
 		{E144B454-A53F-47CF-BDD4-D1695952EEC7} = {E144B454-A53F-47CF-BDD4-D1695952EEC7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joystick", "joystick\Joystick.csproj", "{A7A2D192-3025-4AB1-96CD-097A2A0FB5B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joystick", "Joystick\Joystick.csproj", "{A7A2D192-3025-4AB1-96CD-097A2A0FB5B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AviationInstruments", "AviationInstruments\AviationInstruments.csproj", "{A61853C5-1CFE-4858-9D4E-11C1D2622034}"
 EndProject
@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Readme.txt = Readme.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARDroneVideo", "ARDroneVideo\ARDroneVideo.csproj", "{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -224,6 +226,27 @@ Global
 		{104C0B70-4D35-4090-942A-9223222D0E6C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{104C0B70-4D35-4090-942A-9223222D0E6C}.Release|x64.ActiveCfg = Release|Any CPU
 		{104C0B70-4D35-4090-942A-9223222D0E6C}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|Any CPU.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|Any CPU.Build.0 = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|Win32.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|x64.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Profile|x86.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

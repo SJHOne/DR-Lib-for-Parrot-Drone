@@ -416,6 +416,9 @@ namespace ARDroneUI
             return 0;
         }
 
+        public Size FrontCameraPictureSize { get { return new Size(frontCameraPictureSize.Width, frontCameraPictureSize.Height); } }
+        public Size BottomCameraPictureSize { get { return new Size(bottomCameraPictureSize.Width, bottomCameraPictureSize.Height); } }
+
         // Current drone state
 
         public bool IsConnected { get { return isConnected; } }

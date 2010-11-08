@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using ARDroneUI;
+using ARDrone.Video;
 using InputLibrary;
 
 namespace ARDroneUI
@@ -23,6 +23,8 @@ namespace ARDroneUI
         private DispatcherTimer timerStatusUpdate;
         private DispatcherTimer timerInputUpdate;
         private DispatcherTimer timerVideoUpdate;
+
+        private VideoRecorder videoRecorder = null;
 
         InputLibrary.InputManager input = null;
         private ARDroneControl arDroneControl = null;
@@ -36,6 +38,15 @@ namespace ARDroneUI
             input = new InputLibrary.InputManager(helper.Handle);
 
             arDroneControl = new ARDroneControl();
+
+            videoRecorder = new VideoRecorder();
+            videoRecorder.CompressionComplete += new EventHandler(videoRecorder_CompressionComplete);
+            videoRecorder.CompressionError += new ErrorEventHandler(videoRecorder_CompressionError);
+        }
+
+        public void Dispose()
+        {
+            videoRecorder.Dispose();
         }
 
         public void InitializeTimers()
@@ -84,6 +95,10 @@ namespace ARDroneUI
             if (!arDroneControl.CanDisconnect) { return; }
 
             timerVideoUpdate.Stop();
+            if (videoRecorder.IsVideoCaptureStarted)
+            {
+                videoRecorder.EndVideo();
+            }
 
             if (arDroneControl.Shutdown())
             {
@@ -99,7 +114,7 @@ namespace ARDroneUI
 
         private void ChangeCamera()
         {
-            if (!arDroneControl.CanChangeCamera) { return; }
+            if (!arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureStarted) { return; }
 
             arDroneControl.ChangeCamera();
             AddOutput("Changing camera");
@@ -191,10 +206,27 @@ namespace ARDroneUI
             if (arDroneControl.CanEnterHoverMode || arDroneControl.CanLeaveHoverMode) { buttonCommandHover.IsEnabled = true; } else { buttonCommandHover.IsEnabled = false; }
             if (arDroneControl.CanCallEmergency) { buttonCommandEmergency.IsEnabled = true; } else { buttonCommandEmergency.IsEnabled = false; }
             if (arDroneControl.CanSendFlatTrim) { buttonCommandFlatTrim.IsEnabled = true; } else { buttonCommandFlatTrim.IsEnabled = false; }
-            if (arDroneControl.CanChangeCamera) { buttonCommandChangeCamera.IsEnabled = true; } else { buttonCommandChangeCamera.IsEnabled = false; }
+            if (arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureStarted) { buttonCommandChangeCamera.IsEnabled = true; } else { buttonCommandChangeCamera.IsEnabled = false; }
+
+            if (CanCaptureVideo && !videoRecorder.IsVideoCaptureStarted) { buttonVideoStart.IsEnabled = true; } else { buttonVideoStart.IsEnabled = false; }
+            if (CanCaptureVideo && videoRecorder.IsVideoCaptureStarted) { buttonVideoEnd.IsEnabled = true; } else { buttonVideoEnd.IsEnabled = false; }
 
             if (!arDroneControl.IsFlying) { buttonCommandTakeoff.Content = "Take off"; } else { buttonCommandTakeoff.Content = "Land"; }
             if (!arDroneControl.IsHovering) { buttonCommandHover.Content = "Start hover"; } else { buttonCommandHover.Content = "Stop hover"; }
+
+            if (videoRecorder.IsVideoCaptureEnded)
+            {
+                labelVideoStatus.Content = "Idling ...";
+            }
+            else if (videoRecorder.IsVideoCaptureStarted)
+            {
+                labelVideoStatus.Content = "Recording";
+            }
+            else
+            {
+                labelVideoStatus.Content = "Compressing";
+            }
+
         }
 
         private void UpdateStatus()
@@ -237,11 +269,55 @@ namespace ARDroneUI
             if (arDroneControl.IsConnected)
             {
                 System.Drawing.Image newImage = arDroneControl.GetDisplayedImage();
+
                 if (newImage != null)
                 {
+                    if (videoRecorder.IsVideoCaptureStarted)
+                    {
+                        videoRecorder.AddFrame((System.Drawing.Bitmap)newImage.Clone());
+                    }
+
                     BitmapImage newBitmapImage = Utility.CreateBitmapImageFromImage(newImage);
                     imageVideo.Source = newBitmapImage;
                 }
+            }
+        }
+
+        private void StartVideoCapture()
+        {
+            if (!CanCaptureVideo || videoRecorder.IsVideoCaptureStarted) { return; }
+
+            System.Drawing.Size size;
+            if (arDroneControl.CurrentCameraType == ARDroneControl.CameraType.FrontCamera)
+            {
+                size = arDroneControl.FrontCameraPictureSize;
+            }
+            else
+            {
+                size = arDroneControl.BottomCameraPictureSize;
+            }
+
+            videoRecorder.StartVideo(@"D:\bla.avi", 1000 / (int)timerVideoUpdate.Interval.TotalMilliseconds, size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb, 4, checkBoxVideoCompress.IsChecked == true ? true : false);
+            UpdateUI();
+        }
+
+        private void EndVideoCapture()
+        {
+            if (!videoRecorder.IsVideoCaptureStarted)
+            {
+                return;
+            }
+
+            videoRecorder.EndVideo();
+
+            UpdateUI();
+        }
+
+        private bool CanCaptureVideo
+        {
+            get
+            {
+                return arDroneControl.CanChangeCamera;
             }
         }
 
@@ -304,6 +380,16 @@ namespace ARDroneUI
         private void buttonCommandFlatTrim_Click(object sender, RoutedEventArgs e)
         {
             FlatTrim();
+        }
+
+        private void buttonVideoStart_Click(object sender, RoutedEventArgs e)
+        {
+            StartVideoCapture();
+        }
+
+        private void buttonVideoEnd_Click(object sender, RoutedEventArgs e)
+        {
+            EndVideoCapture();
         }
 
         private void timerStatusUpdate_Tick(object sender, EventArgs e)
@@ -370,6 +456,28 @@ namespace ARDroneUI
         private void timerVideoUpdate_Tick(object sender, EventArgs e)
         {
             SetNewVideoImage();
+        }
+
+        private void videoRecoderSync_CompressionComplete(object sender, EventArgs e)
+        {
+            MessageBox.Show(this, "Successfully compressed video!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            UpdateUI();
+        }
+
+        private void videoRecorder_CompressionComplete(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new EventHandler(videoRecoderSync_CompressionComplete), this, e);
+        }
+
+        private void videoRecoderSync_CompressionError(object sender, ErrorEventArgs e)
+        {
+            MessageBox.Show(this, e.GetException().Message, "Success", MessageBoxButton.OK, MessageBoxImage.Error);
+            UpdateUI();
+        }
+
+        private void videoRecorder_CompressionError(object sender, ErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new ErrorEventHandler(videoRecoderSync_CompressionError), this, e);
         }
     }
 }
