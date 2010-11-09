@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace ARDroneUI
+namespace ARDrone.UI
 {
     public partial class App : Application
     {

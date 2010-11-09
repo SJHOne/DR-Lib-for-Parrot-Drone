@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InputLibrary
+namespace ARDrone.Input
 {
     public class InputState
     {

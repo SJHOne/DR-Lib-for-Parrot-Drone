@@ -8,7 +8,7 @@
     <ProjectGuid>{F945BFB3-A946-4EE4-BAFB-E45F3A884C64}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ARDroneUI</RootNamespace>
+    <RootNamespace>ARDrone.UI</RootNamespace>
     <AssemblyName>ARDroneUI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -86,9 +86,9 @@
       <Project>{A61853C5-1CFE-4858-9D4E-11C1D2622034}</Project>
       <Name>AviationInstruments</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InputLibrary\InputLibrary.csproj">
+    <ProjectReference Include="..\ARDroneInput\ARDroneInput.csproj">
       <Project>{104C0B70-4D35-4090-942A-9223222D0E6C}</Project>
-      <Name>InputLibrary</Name>
+      <Name>ARDroneInput</Name>
     </ProjectReference>
     <ProjectReference Include="..\joystick\Joystick.csproj">
       <Project>{A7A2D192-3025-4AB1-96CD-097A2A0FB5B5}</Project>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using WiimoteLib;
 
-namespace InputLibrary
+namespace ARDrone.Input
 {
     public class WiimoteInput : GenericInput
     {

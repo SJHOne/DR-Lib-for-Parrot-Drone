@@ -1,4 +1,4 @@
-﻿namespace ARDroneUI
+﻿namespace ARDrone.UI
 {
     partial class MainForm
     {

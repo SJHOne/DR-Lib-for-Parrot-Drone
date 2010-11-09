@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-namespace ARDroneUI
+namespace ARDrone.Control
 {
     public partial class ARDroneControl
     {

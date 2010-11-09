@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml.Serialization;
 using WiimoteLib;
 
-namespace InputLibrary
+namespace ARDrone.Input
 {
     public class InputManager
     {

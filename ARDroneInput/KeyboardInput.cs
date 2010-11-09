@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Text;
 using Microsoft.DirectX.DirectInput;
 
-namespace InputLibrary
+namespace ARDrone.Input
 {
     class KeyboardInput : GenericInput
     {

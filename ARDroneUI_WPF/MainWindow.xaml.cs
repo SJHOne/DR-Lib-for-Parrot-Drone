@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using ARDrone.Video;
-using InputLibrary;
+using ARDrone.Control;
+using ARDrone.Capture;
+using ARDrone.Input;
 
-namespace ARDroneUI
+namespace ARDrone.UI
 {
     public partial class MainWindow : Window
     {
@@ -25,9 +25,14 @@ namespace ARDroneUI
         private DispatcherTimer timerVideoUpdate;
 
         private VideoRecorder videoRecorder = null;
+        private SnapshotRecorder snapshotRecorder = null;
 
-        InputLibrary.InputManager input = null;
+        ARDrone.Input.InputManager inputManager = null;
         private ARDroneControl arDroneControl = null;
+
+        int frameCountSinceLastCapture = 0;
+        DateTime lastFrameRateCaptureTime;
+        int averageFrameRate = 0;
 
         public MainWindow()
         {
@@ -35,11 +40,13 @@ namespace ARDroneUI
             InitializeTimers();
 
             System.Windows.Interop.WindowInteropHelper helper = new System.Windows.Interop.WindowInteropHelper(this);
-            input = new InputLibrary.InputManager(helper.Handle);
 
+            inputManager = new ARDrone.Input.InputManager(helper.Handle);
             arDroneControl = new ARDroneControl();
 
             videoRecorder = new VideoRecorder();
+            snapshotRecorder = new SnapshotRecorder();
+
             videoRecorder.CompressionComplete += new EventHandler(videoRecorder_CompressionComplete);
             videoRecorder.CompressionError += new ErrorEventHandler(videoRecorder_CompressionError);
         }
@@ -87,6 +94,8 @@ namespace ARDroneUI
             }
 
             timerVideoUpdate.Start();
+            lastFrameRateCaptureTime = DateTime.Now;
+
             UpdateUI();
         }
 
@@ -95,7 +104,7 @@ namespace ARDroneUI
             if (!arDroneControl.CanDisconnect) { return; }
 
             timerVideoUpdate.Stop();
-            if (videoRecorder.IsVideoCaptureStarted)
+            if (videoRecorder.IsVideoCaptureRunning)
             {
                 videoRecorder.EndVideo();
             }
@@ -114,7 +123,7 @@ namespace ARDroneUI
 
         private void ChangeCamera()
         {
-            if (!arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureStarted) { return; }
+            if (!arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureRunning) { return; }
 
             arDroneControl.ChangeCamera();
             AddOutput("Changing camera");
@@ -172,7 +181,7 @@ namespace ARDroneUI
             UpdateUI();
         }
 
-        private void LeaverHoverMode()
+        private void LeaveHoverMode()
         {
             if (!arDroneControl.CanLeaveHoverMode) { return; }
 
@@ -197,7 +206,7 @@ namespace ARDroneUI
 
         private void UpdateUI()
         {
-            input.SetFlags(arDroneControl.IsConnected, arDroneControl.IsEmergency, arDroneControl.IsFlying, arDroneControl.IsHovering);
+            inputManager.SetFlags(arDroneControl.IsConnected, arDroneControl.IsEmergency, arDroneControl.IsFlying, arDroneControl.IsHovering);
 
             if (arDroneControl.CanConnect) { buttonConnect.IsEnabled = true; } else { buttonConnect.IsEnabled = false; }
             if (arDroneControl.CanDisconnect) { buttonShutdown.IsEnabled = true; } else { buttonShutdown.IsEnabled = false; }
@@ -206,27 +215,21 @@ namespace ARDroneUI
             if (arDroneControl.CanEnterHoverMode || arDroneControl.CanLeaveHoverMode) { buttonCommandHover.IsEnabled = true; } else { buttonCommandHover.IsEnabled = false; }
             if (arDroneControl.CanCallEmergency) { buttonCommandEmergency.IsEnabled = true; } else { buttonCommandEmergency.IsEnabled = false; }
             if (arDroneControl.CanSendFlatTrim) { buttonCommandFlatTrim.IsEnabled = true; } else { buttonCommandFlatTrim.IsEnabled = false; }
-            if (arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureStarted) { buttonCommandChangeCamera.IsEnabled = true; } else { buttonCommandChangeCamera.IsEnabled = false; }
+            if (arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureRunning && !videoRecorder.IsCompressionRunning) { buttonCommandChangeCamera.IsEnabled = true; } else { buttonCommandChangeCamera.IsEnabled = false; }
 
-            if (CanCaptureVideo && !videoRecorder.IsVideoCaptureStarted) { buttonVideoStart.IsEnabled = true; } else { buttonVideoStart.IsEnabled = false; }
-            if (CanCaptureVideo && videoRecorder.IsVideoCaptureStarted) { buttonVideoEnd.IsEnabled = true; } else { buttonVideoEnd.IsEnabled = false; }
 
             if (!arDroneControl.IsFlying) { buttonCommandTakeoff.Content = "Take off"; } else { buttonCommandTakeoff.Content = "Land"; }
             if (!arDroneControl.IsHovering) { buttonCommandHover.Content = "Start hover"; } else { buttonCommandHover.Content = "Stop hover"; }
 
-            if (videoRecorder.IsVideoCaptureEnded)
-            {
-                labelVideoStatus.Content = "Idling ...";
-            }
-            else if (videoRecorder.IsVideoCaptureStarted)
-            {
-                labelVideoStatus.Content = "Recording";
-            }
-            else
-            {
-                labelVideoStatus.Content = "Compressing";
-            }
+            if (arDroneControl.IsConnected) { buttonSnapshot.IsEnabled = true; } else { buttonSnapshot.IsEnabled = false; }
+            if (!arDroneControl.IsConnected || videoRecorder.IsVideoCaptureRunning || videoRecorder.IsCompressionRunning) { checkBoxVideoCompress.IsEnabled = false; } else { checkBoxVideoCompress.IsEnabled = true; }
+            if (CanCaptureVideo && !videoRecorder.IsVideoCaptureRunning && !videoRecorder.IsCompressionRunning) { buttonVideoStart.IsEnabled = true; } else { buttonVideoStart.IsEnabled = false; }
+            if (CanCaptureVideo && videoRecorder.IsVideoCaptureRunning && !videoRecorder.IsCompressionRunning) { buttonVideoEnd.IsEnabled = true; } else { buttonVideoEnd.IsEnabled = false; }
 
+            
+            if      (videoRecorder.IsCompressionRunning)  { labelVideoStatus.Content = "Compressing"; }
+            else if (videoRecorder.IsVideoCaptureRunning) { labelVideoStatus.Content = "Recording"; }
+            else    { labelVideoStatus.Content = "Idling ..."; }
         }
 
         private void UpdateStatus()
@@ -238,11 +241,14 @@ namespace ARDroneUI
 
                 labelStatusBattery.Content = "N/A";
                 labelStatusAltitude.Content = "N/A";
+
+                labelStatusFrameRate.Content = "No video";
             }
             else
             {
                 ARDroneControl.DroneData data  = new ARDroneControl.DroneData();
                 data = arDroneControl.GetCurrentDroneData();
+                int frameRate = GetCurrentFrameRate();
 
                 if (arDroneControl.CurrentCameraType == ARDroneControl.CameraType.FrontCamera)
                 {
@@ -257,11 +263,70 @@ namespace ARDroneUI
 
                 labelStatusBattery.Content = data.BatteryLevel.ToString() + "%";
                 labelStatusAltitude.Content = data.Altitude.ToString();
+
+                labelStatusFrameRate.Content = frameRate.ToString();
             }
+
 
             labelStatusConnected.Content = arDroneControl.IsConnected.ToString();
             labelStatusFlying.Content = arDroneControl.IsFlying.ToString();
             labelStatusHovering.Content = arDroneControl.IsHovering.ToString();
+        }
+
+        private void UpdateInput()
+        {
+            InputState inputState = inputManager.GetCurrentState();
+
+            labelInputRoll.Content = String.Format("{0:+0.000;-0.000;0.000}", inputState.Roll);
+            labelInputPitch.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Pitch);
+            labelInputYaw.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Yaw);
+            labelInputGaz.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Gaz);
+
+            checkBoxInputTakeoff.IsChecked = inputState.TakeOff;
+            checkBoxInputLand.IsChecked = inputState.Land;
+            checkBoxInputHover.IsChecked = inputState.Hover;
+            checkBoxInputEmergency.IsChecked = inputState.Emergency;
+            checkBoxInputFlatTrim.IsChecked = inputState.FlatTrim;
+            checkBoxInputChangeCamera.IsChecked = inputState.CameraSwap;
+
+            if (inputState.CameraSwap)
+            {
+                ChangeCamera();
+            }
+
+            if (inputState.TakeOff && arDroneControl.CanTakeoff)
+            {
+                Takeoff();
+            }
+            else if (inputState.Land && arDroneControl.CanLand)
+            {
+                Land();
+            }
+
+            if (inputState.Hover && arDroneControl.CanEnterHoverMode)
+            {
+                EnterHoverMode();
+            }
+            else if (inputState.Hover && arDroneControl.CanLeaveHoverMode)
+            {
+                LeaveHoverMode();
+            }
+
+            if (inputState.Emergency)
+            {
+                Emergency();
+            }
+            else if (inputState.FlatTrim)
+            {
+                FlatTrim();
+            }
+
+            float roll = inputState.Roll / 1.0f;
+            float pitch = inputState.Pitch / 1.0f;
+            float yaw = inputState.Yaw / 2.0f;
+            float gaz = inputState.Gaz / 2.0f;
+
+            Navigate(roll, pitch, yaw, gaz);
         }
 
         private void SetNewVideoImage()
@@ -272,7 +337,9 @@ namespace ARDroneUI
 
                 if (newImage != null)
                 {
-                    if (videoRecorder.IsVideoCaptureStarted)
+                    frameCountSinceLastCapture++;
+
+                    if (videoRecorder.IsVideoCaptureRunning)
                     {
                         videoRecorder.AddFrame((System.Drawing.Bitmap)newImage.Clone());
                     }
@@ -283,9 +350,21 @@ namespace ARDroneUI
             }
         }
 
+        private void TakeSnapshot()
+        {
+            String snapshotFilePath = ShowFileDialog(".png", "PNG files (.png)|*.png");
+            if (snapshotFilePath == null) { return; }
+
+            System.Drawing.Bitmap currentImage = (System.Drawing.Bitmap)arDroneControl.GetDisplayedImage();
+            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath);
+        }
+
         private void StartVideoCapture()
         {
-            if (!CanCaptureVideo || videoRecorder.IsVideoCaptureStarted) { return; }
+            if (!CanCaptureVideo || videoRecorder.IsVideoCaptureRunning) { return; }
+
+            String videoFilePath = ShowFileDialog(".avi", "Video files (.avi)|*.avi");
+            if (videoFilePath == null) { return; }
 
             System.Drawing.Size size;
             if (arDroneControl.CurrentCameraType == ARDroneControl.CameraType.FrontCamera)
@@ -297,13 +376,13 @@ namespace ARDroneUI
                 size = arDroneControl.BottomCameraPictureSize;
             }
 
-            videoRecorder.StartVideo(@"D:\bla.avi", 1000 / (int)timerVideoUpdate.Interval.TotalMilliseconds, size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb, 4, checkBoxVideoCompress.IsChecked == true ? true : false);
+            videoRecorder.StartVideo(videoFilePath, averageFrameRate, size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb, 4, checkBoxVideoCompress.IsChecked == true ? true : false);
             UpdateUI();
         }
 
         private void EndVideoCapture()
         {
-            if (!videoRecorder.IsVideoCaptureStarted)
+            if (!videoRecorder.IsVideoCaptureRunning)
             {
                 return;
             }
@@ -312,6 +391,50 @@ namespace ARDroneUI
 
             UpdateUI();
         }
+
+        private String ShowFileDialog(String extension, String filter)
+        {
+            Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog();
+            fileDialog.FileName = "ARDroneOut";
+            fileDialog.DefaultExt = extension;
+            fileDialog.Filter = filter;
+
+            bool? result = fileDialog.ShowDialog();
+            
+            String fileName = null;
+            if (result == true)
+            {
+                fileName = fileDialog.FileName;
+            }
+
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(null, "The file could not be deleted", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                fileName = null;
+            }
+
+            return fileName;
+        }
+
+        private int GetCurrentFrameRate()
+        {
+            int timePassed = (int)(DateTime.Now - lastFrameRateCaptureTime).TotalMilliseconds;
+            int frameRate = frameCountSinceLastCapture * 1000 / timePassed;
+            averageFrameRate = (averageFrameRate + frameRate) / 2;
+
+            lastFrameRateCaptureTime = DateTime.Now;
+            frameCountSinceLastCapture = 0;
+
+            return averageFrameRate;
+        }
+
 
         private bool CanCaptureVideo
         {
@@ -330,6 +453,7 @@ namespace ARDroneUI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            videoRecorder.Dispose();
             Disconnect();
         }
 
@@ -368,7 +492,7 @@ namespace ARDroneUI
             }
             else
             {
-                LeaverHoverMode();
+                LeaveHoverMode();
             }
         }
 
@@ -380,6 +504,11 @@ namespace ARDroneUI
         private void buttonCommandFlatTrim_Click(object sender, RoutedEventArgs e)
         {
             FlatTrim();
+        }
+
+        private void buttonSnapshot_Click(object sender, RoutedEventArgs e)
+        {
+            TakeSnapshot();
         }
 
         private void buttonVideoStart_Click(object sender, RoutedEventArgs e)
@@ -399,58 +528,7 @@ namespace ARDroneUI
 
         private void timerInputUpdate_Tick(object sender, EventArgs e)
         {
-            InputState inputState = input.GetCurrentState();
-
-            labelInputRoll.Content = String.Format("{0:+0.000;-0.000;0.000}", inputState.Roll);
-            labelInputPitch.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Pitch);
-            labelInputYaw.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Yaw);
-            labelInputGaz.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Gaz);
-
-            checkBoxInputTakeoff.IsChecked = inputState.TakeOff;
-            checkBoxInputLand.IsChecked = inputState.Land;
-            checkBoxInputHover.IsChecked = inputState.Hover;
-            checkBoxInputEmergency.IsChecked = inputState.Emergency;
-            checkBoxInputFlatTrim.IsChecked = inputState.FlatTrim;
-            checkBoxInputChangeCamera.IsChecked = inputState.CameraSwap;
-
-            if (inputState.CameraSwap)
-            {
-                ChangeCamera();
-            }
-
-            if (inputState.TakeOff && arDroneControl.CanTakeoff)
-            {
-                Takeoff();
-            }
-            else if (inputState.Land && arDroneControl.CanLand)
-            {
-                Land();
-            }
-
-            if (inputState.Hover && arDroneControl.CanEnterHoverMode)
-            {
-                EnterHoverMode();
-            }
-            else if (inputState.Hover && arDroneControl.CanLeaveHoverMode)
-            {
-                LeaverHoverMode();
-            }
-
-            if (inputState.Emergency)
-            {
-                Emergency();
-            }
-            else if (inputState.FlatTrim)
-            {
-                FlatTrim();
-            }
-
-            float roll = inputState.Roll / 1.0f;
-            float pitch = inputState.Pitch / 1.0f;
-            float yaw = inputState.Yaw / 2.0f;
-            float gaz = inputState.Gaz / 2.0f;
-
-            Navigate(roll, pitch, yaw, gaz);
+            UpdateInput();
         }
 
         private void timerVideoUpdate_Tick(object sender, EventArgs e)

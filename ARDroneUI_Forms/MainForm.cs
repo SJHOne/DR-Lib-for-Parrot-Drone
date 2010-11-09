@@ -5,9 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using InputLibrary;
+using ARDrone.Control;
+using ARDrone.Input;
 
-namespace ARDroneUI
+namespace ARDrone.UI
 {
     public partial class MainForm : Form
     {

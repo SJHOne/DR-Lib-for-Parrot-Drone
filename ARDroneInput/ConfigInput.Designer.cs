@@ -1,4 +1,4 @@
-﻿namespace InputLibrary
+﻿namespace ARDrone.Input
 {
     partial class ConfigInput
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace InputLibrary
+namespace ARDrone.Input
 {
     public partial class ConfigInput : Form
     {
