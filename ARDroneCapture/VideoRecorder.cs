@@ -71,7 +71,13 @@ namespace ARDrone.Capture
             isVideoCaptureRunning = true;
             isCompressionRunning = false;
 
-            videoManager = new AviManager(tempFilePath, false);
+            String videoFilePath = finalFilePath;
+            if (isCompressed)
+            {
+                videoFilePath = tempFilePath;
+            }
+
+            videoManager = new AviManager(videoFilePath, false);
             stream = videoManager.AddVideoStream(false, frameRate, width * height * bytesPerPixel, width, height, pixelFormat);
         }
 
