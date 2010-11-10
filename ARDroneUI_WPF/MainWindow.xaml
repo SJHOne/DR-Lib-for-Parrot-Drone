@@ -23,7 +23,7 @@
                         <CheckBox Name="checkBoxInputChangeCamera" Content="Camera" HorizontalAlignment="Left" Margin="98,151,0,0" Height="16"  VerticalAlignment="Top" />
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Status" Canvas.Left="0" Canvas.Top="213" Width="192" Height="211">
+                <GroupBox Header="Status" Canvas.Left="0" Canvas.Top="212" Width="192" Height="211">
                     <Grid>
                         <Label Content="Battery status" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,2,0,0" Height="28" />
                         <Label Content="Camera shown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,22,0,0" Height="28" />
@@ -45,7 +45,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Video &amp; Snapshots" Canvas.Top="425" Canvas.Left="0" Width="192" Height="135" >
+                <GroupBox Header="Video &amp; Snapshots" Canvas.Top="425" Canvas.Left="0" Width="192" Height="132" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="73*" />
@@ -66,8 +66,8 @@
                 <Button Name="buttonShutdown" Content="Shutdown" Width="75" Height="23" Canvas.Left="113" Canvas.Top="57" DockPanel.Dock="Right" Click="buttonShutdown_Click" />
                 <Label Name="labelCamera" Content="No picture" HorizontalAlignment="Center" Foreground="Goldenrod" FontFamily="Microsoft Sans Serif" FontSize="12" />
             </DockPanel>
-            <Canvas DockPanel.Dock="Bottom" Height="165" Margin="3">
-                <ScrollViewer Name="scrollViewerOutput" VerticalScrollBarVisibility="Auto" Width="355" Height="168">
+            <Canvas DockPanel.Dock="Bottom" Height="165" Margin="5">
+                <ScrollViewer Name="scrollViewerOutput" VerticalScrollBarVisibility="Auto" Width="355" Height="164" Canvas.Top="0">
                     <TextBox Name="textBoxOutput" IsReadOnly="True" Canvas.Left="0" Canvas.Top="0"  AcceptsReturn="True" Foreground="Yellow" Background="Black" />
                 </ScrollViewer>
                 <Button Name="buttonCommandTakeoff" Content="Take off" Width="94" Height="22" Canvas.Left="361" Canvas.Top="1" Click="buttonCommandTakeoff_Click" />

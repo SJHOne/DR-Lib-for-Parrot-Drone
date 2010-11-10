@@ -78,6 +78,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARDroneCapture\ARDroneCapture.csproj">
+      <Project>{DF44B163-A438-4DCC-ADB0-5CDB08803A0F}</Project>
+      <Name>ARDroneCapture</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARDroneControlLibrary\ARDroneControlLibrary.csproj">
       <Project>{92277DFC-0D55-4998-8ACF-B01F3A7FB508}</Project>
       <Name>ARDroneControlLibrary</Name>

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.btnSet = new System.Windows.Forms.Button();
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.tbFlatTrim = new System.Windows.Forms.TextBox();
@@ -55,8 +56,7 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.cbDevice = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
+            this.labelDeviceInfo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +90,15 @@
             this.groupBox1.Size = new System.Drawing.Size(589, 282);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(229, 258);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(273, 13);
+            this.label13.TabIndex = 22;
+            this.label13.Text = "Be sure to click this once you have changed values >>>";
             // 
             // btnSet
             // 
@@ -317,23 +326,14 @@
             this.cbDevice.TabIndex = 6;
             this.cbDevice.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // label3
+            // labelDeviceInfo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 15);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Device";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(229, 258);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(273, 13);
-            this.label13.TabIndex = 22;
-            this.label13.Text = "Be sure to click this once you have changed values >>>";
+            this.labelDeviceInfo.AutoSize = true;
+            this.labelDeviceInfo.Location = new System.Drawing.Point(9, 15);
+            this.labelDeviceInfo.Name = "labelDeviceInfo";
+            this.labelDeviceInfo.Size = new System.Drawing.Size(41, 13);
+            this.labelDeviceInfo.TabIndex = 5;
+            this.labelDeviceInfo.Text = "Device";
             // 
             // ConfigInput
             // 
@@ -341,7 +341,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(613, 363);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelDeviceInfo);
             this.Controls.Add(this.cbDevice);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoad);
@@ -375,7 +375,7 @@
         private System.Windows.Forms.TextBox tbGaz;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbYaw;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelDeviceInfo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label12;

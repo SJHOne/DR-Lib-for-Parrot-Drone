@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.textboxOutput = new System.Windows.Forms.TextBox();
+            this.textBoxOutput = new System.Windows.Forms.TextBox();
             this.buttonShutdown = new System.Windows.Forms.Button();
             this.buttonCommandEmergency = new System.Windows.Forms.Button();
             this.buttonCommandChangeCamera = new System.Windows.Forms.Button();
@@ -52,9 +52,11 @@
             this.labelInputGaz = new System.Windows.Forms.Label();
             this.labelInputPitch = new System.Windows.Forms.Label();
             this.labelInputYaw = new System.Windows.Forms.Label();
-            this.checkBoxInputCameraSwap = new System.Windows.Forms.CheckBox();
+            this.checkBoxInputChangeCamera = new System.Windows.Forms.CheckBox();
             this.checkBoxInputHover = new System.Windows.Forms.CheckBox();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.labelStatusFrameRate = new System.Windows.Forms.Label();
+            this.labelStatusFrameRateInfo = new System.Windows.Forms.Label();
             this.labelStatusEmergency = new System.Windows.Forms.Label();
             this.labelStatusEmergencyInfo = new System.Windows.Forms.Label();
             this.labelStatusConnected = new System.Windows.Forms.Label();
@@ -71,15 +73,23 @@
             this.labelStatusBatteryInfo = new System.Windows.Forms.Label();
             this.buttonCommandHover = new System.Windows.Forms.Button();
             this.panelRight = new System.Windows.Forms.Panel();
+            this.groupBoxVideoAndSnapshots = new System.Windows.Forms.GroupBox();
+            this.labelVideoStatus = new System.Windows.Forms.Label();
+            this.checkBoxVideoCompress = new System.Windows.Forms.CheckBox();
+            this.buttonVideoEnd = new System.Windows.Forms.Button();
+            this.buttonVideoStart = new System.Windows.Forms.Button();
+            this.buttonSnapshot = new System.Windows.Forms.Button();
+            this.buttonInputSettings = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelCenter = new System.Windows.Forms.Panel();
             this.pictureBoxVideo = new System.Windows.Forms.PictureBox();
             this.timerVideoUpdate = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
+            this.fileDialog = new System.Windows.Forms.SaveFileDialog();
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.panelRight.SuspendLayout();
+            this.groupBoxVideoAndSnapshots.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelCenter.SuspendLayout();
@@ -89,32 +99,32 @@
             // buttonConnect
             // 
             this.buttonConnect.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonConnect.Location = new System.Drawing.Point(0, 0);
+            this.buttonConnect.Location = new System.Drawing.Point(3, 3);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(75, 25);
+            this.buttonConnect.Size = new System.Drawing.Size(75, 24);
             this.buttonConnect.TabIndex = 0;
             this.buttonConnect.Text = "Startup";
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
-            // textboxOutput
+            // textBoxOutput
             // 
-            this.textboxOutput.BackColor = System.Drawing.SystemColors.MenuText;
-            this.textboxOutput.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textboxOutput.ForeColor = System.Drawing.Color.Yellow;
-            this.textboxOutput.Location = new System.Drawing.Point(1, 3);
-            this.textboxOutput.Multiline = true;
-            this.textboxOutput.Name = "textboxOutput";
-            this.textboxOutput.ReadOnly = true;
-            this.textboxOutput.Size = new System.Drawing.Size(358, 160);
-            this.textboxOutput.TabIndex = 1;
+            this.textBoxOutput.BackColor = System.Drawing.SystemColors.MenuText;
+            this.textBoxOutput.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxOutput.ForeColor = System.Drawing.Color.Yellow;
+            this.textBoxOutput.Location = new System.Drawing.Point(1, 3);
+            this.textBoxOutput.Multiline = true;
+            this.textBoxOutput.Name = "textBoxOutput";
+            this.textBoxOutput.ReadOnly = true;
+            this.textBoxOutput.Size = new System.Drawing.Size(358, 158);
+            this.textBoxOutput.TabIndex = 1;
             // 
             // buttonShutdown
             // 
             this.buttonShutdown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonShutdown.Location = new System.Drawing.Point(405, 0);
+            this.buttonShutdown.Location = new System.Drawing.Point(402, 3);
             this.buttonShutdown.Name = "buttonShutdown";
-            this.buttonShutdown.Size = new System.Drawing.Size(75, 25);
+            this.buttonShutdown.Size = new System.Drawing.Size(75, 24);
             this.buttonShutdown.TabIndex = 2;
             this.buttonShutdown.Text = "Shutdown";
             this.buttonShutdown.UseVisualStyleBackColor = true;
@@ -170,9 +180,9 @@
             this.labelCamera.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCamera.ForeColor = System.Drawing.Color.Goldenrod;
-            this.labelCamera.Location = new System.Drawing.Point(75, 0);
+            this.labelCamera.Location = new System.Drawing.Point(78, 3);
             this.labelCamera.Name = "labelCamera";
-            this.labelCamera.Size = new System.Drawing.Size(330, 25);
+            this.labelCamera.Size = new System.Drawing.Size(324, 24);
             this.labelCamera.TabIndex = 19;
             this.labelCamera.Text = "No picture";
             this.labelCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -268,7 +278,7 @@
             this.groupBoxInput.Controls.Add(this.labelInputGaz);
             this.groupBoxInput.Controls.Add(this.labelInputPitch);
             this.groupBoxInput.Controls.Add(this.labelInputYaw);
-            this.groupBoxInput.Controls.Add(this.checkBoxInputCameraSwap);
+            this.groupBoxInput.Controls.Add(this.checkBoxInputChangeCamera);
             this.groupBoxInput.Controls.Add(this.checkBoxInputHover);
             this.groupBoxInput.Controls.Add(this.checkBoxInputFlatTrim);
             this.groupBoxInput.Controls.Add(this.checkBoxInputEmergency);
@@ -321,16 +331,16 @@
             this.labelInputYaw.TabIndex = 36;
             this.labelInputYaw.Text = "0,000";
             // 
-            // checkBoxInputCameraSwap
+            // checkBoxInputChangeCamera
             // 
-            this.checkBoxInputCameraSwap.AutoSize = true;
-            this.checkBoxInputCameraSwap.Enabled = false;
-            this.checkBoxInputCameraSwap.Location = new System.Drawing.Point(104, 153);
-            this.checkBoxInputCameraSwap.Name = "checkBoxInputCameraSwap";
-            this.checkBoxInputCameraSwap.Size = new System.Drawing.Size(62, 17);
-            this.checkBoxInputCameraSwap.TabIndex = 33;
-            this.checkBoxInputCameraSwap.Text = "Camera";
-            this.checkBoxInputCameraSwap.UseVisualStyleBackColor = true;
+            this.checkBoxInputChangeCamera.AutoSize = true;
+            this.checkBoxInputChangeCamera.Enabled = false;
+            this.checkBoxInputChangeCamera.Location = new System.Drawing.Point(104, 153);
+            this.checkBoxInputChangeCamera.Name = "checkBoxInputChangeCamera";
+            this.checkBoxInputChangeCamera.Size = new System.Drawing.Size(62, 17);
+            this.checkBoxInputChangeCamera.TabIndex = 33;
+            this.checkBoxInputChangeCamera.Text = "Camera";
+            this.checkBoxInputChangeCamera.UseVisualStyleBackColor = true;
             // 
             // checkBoxInputHover
             // 
@@ -345,6 +355,8 @@
             // 
             // groupBoxStatus
             // 
+            this.groupBoxStatus.Controls.Add(this.labelStatusFrameRate);
+            this.groupBoxStatus.Controls.Add(this.labelStatusFrameRateInfo);
             this.groupBoxStatus.Controls.Add(this.labelStatusEmergency);
             this.groupBoxStatus.Controls.Add(this.labelStatusEmergencyInfo);
             this.groupBoxStatus.Controls.Add(this.labelStatusConnected);
@@ -361,15 +373,33 @@
             this.groupBoxStatus.Controls.Add(this.labelStatusBatteryInfo);
             this.groupBoxStatus.Location = new System.Drawing.Point(3, 191);
             this.groupBoxStatus.Name = "groupBoxStatus";
-            this.groupBoxStatus.Size = new System.Drawing.Size(184, 179);
+            this.groupBoxStatus.Size = new System.Drawing.Size(184, 196);
             this.groupBoxStatus.TabIndex = 33;
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Status";
             // 
+            // labelStatusFrameRate
+            // 
+            this.labelStatusFrameRate.AutoSize = true;
+            this.labelStatusFrameRate.Location = new System.Drawing.Point(122, 174);
+            this.labelStatusFrameRate.Name = "labelStatusFrameRate";
+            this.labelStatusFrameRate.Size = new System.Drawing.Size(50, 13);
+            this.labelStatusFrameRate.TabIndex = 44;
+            this.labelStatusFrameRate.Text = "No video";
+            // 
+            // labelStatusFrameRateInfo
+            // 
+            this.labelStatusFrameRateInfo.AutoSize = true;
+            this.labelStatusFrameRateInfo.Location = new System.Drawing.Point(14, 174);
+            this.labelStatusFrameRateInfo.Name = "labelStatusFrameRateInfo";
+            this.labelStatusFrameRateInfo.Size = new System.Drawing.Size(62, 13);
+            this.labelStatusFrameRateInfo.TabIndex = 43;
+            this.labelStatusFrameRateInfo.Text = "Frame Rate";
+            // 
             // labelStatusEmergency
             // 
             this.labelStatusEmergency.AutoSize = true;
-            this.labelStatusEmergency.Location = new System.Drawing.Point(133, 155);
+            this.labelStatusEmergency.Location = new System.Drawing.Point(122, 147);
             this.labelStatusEmergency.Name = "labelStatusEmergency";
             this.labelStatusEmergency.Size = new System.Drawing.Size(29, 13);
             this.labelStatusEmergency.TabIndex = 42;
@@ -378,7 +408,7 @@
             // labelStatusEmergencyInfo
             // 
             this.labelStatusEmergencyInfo.AutoSize = true;
-            this.labelStatusEmergencyInfo.Location = new System.Drawing.Point(14, 155);
+            this.labelStatusEmergencyInfo.Location = new System.Drawing.Point(14, 147);
             this.labelStatusEmergencyInfo.Name = "labelStatusEmergencyInfo";
             this.labelStatusEmergencyInfo.Size = new System.Drawing.Size(60, 13);
             this.labelStatusEmergencyInfo.TabIndex = 41;
@@ -387,7 +417,7 @@
             // labelStatusConnected
             // 
             this.labelStatusConnected.AutoSize = true;
-            this.labelStatusConnected.Location = new System.Drawing.Point(133, 95);
+            this.labelStatusConnected.Location = new System.Drawing.Point(122, 87);
             this.labelStatusConnected.Name = "labelStatusConnected";
             this.labelStatusConnected.Size = new System.Drawing.Size(29, 13);
             this.labelStatusConnected.TabIndex = 40;
@@ -396,7 +426,7 @@
             // labelStatusConnectedInfo
             // 
             this.labelStatusConnectedInfo.AutoSize = true;
-            this.labelStatusConnectedInfo.Location = new System.Drawing.Point(14, 95);
+            this.labelStatusConnectedInfo.Location = new System.Drawing.Point(14, 87);
             this.labelStatusConnectedInfo.Name = "labelStatusConnectedInfo";
             this.labelStatusConnectedInfo.Size = new System.Drawing.Size(59, 13);
             this.labelStatusConnectedInfo.TabIndex = 39;
@@ -405,7 +435,7 @@
             // labelStatusHovering
             // 
             this.labelStatusHovering.AutoSize = true;
-            this.labelStatusHovering.Location = new System.Drawing.Point(133, 135);
+            this.labelStatusHovering.Location = new System.Drawing.Point(122, 127);
             this.labelStatusHovering.Name = "labelStatusHovering";
             this.labelStatusHovering.Size = new System.Drawing.Size(29, 13);
             this.labelStatusHovering.TabIndex = 38;
@@ -414,7 +444,7 @@
             // labelStatusFlying
             // 
             this.labelStatusFlying.AutoSize = true;
-            this.labelStatusFlying.Location = new System.Drawing.Point(133, 115);
+            this.labelStatusFlying.Location = new System.Drawing.Point(122, 107);
             this.labelStatusFlying.Name = "labelStatusFlying";
             this.labelStatusFlying.Size = new System.Drawing.Size(29, 13);
             this.labelStatusFlying.TabIndex = 37;
@@ -423,7 +453,7 @@
             // labelStatusAltitude
             // 
             this.labelStatusAltitude.AutoSize = true;
-            this.labelStatusAltitude.Location = new System.Drawing.Point(133, 60);
+            this.labelStatusAltitude.Location = new System.Drawing.Point(122, 59);
             this.labelStatusAltitude.Name = "labelStatusAltitude";
             this.labelStatusAltitude.Size = new System.Drawing.Size(27, 13);
             this.labelStatusAltitude.TabIndex = 36;
@@ -432,7 +462,7 @@
             // labelStatusCamera
             // 
             this.labelStatusCamera.AutoSize = true;
-            this.labelStatusCamera.Location = new System.Drawing.Point(133, 40);
+            this.labelStatusCamera.Location = new System.Drawing.Point(122, 39);
             this.labelStatusCamera.Name = "labelStatusCamera";
             this.labelStatusCamera.Size = new System.Drawing.Size(33, 13);
             this.labelStatusCamera.TabIndex = 35;
@@ -441,7 +471,7 @@
             // labelStatusBattery
             // 
             this.labelStatusBattery.AutoSize = true;
-            this.labelStatusBattery.Location = new System.Drawing.Point(133, 20);
+            this.labelStatusBattery.Location = new System.Drawing.Point(122, 19);
             this.labelStatusBattery.Name = "labelStatusBattery";
             this.labelStatusBattery.Size = new System.Drawing.Size(27, 13);
             this.labelStatusBattery.TabIndex = 34;
@@ -450,7 +480,7 @@
             // labelStatusHoveringInfo
             // 
             this.labelStatusHoveringInfo.AutoSize = true;
-            this.labelStatusHoveringInfo.Location = new System.Drawing.Point(14, 135);
+            this.labelStatusHoveringInfo.Location = new System.Drawing.Point(14, 127);
             this.labelStatusHoveringInfo.Name = "labelStatusHoveringInfo";
             this.labelStatusHoveringInfo.Size = new System.Drawing.Size(50, 13);
             this.labelStatusHoveringInfo.TabIndex = 4;
@@ -459,7 +489,7 @@
             // labelStatusFlyingInfo
             // 
             this.labelStatusFlyingInfo.AutoSize = true;
-            this.labelStatusFlyingInfo.Location = new System.Drawing.Point(14, 115);
+            this.labelStatusFlyingInfo.Location = new System.Drawing.Point(14, 107);
             this.labelStatusFlyingInfo.Name = "labelStatusFlyingInfo";
             this.labelStatusFlyingInfo.Size = new System.Drawing.Size(34, 13);
             this.labelStatusFlyingInfo.TabIndex = 3;
@@ -468,7 +498,7 @@
             // labelStatusAltitudeInfo
             // 
             this.labelStatusAltitudeInfo.AutoSize = true;
-            this.labelStatusAltitudeInfo.Location = new System.Drawing.Point(14, 60);
+            this.labelStatusAltitudeInfo.Location = new System.Drawing.Point(14, 59);
             this.labelStatusAltitudeInfo.Name = "labelStatusAltitudeInfo";
             this.labelStatusAltitudeInfo.Size = new System.Drawing.Size(42, 13);
             this.labelStatusAltitudeInfo.TabIndex = 2;
@@ -477,7 +507,7 @@
             // labelStatusCameraInfo
             // 
             this.labelStatusCameraInfo.AutoSize = true;
-            this.labelStatusCameraInfo.Location = new System.Drawing.Point(14, 40);
+            this.labelStatusCameraInfo.Location = new System.Drawing.Point(14, 39);
             this.labelStatusCameraInfo.Name = "labelStatusCameraInfo";
             this.labelStatusCameraInfo.Size = new System.Drawing.Size(77, 13);
             this.labelStatusCameraInfo.TabIndex = 1;
@@ -486,7 +516,7 @@
             // labelStatusBatteryInfo
             // 
             this.labelStatusBatteryInfo.AutoSize = true;
-            this.labelStatusBatteryInfo.Location = new System.Drawing.Point(14, 20);
+            this.labelStatusBatteryInfo.Location = new System.Drawing.Point(14, 19);
             this.labelStatusBatteryInfo.Name = "labelStatusBatteryInfo";
             this.labelStatusBatteryInfo.Size = new System.Drawing.Size(71, 13);
             this.labelStatusBatteryInfo.TabIndex = 0;
@@ -504,7 +534,8 @@
             // 
             // panelRight
             // 
-            this.panelRight.Controls.Add(this.button1);
+            this.panelRight.Controls.Add(this.groupBoxVideoAndSnapshots);
+            this.panelRight.Controls.Add(this.buttonInputSettings);
             this.panelRight.Controls.Add(this.groupBoxInput);
             this.panelRight.Controls.Add(this.groupBoxStatus);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
@@ -513,9 +544,82 @@
             this.panelRight.Size = new System.Drawing.Size(192, 549);
             this.panelRight.TabIndex = 35;
             // 
+            // groupBoxVideoAndSnapshots
+            // 
+            this.groupBoxVideoAndSnapshots.Controls.Add(this.labelVideoStatus);
+            this.groupBoxVideoAndSnapshots.Controls.Add(this.checkBoxVideoCompress);
+            this.groupBoxVideoAndSnapshots.Controls.Add(this.buttonVideoEnd);
+            this.groupBoxVideoAndSnapshots.Controls.Add(this.buttonVideoStart);
+            this.groupBoxVideoAndSnapshots.Controls.Add(this.buttonSnapshot);
+            this.groupBoxVideoAndSnapshots.Location = new System.Drawing.Point(3, 393);
+            this.groupBoxVideoAndSnapshots.Name = "groupBoxVideoAndSnapshots";
+            this.groupBoxVideoAndSnapshots.Size = new System.Drawing.Size(184, 124);
+            this.groupBoxVideoAndSnapshots.TabIndex = 36;
+            this.groupBoxVideoAndSnapshots.TabStop = false;
+            this.groupBoxVideoAndSnapshots.Text = "Videos and Snapshots";
+            // 
+            // labelVideoStatus
+            // 
+            this.labelVideoStatus.AutoSize = true;
+            this.labelVideoStatus.Location = new System.Drawing.Point(5, 105);
+            this.labelVideoStatus.Name = "labelVideoStatus";
+            this.labelVideoStatus.Size = new System.Drawing.Size(44, 13);
+            this.labelVideoStatus.TabIndex = 4;
+            this.labelVideoStatus.Text = "Idling ...";
+            // 
+            // checkBoxVideoCompress
+            // 
+            this.checkBoxVideoCompress.AutoSize = true;
+            this.checkBoxVideoCompress.Location = new System.Drawing.Point(8, 52);
+            this.checkBoxVideoCompress.Name = "checkBoxVideoCompress";
+            this.checkBoxVideoCompress.Size = new System.Drawing.Size(101, 17);
+            this.checkBoxVideoCompress.TabIndex = 3;
+            this.checkBoxVideoCompress.Text = "Compress video";
+            this.checkBoxVideoCompress.UseVisualStyleBackColor = true;
+            // 
+            // buttonVideoEnd
+            // 
+            this.buttonVideoEnd.Location = new System.Drawing.Point(92, 76);
+            this.buttonVideoEnd.Name = "buttonVideoEnd";
+            this.buttonVideoEnd.Size = new System.Drawing.Size(86, 23);
+            this.buttonVideoEnd.TabIndex = 2;
+            this.buttonVideoEnd.Text = "End Video";
+            this.buttonVideoEnd.UseVisualStyleBackColor = true;
+            this.buttonVideoEnd.Click += new System.EventHandler(this.buttonVideoEnd_Click);
+            // 
+            // buttonVideoStart
+            // 
+            this.buttonVideoStart.Location = new System.Drawing.Point(6, 75);
+            this.buttonVideoStart.Name = "buttonVideoStart";
+            this.buttonVideoStart.Size = new System.Drawing.Size(80, 23);
+            this.buttonVideoStart.TabIndex = 1;
+            this.buttonVideoStart.Text = "Start Video";
+            this.buttonVideoStart.UseVisualStyleBackColor = true;
+            this.buttonVideoStart.Click += new System.EventHandler(this.buttonVideoStart_Click);
+            // 
+            // buttonSnapshot
+            // 
+            this.buttonSnapshot.Location = new System.Drawing.Point(6, 19);
+            this.buttonSnapshot.Name = "buttonSnapshot";
+            this.buttonSnapshot.Size = new System.Drawing.Size(172, 23);
+            this.buttonSnapshot.TabIndex = 0;
+            this.buttonSnapshot.Text = "Take a snaphot";
+            this.buttonSnapshot.UseVisualStyleBackColor = true;
+            this.buttonSnapshot.Click += new System.EventHandler(this.buttonSnapshot_Click);
+            // 
+            // buttonInputSettings
+            // 
+            this.buttonInputSettings.Location = new System.Drawing.Point(3, 522);
+            this.buttonInputSettings.Name = "buttonInputSettings";
+            this.buttonInputSettings.Size = new System.Drawing.Size(107, 23);
+            this.buttonInputSettings.TabIndex = 35;
+            this.buttonInputSettings.Text = "Input Settings";
+            this.buttonInputSettings.UseVisualStyleBackColor = true;
+            this.buttonInputSettings.Click += new System.EventHandler(this.buttonInputSettings_Click);
+            // 
             // panelBottom
             // 
-            this.panelBottom.Controls.Add(this.textboxOutput);
+            this.panelBottom.Controls.Add(this.textBoxOutput);
             this.panelBottom.Controls.Add(this.buttonCommandEmergency);
             this.panelBottom.Controls.Add(this.buttonCommandHover);
             this.panelBottom.Controls.Add(this.buttonCommandTakeoff);
@@ -534,17 +638,19 @@
             this.panelTop.Controls.Add(this.buttonShutdown);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Margin = new System.Windows.Forms.Padding(5);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(480, 25);
+            this.panelTop.Padding = new System.Windows.Forms.Padding(3);
+            this.panelTop.Size = new System.Drawing.Size(480, 30);
             this.panelTop.TabIndex = 37;
             // 
             // panelCenter
             // 
             this.panelCenter.Controls.Add(this.pictureBoxVideo);
             this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCenter.Location = new System.Drawing.Point(0, 25);
+            this.panelCenter.Location = new System.Drawing.Point(0, 30);
             this.panelCenter.Name = "panelCenter";
-            this.panelCenter.Size = new System.Drawing.Size(480, 360);
+            this.panelCenter.Size = new System.Drawing.Size(480, 355);
             this.panelCenter.TabIndex = 38;
             // 
             // pictureBoxVideo
@@ -552,7 +658,7 @@
             this.pictureBoxVideo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxVideo.Location = new System.Drawing.Point(0, 0);
             this.pictureBoxVideo.Name = "pictureBoxVideo";
-            this.pictureBoxVideo.Size = new System.Drawing.Size(480, 360);
+            this.pictureBoxVideo.Size = new System.Drawing.Size(480, 355);
             this.pictureBoxVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxVideo.TabIndex = 0;
             this.pictureBoxVideo.TabStop = false;
@@ -561,16 +667,6 @@
             // 
             this.timerVideoUpdate.Interval = 50;
             this.timerVideoUpdate.Tick += new System.EventHandler(this.timerVideoUpdate_Tick);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(47, 388);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 23);
-            this.button1.TabIndex = 35;
-            this.button1.Text = "Input Settings";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -585,12 +681,13 @@
             this.MinimumSize = new System.Drawing.Size(688, 587);
             this.Name = "MainForm";
             this.Text = "Drone Control";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.panelRight.ResumeLayout(false);
+            this.groupBoxVideoAndSnapshots.ResumeLayout(false);
+            this.groupBoxVideoAndSnapshots.PerformLayout();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
             this.panelTop.ResumeLayout(false);
@@ -603,7 +700,7 @@
         #endregion
 
         private System.Windows.Forms.Button buttonConnect;
-        private System.Windows.Forms.TextBox textboxOutput;
+        private System.Windows.Forms.TextBox textBoxOutput;
         private System.Windows.Forms.Button buttonShutdown;
         private System.Windows.Forms.Button buttonCommandEmergency;
         private System.Windows.Forms.Button buttonCommandChangeCamera;
@@ -638,7 +735,7 @@
         private System.Windows.Forms.Label labelStatusEmergency;
         private System.Windows.Forms.Label labelStatusEmergencyInfo;
         private System.Windows.Forms.CheckBox checkBoxInputHover;
-        private System.Windows.Forms.CheckBox checkBoxInputCameraSwap;
+        private System.Windows.Forms.CheckBox checkBoxInputChangeCamera;
         private System.Windows.Forms.Panel panelRight;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Panel panelTop;
@@ -649,7 +746,16 @@
         private System.Windows.Forms.Label labelInputGaz;
         private System.Windows.Forms.Label labelInputPitch;
         private System.Windows.Forms.Label labelInputYaw;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonInputSettings;
+        private System.Windows.Forms.GroupBox groupBoxVideoAndSnapshots;
+        private System.Windows.Forms.CheckBox checkBoxVideoCompress;
+        private System.Windows.Forms.Button buttonVideoEnd;
+        private System.Windows.Forms.Button buttonVideoStart;
+        private System.Windows.Forms.Button buttonSnapshot;
+        private System.Windows.Forms.Label labelVideoStatus;
+        private System.Windows.Forms.Label labelStatusFrameRate;
+        private System.Windows.Forms.Label labelStatusFrameRateInfo;
+        private System.Windows.Forms.SaveFileDialog fileDialog;
     }
 }
 
