@@ -94,10 +94,6 @@
       <Project>{104C0B70-4D35-4090-942A-9223222D0E6C}</Project>
       <Name>ARDroneInput</Name>
     </ProjectReference>
-    <ProjectReference Include="..\joystick\Joystick.csproj">
-      <Project>{A7A2D192-3025-4AB1-96CD-097A2A0FB5B5}</Project>
-      <Name>Joystick</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

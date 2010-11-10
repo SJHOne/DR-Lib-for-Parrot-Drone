@@ -34,6 +34,9 @@ namespace ARDrone.UI
         DateTime lastFrameRateCaptureTime;
         int averageFrameRate = 0;
 
+        String snapshotFilePath = string.Empty;
+        int iCount = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -349,14 +352,19 @@ namespace ARDrone.UI
                 }
             }
         }
-
+        
         private void TakeSnapshot()
         {
-            String snapshotFilePath = ShowFileDialog(".png", "PNG files (.png)|*.png");
-            if (snapshotFilePath == null) { return; }
+            if (snapshotFilePath == string.Empty)
+            {
+                snapshotFilePath = ShowFileDialog(".png", "PNG files (.png)|*.png");
+                if (snapshotFilePath == null) { return; }
+            }
 
             System.Drawing.Bitmap currentImage = (System.Drawing.Bitmap)arDroneControl.GetDisplayedImage();
-            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath);
+            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath.Replace(".png", "_" + iCount.ToString() + ".png"));
+            AddOutput("Saved image #" +iCount.ToString());
+            iCount++;
         }
 
         private void StartVideoCapture()
