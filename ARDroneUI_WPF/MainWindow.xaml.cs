@@ -35,7 +35,7 @@ namespace ARDrone.UI
         int averageFrameRate = 0;
 
         String snapshotFilePath = string.Empty;
-        int iCount = 0;
+        int snapshotFileCount = 0;
 
         public MainWindow()
         {
@@ -362,9 +362,9 @@ namespace ARDrone.UI
             }
 
             System.Drawing.Bitmap currentImage = (System.Drawing.Bitmap)arDroneControl.GetDisplayedImage();
-            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath.Replace(".png", "_" + iCount.ToString() + ".png"));
-            AddOutput("Saved image #" +iCount.ToString());
-            iCount++;
+            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath.Replace(".png", "_" + snapshotFileCount.ToString() + ".png"));
+            AddOutput("Saved image #" +snapshotFileCount.ToString());
+            snapshotFileCount++;
         }
 
         private void StartVideoCapture()

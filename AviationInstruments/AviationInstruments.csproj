@@ -89,7 +89,7 @@
     <None Include="Resources\Altimeter_Background.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Bandeau_Dérouleur.bmp" />
+    <None Include="Resources\Bandeau_Derouleur.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HeadingIndicator_Aircraft.bmp" />
