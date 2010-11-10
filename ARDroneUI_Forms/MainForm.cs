@@ -38,6 +38,7 @@ namespace ARDrone.UI
             videoRecorder.CompressionError += new ErrorEventHandler(videoRecorder_CompressionError);
 
             timerStatusUpdate.Start();
+            timerInputUpdate.Start();
             UpdateUI();
         }
 
