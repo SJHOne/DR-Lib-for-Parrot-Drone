@@ -20,28 +20,33 @@ namespace ARDrone.Input
             _owner = owner;  // TODO : Ideally this should be exposed through an event, to facilitate unit testing
 
             UpdateUI();
-        }
-
-        private void UpdateUI()
-        {
             cbDevice.Items.Clear();
 
             foreach (GenericInput gM in _owner.InputDevices)
             {
                 cbDevice.Items.Add(gM.DeviceName);
             }
-            
-            cbDevice.SelectedIndex = 0;
 
-            tbCamSwap.Text = _owner.InputDevices[0].Mapping.CameraSwapButton; ;
-            tbEmergency.Text = _owner.InputDevices[0].Mapping.EmergencyButton;;
-            tbFlatTrim.Text = _owner.InputDevices[0].Mapping.FlatTrimButton;
-            tbGaz.Text = _owner.InputDevices[0].Mapping.GazAxisMapping;
-            tbLand.Text = _owner.InputDevices[0].Mapping.LandButton;
-            tbPitch.Text = _owner.InputDevices[0].Mapping.PitchAxisMapping;
-            tbRoll.Text = _owner.InputDevices[0].Mapping.RollAxisMapping;
-            tbTakeOff.Text = _owner.InputDevices[0].Mapping.TakeOffButton;
-            tbYaw.Text = _owner.InputDevices[0].Mapping.YawAxisMapping;
+            cbDevice.SelectedIndex = 0;
+        }
+
+        private void UpdateUI()
+        {
+
+            if (cbDevice.SelectedIndex > 0)
+            {
+
+                tbCamSwap.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.CameraSwapButton; ;
+                tbEmergency.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.EmergencyButton; ;
+                tbFlatTrim.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.FlatTrimButton;
+                tbGaz.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.GazAxisMapping;
+                tbLand.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.LandButton;
+                tbPitch.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.PitchAxisMapping;
+                tbRoll.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.RollAxisMapping;
+                tbTakeOff.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.TakeOffButton;
+                tbYaw.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.YawAxisMapping;
+                tbHover.Text = _owner.InputDevices[cbDevice.SelectedIndex].Mapping.HoverButton;
+            }
         }
 
         private void ConfigInput_Load(object sender, EventArgs e)
@@ -62,7 +67,7 @@ namespace ARDrone.Input
             {
                 txtOutput.AppendText(s + ", ");
             }
-
+            this.UpdateUI();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -90,6 +95,7 @@ namespace ARDrone.Input
                 _owner.InputDevices[cbDevice.SelectedIndex].Mapping.RollAxisMapping = tbRoll.Text;
                 _owner.InputDevices[cbDevice.SelectedIndex].Mapping.TakeOffButton = tbTakeOff.Text;
                 _owner.InputDevices[cbDevice.SelectedIndex].Mapping.YawAxisMapping = tbYaw.Text;
+                _owner.InputDevices[cbDevice.SelectedIndex].Mapping.HoverButton = tbHover.Text;
 
             }
             catch (Exception ex)
