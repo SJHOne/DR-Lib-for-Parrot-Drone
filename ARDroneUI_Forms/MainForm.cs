@@ -254,6 +254,7 @@ namespace ARDrone.UI
             labelStatusConnected.Text = arDroneControl.IsConnected.ToString();
             labelStatusFlying.Text = arDroneControl.IsFlying.ToString();
             labelStatusHovering.Text = arDroneControl.IsHovering.ToString();
+            labelStatusEmergency.Text = arDroneControl.IsEmergency.ToString();
         }
 
         private void UpdateInput()
