@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <WinSDKDir>C:\Program Files\Microsoft SDKs\Windows\v7.1</WinSDKDir>
-    <SDLDir>D:\ARDrone_SDK\SDL-1.2.14</SDLDir>
-    <DXSDKDir>D:\ARDrone_SDK\DX SDK</DXSDKDir>
+    <SDLDir>C:\Users\jvinel\Documents\08-Parrot Drone\SDL</SDLDir>
+    <DXSDKDir>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)</DXSDKDir>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
