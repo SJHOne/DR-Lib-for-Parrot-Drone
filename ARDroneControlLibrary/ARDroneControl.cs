@@ -336,7 +336,7 @@ namespace ARDrone.Control
 
             isFlying = false;
             isHovering = false;
-            isEmergency = true;
+            isEmergency = !isEmergency;
 
             return droneEnabled ? SendEmergency() == 0 : true;
         }
@@ -436,7 +436,7 @@ namespace ARDrone.Control
         public bool CanFlyFreely { get { return isConnected && isFlying && !isEmergency && !isHovering; } }
         public bool CanEnterHoverMode { get { return isConnected && isFlying && !isEmergency && !isHovering; } }
         public bool CanLeaveHoverMode { get { return isConnected && isFlying && !isEmergency && isHovering; } }
-        public bool CanCallEmergency { get { return isConnected && !isEmergency; } }
+        public bool CanCallEmergency { get { return isConnected; } }
         public bool CanSendFlatTrim { get { return isConnected; } }
 
         public CameraType CurrentCameraType

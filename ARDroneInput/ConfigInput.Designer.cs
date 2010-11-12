@@ -57,11 +57,15 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.cbDevice = new System.Windows.Forms.ComboBox();
             this.labelDeviceInfo = new System.Windows.Forms.Label();
+            this.tbHover = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tbHover);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.btnSet);
             this.groupBox1.Controls.Add(this.txtOutput);
@@ -87,14 +91,14 @@
             this.groupBox1.Controls.Add(this.tbPitch);
             this.groupBox1.Location = new System.Drawing.Point(12, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(589, 282);
+            this.groupBox1.Size = new System.Drawing.Size(589, 306);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(229, 258);
+            this.label13.Location = new System.Drawing.Point(229, 282);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(273, 13);
             this.label13.TabIndex = 22;
@@ -102,7 +106,7 @@
             // 
             // btnSet
             // 
-            this.btnSet.Location = new System.Drawing.Point(508, 253);
+            this.btnSet.Location = new System.Drawing.Point(508, 277);
             this.btnSet.Name = "btnSet";
             this.btnSet.Size = new System.Drawing.Size(75, 23);
             this.btnSet.TabIndex = 7;
@@ -112,7 +116,7 @@
             // 
             // txtOutput
             // 
-            this.txtOutput.Location = new System.Drawing.Point(10, 176);
+            this.txtOutput.Location = new System.Drawing.Point(10, 200);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
@@ -284,7 +288,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(530, 329);
+            this.btnOK.Location = new System.Drawing.Point(530, 352);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -294,7 +298,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(93, 330);
+            this.btnLoad.Location = new System.Drawing.Point(93, 353);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 4;
@@ -304,7 +308,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(12, 330);
+            this.btnSave.Location = new System.Drawing.Point(12, 353);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 5;
@@ -335,12 +339,28 @@
             this.labelDeviceInfo.TabIndex = 5;
             this.labelDeviceInfo.Text = "Device";
             // 
+            // tbHover
+            // 
+            this.tbHover.Location = new System.Drawing.Point(366, 176);
+            this.tbHover.Name = "tbHover";
+            this.tbHover.Size = new System.Drawing.Size(162, 20);
+            this.tbHover.TabIndex = 24;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(275, 179);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "Hover";
+            // 
             // ConfigInput
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 363);
+            this.ClientSize = new System.Drawing.Size(613, 384);
             this.Controls.Add(this.labelDeviceInfo);
             this.Controls.Add(this.cbDevice);
             this.Controls.Add(this.btnSave);
@@ -391,5 +411,7 @@
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnSet;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tbHover;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -73,6 +73,10 @@
             this.labelStatusBatteryInfo = new System.Windows.Forms.Label();
             this.buttonCommandHover = new System.Windows.Forms.Button();
             this.panelRight = new System.Windows.Forms.Panel();
+            this.groupBoxInstrument = new System.Windows.Forms.GroupBox();
+            this.altimeterControl = new AviationInstruments.AltimeterInstrumentControl();
+            this.headingControl = new AviationInstruments.HeadingIndicatorInstrumentControl();
+            this.attitudeControl = new AviationInstruments.AttitudeIndicatorInstrumentControl();
             this.groupBoxVideoAndSnapshots = new System.Windows.Forms.GroupBox();
             this.labelVideoStatus = new System.Windows.Forms.Label();
             this.checkBoxVideoCompress = new System.Windows.Forms.CheckBox();
@@ -89,6 +93,7 @@
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.panelRight.SuspendLayout();
+            this.groupBoxInstrument.SuspendLayout();
             this.groupBoxVideoAndSnapshots.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelTop.SuspendLayout();
@@ -122,7 +127,7 @@
             // buttonShutdown
             // 
             this.buttonShutdown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonShutdown.Location = new System.Drawing.Point(402, 3);
+            this.buttonShutdown.Location = new System.Drawing.Point(415, 3);
             this.buttonShutdown.Name = "buttonShutdown";
             this.buttonShutdown.Size = new System.Drawing.Size(75, 24);
             this.buttonShutdown.TabIndex = 2;
@@ -182,7 +187,7 @@
             this.labelCamera.ForeColor = System.Drawing.Color.Goldenrod;
             this.labelCamera.Location = new System.Drawing.Point(78, 3);
             this.labelCamera.Name = "labelCamera";
-            this.labelCamera.Size = new System.Drawing.Size(324, 24);
+            this.labelCamera.Size = new System.Drawing.Size(337, 24);
             this.labelCamera.TabIndex = 19;
             this.labelCamera.Text = "No picture";
             this.labelCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -534,15 +539,52 @@
             // 
             // panelRight
             // 
+            this.panelRight.Controls.Add(this.groupBoxInstrument);
             this.panelRight.Controls.Add(this.groupBoxVideoAndSnapshots);
             this.panelRight.Controls.Add(this.buttonInputSettings);
             this.panelRight.Controls.Add(this.groupBoxInput);
             this.panelRight.Controls.Add(this.groupBoxStatus);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRight.Location = new System.Drawing.Point(480, 0);
+            this.panelRight.Location = new System.Drawing.Point(493, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(192, 549);
+            this.panelRight.Size = new System.Drawing.Size(350, 549);
             this.panelRight.TabIndex = 35;
+            // 
+            // groupBoxInstrument
+            // 
+            this.groupBoxInstrument.Controls.Add(this.altimeterControl);
+            this.groupBoxInstrument.Controls.Add(this.headingControl);
+            this.groupBoxInstrument.Controls.Add(this.attitudeControl);
+            this.groupBoxInstrument.Location = new System.Drawing.Point(193, 6);
+            this.groupBoxInstrument.Name = "groupBoxInstrument";
+            this.groupBoxInstrument.Size = new System.Drawing.Size(154, 511);
+            this.groupBoxInstrument.TabIndex = 38;
+            this.groupBoxInstrument.TabStop = false;
+            this.groupBoxInstrument.Text = "Instrument";
+            // 
+            // altimeterControl
+            // 
+            this.altimeterControl.Location = new System.Drawing.Point(8, 324);
+            this.altimeterControl.Name = "altimeterControl";
+            this.altimeterControl.Size = new System.Drawing.Size(140, 142);
+            this.altimeterControl.TabIndex = 5;
+            this.altimeterControl.Text = "altimeterInstrumentControl1";
+            // 
+            // headingControl
+            // 
+            this.headingControl.Location = new System.Drawing.Point(8, 175);
+            this.headingControl.Name = "headingControl";
+            this.headingControl.Size = new System.Drawing.Size(140, 142);
+            this.headingControl.TabIndex = 4;
+            this.headingControl.Text = "headingIndicatorInstrumentControl1";
+            // 
+            // attitudeControl
+            // 
+            this.attitudeControl.Location = new System.Drawing.Point(8, 18);
+            this.attitudeControl.Name = "attitudeControl";
+            this.attitudeControl.Size = new System.Drawing.Size(140, 142);
+            this.attitudeControl.TabIndex = 1;
+            this.attitudeControl.Text = "attitudeControl";
             // 
             // groupBoxVideoAndSnapshots
             // 
@@ -628,7 +670,7 @@
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 385);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(480, 164);
+            this.panelBottom.Size = new System.Drawing.Size(493, 164);
             this.panelBottom.TabIndex = 36;
             // 
             // panelTop
@@ -641,7 +683,7 @@
             this.panelTop.Margin = new System.Windows.Forms.Padding(5);
             this.panelTop.Name = "panelTop";
             this.panelTop.Padding = new System.Windows.Forms.Padding(3);
-            this.panelTop.Size = new System.Drawing.Size(480, 30);
+            this.panelTop.Size = new System.Drawing.Size(493, 30);
             this.panelTop.TabIndex = 37;
             // 
             // panelCenter
@@ -650,7 +692,7 @@
             this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCenter.Location = new System.Drawing.Point(0, 30);
             this.panelCenter.Name = "panelCenter";
-            this.panelCenter.Size = new System.Drawing.Size(480, 355);
+            this.panelCenter.Size = new System.Drawing.Size(493, 355);
             this.panelCenter.TabIndex = 38;
             // 
             // pictureBoxVideo
@@ -658,7 +700,7 @@
             this.pictureBoxVideo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxVideo.Location = new System.Drawing.Point(0, 0);
             this.pictureBoxVideo.Name = "pictureBoxVideo";
-            this.pictureBoxVideo.Size = new System.Drawing.Size(480, 355);
+            this.pictureBoxVideo.Size = new System.Drawing.Size(493, 355);
             this.pictureBoxVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxVideo.TabIndex = 0;
             this.pictureBoxVideo.TabStop = false;
@@ -673,7 +715,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(672, 549);
+            this.ClientSize = new System.Drawing.Size(843, 549);
             this.Controls.Add(this.panelCenter);
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelBottom);
@@ -681,11 +723,14 @@
             this.MinimumSize = new System.Drawing.Size(688, 587);
             this.Name = "MainForm";
             this.Text = "Drone Control";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.panelRight.ResumeLayout(false);
+            this.groupBoxInstrument.ResumeLayout(false);
             this.groupBoxVideoAndSnapshots.ResumeLayout(false);
             this.groupBoxVideoAndSnapshots.PerformLayout();
             this.panelBottom.ResumeLayout(false);
@@ -756,6 +801,10 @@
         private System.Windows.Forms.Label labelStatusFrameRate;
         private System.Windows.Forms.Label labelStatusFrameRateInfo;
         private System.Windows.Forms.SaveFileDialog fileDialog;
+        private System.Windows.Forms.GroupBox groupBoxInstrument;
+        private AviationInstruments.AttitudeIndicatorInstrumentControl attitudeControl;
+        private AviationInstruments.HeadingIndicatorInstrumentControl headingControl;
+        private AviationInstruments.AltimeterInstrumentControl altimeterControl;
     }
 }
 

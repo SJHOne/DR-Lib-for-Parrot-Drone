@@ -11,7 +11,7 @@ namespace ARDrone.Input
     {
         enum Axis
         {
-            Axis_X, Axis_Y, Axis_R, Axis_POV_1
+            Axis_X, Axis_Y, Axis_Z, Axis_R, Axis_POV_1
         }
         enum Button
         {
@@ -91,6 +91,7 @@ namespace ARDrone.Input
             Dictionary<String, float> axisValues = new Dictionary<String, float>();
             axisValues[Axis.Axis_X.ToString()] = GetFloatValue(state.X);
             axisValues[Axis.Axis_Y.ToString()] = GetFloatValue(state.Y);
+            axisValues[Axis.Axis_Z.ToString()] = GetFloatValue(state.Z);
             axisValues[Axis.Axis_R.ToString()] = GetFloatValue(state.Rz);
             axisValues[Axis.Axis_POV_1.ToString()] = CalculatePOVValue(state.GetPointOfView()[0]);
 
