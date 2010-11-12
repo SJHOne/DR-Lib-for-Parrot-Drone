@@ -63,6 +63,7 @@
     <Compile Include="InstrumentControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="InstrumentsManager.cs" />
     <Compile Include="TurnCoordinatorInstrumentControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -135,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\VerticalSpeedNeedle.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ARDroneControlLibrary\ARDroneControlLibrary.csproj">
+      <Project>{92277DFC-0D55-4998-8ACF-B01F3A7FB508}</Project>
+      <Name>ARDroneControlLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

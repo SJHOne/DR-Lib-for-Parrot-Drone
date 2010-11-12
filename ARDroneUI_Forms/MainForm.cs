@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -9,6 +8,7 @@ using System.Windows.Forms;
 using ARDrone.Control;
 using ARDrone.Capture;
 using ARDrone.Input;
+using AviationInstruments;
 
 namespace ARDrone.UI
 {
@@ -16,6 +16,7 @@ namespace ARDrone.UI
     {
         private VideoRecorder videoRecorder = null;
         private SnapshotRecorder snapshotRecorder = null;
+        private InstrumentsManager instrumentsManager;
 
         ARDrone.Input.InputManager inputManager = null;
         private ARDroneControl arDroneControl = null;
@@ -40,6 +41,13 @@ namespace ARDrone.UI
             timerStatusUpdate.Start();
             timerInputUpdate.Start();
             UpdateUI();
+
+            this.instrumentsManager = new InstrumentsManager(arDroneControl);
+            this.instrumentsManager.addInstrument(this.attitudeControl);
+            this.instrumentsManager.addInstrument(this.altimeterControl);
+            this.instrumentsManager.addInstrument(this.headingControl);
+            this.instrumentsManager.startManage();
+
         }
 
         public void DisposeControl()
@@ -427,6 +435,7 @@ namespace ARDrone.UI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             videoRecorder.Dispose();
+            instrumentsManager.stopManage();
             Disconnect();
         }
 
@@ -534,6 +543,14 @@ namespace ARDrone.UI
         private void videoRecorder_CompressionError(object sender, ErrorEventArgs e)
         {
             BeginInvoke(new ErrorEventHandler(videoRecoderSync_CompressionError), this, e);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            videoRecorder.Dispose();
+            instrumentsManager.stopManage();
+            Disconnect();
         }
     }
 }
