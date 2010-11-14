@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace ARDrone.UI
@@ -20,6 +21,12 @@ namespace ARDrone.UI
             bitmapImage.EndInit();
 
             return bitmapImage;
+        }
+
+        public static IntPtr GetWindowHandle(Window window)
+        {
+            System.Windows.Interop.WindowInteropHelper helper = new System.Windows.Interop.WindowInteropHelper(window);
+            return helper.Handle;
         }
     }
 }

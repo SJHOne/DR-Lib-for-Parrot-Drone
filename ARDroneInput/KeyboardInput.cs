@@ -30,12 +30,14 @@ namespace ARDrone.Input
             }
         }
 
-        public override string DeviceName
+        public override String DeviceName
         {
-            get
-            {
-                return "Keyboard";
-            }
+            get { return "Keyboard"; }
+        }
+
+        public override String FilePrefix
+        {
+            get { return "KB"; }
         }
 
         public KeyboardInput(Device device) : base()
@@ -53,8 +55,12 @@ namespace ARDrone.Input
             }
 
             mapping = new InputMapping(validButtons, validAxes);
-            mapping.SetAxisMappings("A-D", "W-S", "LeftArrow-Right", "DownArrow-Up");
-            mapping.SetButtonMappings("C", "Return", "Return", "NumPad0", "Space", "F");
+            if (!LoadMapping())
+            {
+                // Initial mapping (if no saved mapping could be found)
+                mapping.SetAxisMappings("A-D", "W-S", "LeftArrow-Right", "DownArrow-Up");
+                mapping.SetButtonMappings("C", "Return", "Return", "NumPad0", "Space", "F");
+            }
         }
 
         public override void Dispose()

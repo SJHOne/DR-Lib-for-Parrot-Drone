@@ -26,10 +26,17 @@ namespace ARDrone.Input
         {
             get
             {
-                if (device == null)
-                    return string.Empty;
-                else
-                    return device.Properties.ProductName;
+                if (device == null) { return string.Empty; }
+                else { return device.Properties.ProductName; }
+            }
+        }
+
+        public override string FilePrefix
+        {
+            get
+            {
+                if (device == null) { return string.Empty; }
+                else { return device.Properties.TypeName; }
             }
         }
 
@@ -50,15 +57,19 @@ namespace ARDrone.Input
             }
 
             mapping = new InputMapping(validButtons, validAxes);
-            if (device.Properties.ProductName == "T.Flight Stick X")
+            if (!LoadMapping())
             {
-                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, Axis.Axis_R, Axis.Axis_POV_1);
-                mapping.SetButtonMappings(Button.Button_11, Button.Button_4, Button.Button_4, Button.Button_10, Button.Button_2, Button.Button_5);
-            }
-            else
-            {
-                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, "Button_1-Button_3", "Button_2-Button_4");
-                mapping.SetButtonMappings(Button.Button_6, Button.Button_10, Button.Button_10, Button.Button_8, Button.Button_5, Button.Button_9);
+                // Initial mapping (if no saved mapping could be found)
+                if (device.Properties.ProductName == "T.Flight Stick X")
+                {
+                    mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, Axis.Axis_R, Axis.Axis_POV_1);
+                    mapping.SetButtonMappings(Button.Button_11, Button.Button_4, Button.Button_4, Button.Button_10, Button.Button_2, Button.Button_5);
+                }
+                else
+                {
+                    mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, "Button_1-Button_3", "Button_2-Button_4");
+                    mapping.SetButtonMappings(Button.Button_6, Button.Button_10, Button.Button_10, Button.Button_8, Button.Button_5, Button.Button_9);
+                }
             }
         }
 

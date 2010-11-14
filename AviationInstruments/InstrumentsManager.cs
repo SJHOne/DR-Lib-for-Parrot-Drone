@@ -16,7 +16,6 @@ namespace AviationInstruments
 
         readonly object stateLock = new object();
         bool shouldThreadBeTerminated = false;
-        bool threadIsRunning = false;
 
         public InstrumentsManager(ARDroneControl arDroneControl)
         {
@@ -34,7 +33,6 @@ namespace AviationInstruments
             lock (stateLock)
             {
                 shouldThreadBeTerminated = false;
-                threadIsRunning = true;
             }
 
             Thread workerThread = new Thread(this.manage);
@@ -46,7 +44,6 @@ namespace AviationInstruments
             lock (stateLock)
             {
                 shouldThreadBeTerminated = true;
-                threadIsRunning = true;
             }
         }
 

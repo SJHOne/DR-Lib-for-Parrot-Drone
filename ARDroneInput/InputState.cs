@@ -127,6 +127,13 @@ namespace ARDrone.Input
             FlatTrimButton = flatTrimButtonMapping.ToString();
         }
 
+        public InputMapping Clone()
+        {
+            InputMapping clonedMapping = new InputMapping(validButtons, validAxes);
+            clonedMapping.SetButtonMappings(cameraSwapButton, takeOffButton, landButton, hoverButton, emergencyButton, flatTrimButton);
+            return clonedMapping;
+        }
+
         public bool isValidButton(String buttonValue)
         {
             return validButtons.Contains(buttonValue);

@@ -35,10 +35,17 @@ namespace ARDrone.Input
         {
             get
             {
-                if (wiimote == null)
-                    return string.Empty;
-                else
-                    return wiimote.HIDDevicePath;  // Should this be .ID instead?
+                if (wiimote == null) { return string.Empty; }
+                else { return wiimote.HIDDevicePath; }
+            }
+        }
+
+        public override String FilePrefix
+        {
+            get
+            {
+                if (wiimote == null) { return string.Empty; }
+                else { return "WM"; }
             }
         }
 
@@ -69,8 +76,12 @@ namespace ARDrone.Input
             }
 
             mapping = new InputMapping(validButtons, validAxes);
-            mapping.SetAxisMappings(Axis.Axis_Y, Axis.Axis_X, "Button_Left-Button_Right", "Button_B-Button_A");
-            mapping.SetButtonMappings("", Button.Button_Plus, Button.Button_Plus, Button.Button_Minus, Button.Button_Home, "");
+            if (!LoadMapping())
+            {
+                // Initial mapping (if no saved mapping could be found)
+                mapping.SetAxisMappings(Axis.Axis_Y, Axis.Axis_X, "Button_Left-Button_Right", "Button_B-Button_A");
+                mapping.SetButtonMappings("", Button.Button_Plus, Button.Button_Plus, Button.Button_Minus, Button.Button_Home, "");
+            }
         }
 
         public override void Dispose()

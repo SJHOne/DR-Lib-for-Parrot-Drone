@@ -42,9 +42,7 @@ namespace ARDrone.UI
             InitializeComponent();
             InitializeTimers();
 
-            System.Windows.Interop.WindowInteropHelper helper = new System.Windows.Interop.WindowInteropHelper(this);
-
-            inputManager = new ARDrone.Input.InputManager(helper.Handle);
+            inputManager = new ARDrone.Input.InputManager(Utility.GetWindowHandle(this));
             arDroneControl = new ARDroneControl();
 
             videoRecorder = new VideoRecorder();
