@@ -723,7 +723,6 @@
             this.MinimumSize = new System.Drawing.Size(688, 587);
             this.Name = "MainForm";
             this.Text = "Drone Control";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();

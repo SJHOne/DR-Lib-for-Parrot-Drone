@@ -22,24 +22,6 @@ namespace ARDrone.Input
 
         Device device = null;
 
-        public override string DeviceName
-        {
-            get
-            {
-                if (device == null) { return string.Empty; }
-                else { return device.Properties.ProductName; }
-            }
-        }
-
-        public override string FilePrefix
-        {
-            get
-            {
-                if (device == null) { return string.Empty; }
-                else { return device.Properties.TypeName; }
-            }
-        }
-
         public JoystickInput(Device device) : base()
         {
             this.device = device;
@@ -56,20 +38,20 @@ namespace ARDrone.Input
                 validButtons.Add(button.ToString());
             }
 
-            mapping = new InputMapping(validButtons, validAxes);
-            if (!LoadMapping())
+            CreateMapping(validButtons, validAxes);
+        }
+
+        protected override void CreateStandardMapping()
+        {
+            if (device.Properties.ProductName == "T.Flight Stick X")
             {
-                // Initial mapping (if no saved mapping could be found)
-                if (device.Properties.ProductName == "T.Flight Stick X")
-                {
-                    mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, Axis.Axis_R, Axis.Axis_POV_1);
-                    mapping.SetButtonMappings(Button.Button_11, Button.Button_4, Button.Button_4, Button.Button_10, Button.Button_2, Button.Button_5);
-                }
-                else
-                {
-                    mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, "Button_1-Button_3", "Button_2-Button_4");
-                    mapping.SetButtonMappings(Button.Button_6, Button.Button_10, Button.Button_10, Button.Button_8, Button.Button_5, Button.Button_9);
-                }
+                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, Axis.Axis_R, Axis.Axis_POV_1);
+                mapping.SetButtonMappings(Button.Button_11, Button.Button_4, Button.Button_4, Button.Button_10, Button.Button_2, Button.Button_5);
+            }
+            else
+            {
+                mapping.SetAxisMappings(Axis.Axis_X, Axis.Axis_Y, "Button_1-Button_3", "Button_2-Button_4");
+                mapping.SetButtonMappings(Button.Button_6, Button.Button_10, Button.Button_10, Button.Button_8, Button.Button_5, Button.Button_9);
             }
         }
 
@@ -119,6 +101,24 @@ namespace ARDrone.Input
             if (povInput == -1 || povInput == 9000 || povInput == 27000) return 0.0f;
             else if (povInput == 0 || povInput == 4500 || povInput == 31500) return 1.0f;
             else return -1.0f;
+        }
+
+        public override string DeviceName
+        {
+            get
+            {
+                if (device == null) { return string.Empty; }
+                else { return device.Properties.ProductName; }
+            }
+        }
+
+        public override string FilePrefix
+        {
+            get
+            {
+                if (device == null) { return string.Empty; }
+                else { return device.Properties.TypeName; }
+            }
         }
     }
 }

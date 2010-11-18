@@ -1,29 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
+using System.Windows.Forms;
 using ARDrone.Input;
 
 namespace ARDrone.UI
 {
-    public partial class ConfigInput : Window
+    public partial class ConfigInput : Form
     {
         private enum Control { None, AxisRoll, AxisPitch, AxisYaw, AxisGaz, ButtonTakeoff, ButtonLand, ButtonHover, ButtonEmergency, ButtonFlatTrim, ButtonChangeCamera };
         private enum ControlType { None, Axis, Button };
 
         private Dictionary<String, Control> nameControlMap = null;
         private Dictionary<Control, ControlType> controlTypeMap = null;
-
-        private DispatcherTimer timerInputUpdate;
 
         private ARDrone.Input.InputManager inputManager = null;
 
@@ -39,7 +32,7 @@ namespace ARDrone.UI
         {
             InitializeComponent();
 
-            inputManager = new ARDrone.Input.InputManager(Utility.GetWindowHandle(this));
+            inputManager = new ARDrone.Input.InputManager(this.Handle);
             Init(inputManager);
         }
 
@@ -51,6 +44,7 @@ namespace ARDrone.UI
 
         public void Init(ARDrone.Input.InputManager inputManager)
         {
+            comboBoxDevices.SelectedIndex = 0;
             InitializeTimers();
 
             InitializeControlMap();
@@ -66,7 +60,7 @@ namespace ARDrone.UI
             nameControlMap.Add(textBoxAxisRoll.Name, Control.AxisRoll); nameControlMap.Add(textBoxAxisPitch.Name, Control.AxisPitch);
             nameControlMap.Add(textBoxAxisYaw.Name, Control.AxisYaw); nameControlMap.Add(textBoxAxisGaz.Name, Control.AxisGaz);
 
-            nameControlMap.Add(textBoxButtonTakeoff.Name, Control.ButtonTakeoff); nameControlMap.Add(textBoxButtonLand.Name, Control.ButtonLand);
+            nameControlMap.Add(textBoxButtonTakeOff.Name, Control.ButtonTakeoff); nameControlMap.Add(textBoxButtonLand.Name, Control.ButtonLand);
             nameControlMap.Add(textBoxButtonHover.Name, Control.ButtonHover); nameControlMap.Add(textBoxButtonEmergency.Name, Control.ButtonEmergency);
             nameControlMap.Add(textBoxButtonFlatTrim.Name, Control.ButtonFlatTrim); nameControlMap.Add(textBoxButtonChangeCamera.Name, Control.ButtonChangeCamera);
 
@@ -82,9 +76,6 @@ namespace ARDrone.UI
 
         public void InitializeTimers()
         {
-            timerInputUpdate = new DispatcherTimer();
-            timerInputUpdate.Interval = new TimeSpan(0, 0, 0, 0, 50);
-            timerInputUpdate.Tick += new EventHandler(timerInputUpdate_Tick);
             timerInputUpdate.Start();
         }
 
@@ -95,28 +86,27 @@ namespace ARDrone.UI
             foreach (GenericInput inputDevice in inputManager.InputDevices)
             {
                 devices.Add(inputDevice.DeviceName, inputDevice);
-
-                ComboBoxItem newItem = new ComboBoxItem();
-                newItem.Content = inputDevice.DeviceName;
-                comboBoxDevices.Items.Add(newItem); 
+                comboBoxDevices.Items.Add(inputDevice.DeviceName);
             }
         }
 
         private void ChangeInputDevice()
         {
-            object comboBoxContent = ((ComboBoxItem)comboBoxDevices.SelectedValue).Content;
-
-            if (((ComboBoxItem)comboBoxDevices.Items[0]).Content != null &&
-                ((ComboBoxItem)comboBoxDevices.Items[0]).Content.ToString() == "-- No device selected --")
+            String selectedDeviceName = (String)comboBoxDevices.Items[comboBoxDevices.SelectedIndex];
+            
+            if (selectedDeviceName == "-- No device selected --")
+            {
+                return;
+            }
+            if ((String)comboBoxDevices.Items[0] == "-- No device selected --")
             {
                 comboBoxDevices.Items.RemoveAt(0);
             }
 
-            if (comboBoxContent != null)
+            if (selectedDeviceName != null)
             {
                 SetMappingEnabledState(true);
 
-                String selectedDeviceName = comboBoxContent.ToString();
                 selectedDevice = devices[selectedDeviceName];
                 selectedDevice.InitCurrentlyInvokedInput();
 
@@ -131,7 +121,7 @@ namespace ARDrone.UI
                 selectedControl = nameControlMap[textBox.Name];
                 selectedControlType = controlTypeMap[selectedControl];
 
-                textBox.Foreground = new SolidColorBrush(Colors.LightGray);
+                textBox.ForeColor = Color.LightGray;
                 textBox.Text = "-- Assigning a value --";
             }
         }
@@ -143,7 +133,7 @@ namespace ARDrone.UI
                 selectedControl = Control.None;
                 selectedControlType = ControlType.None;
 
-                textBox.Foreground = new SolidColorBrush(Colors.Black);
+                textBox.ForeColor = Color.Black;
 
                 if (selectedDevice != null)
                 {
@@ -154,12 +144,22 @@ namespace ARDrone.UI
 
         private void SetMappingEnabledState(bool enabled)
         {
-            textBoxAxisRoll.IsEnabled = enabled; textBoxAxisPitch.IsEnabled = enabled;
-            textBoxAxisYaw.IsEnabled = enabled; textBoxAxisGaz.IsEnabled = enabled;
+            textBoxAxisRoll.Enabled = enabled; textBoxAxisPitch.Enabled = enabled;
+            textBoxAxisYaw.Enabled = enabled; textBoxAxisGaz.Enabled = enabled;
 
-            textBoxButtonTakeoff.IsEnabled = enabled; textBoxButtonLand.IsEnabled = enabled;
-            textBoxButtonHover.IsEnabled = enabled; textBoxButtonEmergency.IsEnabled = enabled;
-            textBoxButtonFlatTrim.IsEnabled = enabled; textBoxButtonChangeCamera.IsEnabled = enabled;
+            textBoxButtonTakeOff.Enabled = enabled; textBoxButtonLand.Enabled = enabled;
+            textBoxButtonHover.Enabled = enabled; textBoxButtonEmergency.Enabled = enabled;
+            textBoxButtonFlatTrim.Enabled = enabled; textBoxButtonChangeCamera.Enabled = enabled;
+
+            if (enabled)
+            {
+                textBoxAxisRoll.BackColor = Color.White; textBoxAxisPitch.BackColor = Color.White;
+                textBoxAxisYaw.BackColor = Color.White; textBoxAxisGaz.BackColor = Color.White;
+
+                textBoxButtonTakeOff.BackColor = Color.White; textBoxButtonLand.BackColor = Color.White;
+                textBoxButtonHover.BackColor = Color.White; textBoxButtonEmergency.BackColor = Color.White;
+                textBoxButtonFlatTrim.BackColor = Color.White; textBoxButtonChangeCamera.BackColor = Color.White;
+            }
         }
 
         private void SaveMapping()
@@ -185,9 +185,9 @@ namespace ARDrone.UI
                 return;
             }
 
-            MessageBoxResult result = MessageBox.Show(this, "Do you really want to reset the setting to default values?", "Reset mapping", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            DialogResult result = MessageBox.Show(this, "Do you really want to reset the setting to default values?", "Reset mapping", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == MessageBoxResult.Yes)
+            if (result == DialogResult.Yes)
             {
                 selectedDevice.SetDefaultMapping();
                 TakeOverMapping(selectedDevice.Mapping);
@@ -201,7 +201,7 @@ namespace ARDrone.UI
             textBoxAxisYaw.Text = mapping.YawAxisMapping;
             textBoxAxisGaz.Text = mapping.GazAxisMapping;
 
-            textBoxButtonTakeoff.Text = mapping.TakeOffButton;
+            textBoxButtonTakeOff.Text = mapping.TakeOffButton;
             textBoxButtonLand.Text = mapping.LandButton;
             textBoxButtonHover.Text = mapping.HoverButton;
             textBoxButtonEmergency.Text = mapping.EmergencyButton;
@@ -232,12 +232,12 @@ namespace ARDrone.UI
 
             inputValues.AddRange(textBoxAxisRoll.Text.Split('-')); inputValues.AddRange(textBoxAxisPitch.Text.Split('-'));
             inputValues.AddRange(textBoxAxisYaw.Text.Split('-')); inputValues.AddRange(textBoxAxisGaz.Text.Split('-'));
-            inputValues.Add(textBoxButtonTakeoff.Text); inputValues.Add(textBoxButtonLand.Text); inputValues.Add(textBoxButtonHover.Text);
+            inputValues.Add(textBoxButtonTakeOff.Text); inputValues.Add(textBoxButtonLand.Text); inputValues.Add(textBoxButtonHover.Text);
             inputValues.Add(textBoxButtonEmergency.Text); inputValues.Add(textBoxButtonFlatTrim.Text); inputValues.Add(textBoxButtonChangeCamera.Text);
 
             CheckDoubleInputEntry(textBoxAxisRoll, inputValues); CheckDoubleInputEntry(textBoxAxisPitch, inputValues);
             CheckDoubleInputEntry(textBoxAxisYaw, inputValues); CheckDoubleInputEntry(textBoxAxisGaz, inputValues);
-            CheckDoubleInputEntry(textBoxButtonTakeoff, inputValues); CheckDoubleInputEntry(textBoxButtonLand, inputValues); CheckDoubleInputEntry(textBoxButtonHover, inputValues);
+            CheckDoubleInputEntry(textBoxButtonTakeOff, inputValues); CheckDoubleInputEntry(textBoxButtonLand, inputValues); CheckDoubleInputEntry(textBoxButtonHover, inputValues);
             CheckDoubleInputEntry(textBoxButtonEmergency, inputValues); CheckDoubleInputEntry(textBoxButtonFlatTrim, inputValues); CheckDoubleInputEntry(textBoxButtonChangeCamera, inputValues);
         }
 
@@ -257,11 +257,11 @@ namespace ARDrone.UI
 
             if (doubleEntry)
             {
-                textBox.Foreground = new SolidColorBrush(Colors.Red);
+                textBox.ForeColor = Color.Red;
             }
             else
             {
-                textBox.Foreground = new SolidColorBrush(Colors.Black);
+                textBox.ForeColor = Color.Black;
             }
         }
 
@@ -316,29 +316,29 @@ namespace ARDrone.UI
             }
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            buttonSubmit.Focus();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ConfigInput_FormClosing(object sender, FormClosingEventArgs e)
         {
             RevertMapping();
         }
 
-        private void comboBoxDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ConfigInput_Click(object sender, EventArgs e)
+        {
+            buttonSubmit.Focus();
+        }
+
+        private void comboBoxDevices_SelectedValueChanged(object sender, EventArgs e)
         {
             ChangeInputDevice();
         }
 
-        private void textBoxControl_GotFocus(object sender, RoutedEventArgs e)
+        private void textBox_Enter(object sender, EventArgs e)
         {
-            Focus((TextBox)e.OriginalSource);
+            Focus((TextBox)sender);
         }
 
-        private void textBoxControl_LostFocus(object sender, RoutedEventArgs e)
+        private void textBox_Leave(object sender, EventArgs e)
         {
-            Unfocus((TextBox)e.OriginalSource);
+            Unfocus((TextBox)sender);
         }
 
         private void timerInputUpdate_Tick(object sender, EventArgs e)
@@ -346,18 +346,18 @@ namespace ARDrone.UI
             UpdateInputDevice();
         }
 
-        private void buttonReset_Click(object sender, RoutedEventArgs e)
+        private void buttonReset_Click(object sender, EventArgs e)
         {
             ResetMapping();
         }
 
-        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
             RevertMapping();
             Close();
         }
 
-        private void buttonSubmit_Click(object sender, RoutedEventArgs e)
+        private void buttonSubmit_Click(object sender, EventArgs e)
         {
             SaveMapping();
             Close();

@@ -527,6 +527,12 @@ namespace ARDrone.UI
             EndVideoCapture();
         }
 
+        private void buttonInputSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ConfigInput configInput = new ConfigInput(inputManager);
+            configInput.ShowDialog();
+        }
+
         private void timerStatusUpdate_Tick(object sender, EventArgs e)
         {
             UpdateStatus();

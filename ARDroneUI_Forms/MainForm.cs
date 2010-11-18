@@ -506,7 +506,8 @@ namespace ARDrone.UI
 
         private void buttonInputSettings_Click(object sender, EventArgs e)
         {
-            inputManager.ShowSettingsDialog();
+            ConfigInput configInput = new ConfigInput(inputManager);
+            configInput.ShowDialog();
         }
 
         private void timerStatusUpdate_Tick(object sender, EventArgs e)

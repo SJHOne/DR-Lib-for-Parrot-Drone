@@ -31,24 +31,6 @@ namespace ARDrone.Input
 
         Wiimote wiimote = null;
 
-        public override string DeviceName
-        {
-            get
-            {
-                if (wiimote == null) { return string.Empty; }
-                else { return wiimote.HIDDevicePath; }
-            }
-        }
-
-        public override String FilePrefix
-        {
-            get
-            {
-                if (wiimote == null) { return string.Empty; }
-                else { return "WM"; }
-            }
-        }
-
         public WiimoteInput(Wiimote wiimote) : base()
         {
             wiimote.WiimoteChanged += wiimote_WiimoteChanged;
@@ -75,13 +57,13 @@ namespace ARDrone.Input
                 validButtons.Add(button.ToString());
             }
 
-            mapping = new InputMapping(validButtons, validAxes);
-            if (!LoadMapping())
-            {
-                // Initial mapping (if no saved mapping could be found)
-                mapping.SetAxisMappings(Axis.Axis_Y, Axis.Axis_X, "Button_Left-Button_Right", "Button_B-Button_A");
-                mapping.SetButtonMappings("", Button.Button_Plus, Button.Button_Plus, Button.Button_Minus, Button.Button_Home, "");
-            }
+            CreateMapping(validButtons, validAxes);
+        }
+
+        protected override void CreateStandardMapping()
+        {
+            mapping.SetAxisMappings(Axis.Axis_Y, Axis.Axis_X, "Button_Left-Button_Right", "Button_B-Button_A");
+            mapping.SetButtonMappings("", Button.Button_Plus, Button.Button_Plus, Button.Button_Minus, Button.Button_Home, "");
         }
 
         public override void Dispose()
@@ -155,6 +137,24 @@ namespace ARDrone.Input
         void wiimote_WiimoteExtensionChanged(object sender, WiimoteExtensionChangedEventArgs e)
         {
             // Nothing to do (for now)
+        }
+
+        public override string DeviceName
+        {
+            get
+            {
+                if (wiimote == null) { return string.Empty; }
+                else { return wiimote.HIDDevicePath; }
+            }
+        }
+
+        public override String FilePrefix
+        {
+            get
+            {
+                if (wiimote == null) { return string.Empty; }
+                else { return "WM"; }
+            }
         }
     }
 }

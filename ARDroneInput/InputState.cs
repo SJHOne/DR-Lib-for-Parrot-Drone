@@ -37,56 +37,13 @@ namespace ARDrone.Input
     {
         private List<String> validButtons = null;
         private List<String> validAxes = null;
-
-        private String rollAxisMapping = "";
-        private String pitchAxisMapping = "";
-        private String yawAxisMapping = "";
-        private String gazAxisMapping = "";
-
-        private String cameraSwapButton = "";
-        private String takeOffButton = "";
-        private String landButton = "";
-        private String hoverButton = "";
-        private String emergencyButton = "";
-        private String flatTrimButton = "";
-        
-        /// <summary>
-        /// Serializing constructor
-        /// </summary>
-        public InputMapping()
-        {
-            this.validButtons = new List<String>();
-            this.validAxes = new List<String>();
-
-            SkipValidation = true; // We will be using the serializer
-        }
-
-        public bool SkipValidation
-        {
-            get;
-            set;
-        }
-
-        public List<String> ValidButtons
-        {
-            get { return validButtons; }
-        }
-        
-        public List<String> ValidAxes
-        {
-            get { return validAxes; }
-        }
-
-        public void CopyValidation(InputMapping m)
-        {
-            validButtons = m.ValidButtons;
-            validAxes    = m.ValidAxes;
-        }
+        private InputControls controls = null;
 
         public InputMapping(List<String> validButtons, List<String> validAxes)
         {
             this.validButtons = new List<String>();
             this.validAxes = new List<String>();
+            this.controls = new InputControls();
 
             for (int i = 0; i < validButtons.Count; i++)
             {
@@ -109,6 +66,26 @@ namespace ARDrone.Input
         }
 
 
+        public InputMapping Clone()
+        {
+            InputMapping clonedMapping = new InputMapping(validButtons, validAxes);
+            clonedMapping.SetButtonMappings(controls.CameraSwapButton, controls.TakeOffButton, controls.LandButton, controls.HoverButton, controls.EmergencyButton, controls.FlatTrimButton);
+            clonedMapping.SetAxisMappings(controls.RollAxisMapping, controls.PitchAxisMapping, controls.YawAxisMapping, controls.GazAxisMapping);
+            return clonedMapping;
+        }
+
+        public void CopyValidButtonsAndAxesFrom(InputMapping mappingToCopyFrom)
+        {
+            validButtons = mappingToCopyFrom.ValidButtons;
+            validAxes = mappingToCopyFrom.ValidAxes;
+        }
+
+        public void CopyMappingsFrom(InputControls controls)
+        {
+            SetButtonMappings(controls.CameraSwapButton, controls.TakeOffButton, controls.LandButton, controls.HoverButton, controls.EmergencyButton, controls.FlatTrimButton);
+            SetAxisMappings(controls.RollAxisMapping, controls.PitchAxisMapping, controls.YawAxisMapping, controls.GazAxisMapping);
+        }
+
         public void SetAxisMappings(Object rollAxisMapping, Object pitchAxisMapping, Object yawAxisMapping, Object gazAxisMapping)
         {
             RollAxisMapping = rollAxisMapping.ToString();
@@ -125,13 +102,6 @@ namespace ARDrone.Input
             HoverButton = hoverButtonMapping.ToString();
             EmergencyButton = emergencyButtonMapping.ToString();
             FlatTrimButton = flatTrimButtonMapping.ToString();
-        }
-
-        public InputMapping Clone()
-        {
-            InputMapping clonedMapping = new InputMapping(validButtons, validAxes);
-            clonedMapping.SetButtonMappings(cameraSwapButton, takeOffButton, landButton, hoverButton, emergencyButton, flatTrimButton);
-            return clonedMapping;
         }
 
         public bool isValidButton(String buttonValue)
@@ -152,109 +122,156 @@ namespace ARDrone.Input
             }
         }
 
+        public List<String> ValidButtons
+        {
+            get { return validButtons; }
+        }
+
+        public List<String> ValidAxes
+        {
+            get { return validAxes; }
+        }
+
         public String RollAxisMapping
         {
-            get { return rollAxisMapping; }
+            get { return controls.RollAxisMapping; }
             set
             {
-                if (!SkipValidation && !isValidAxis(value)) { throw new Exception("Roll Axis Value is not a valid axis value"); }
-                rollAxisMapping = value;
+                if (!isValidAxis(value)) { throw new Exception("Roll Axis Value is not a valid axis value"); }
+                controls.RollAxisMapping = value;
             }
         }
 
         public String PitchAxisMapping
         {
-            get { return pitchAxisMapping; }
+            get { return controls.PitchAxisMapping; }
             set
             {
-                if (!SkipValidation && !isValidAxis(value)) { throw new Exception("Pitch Axis Value is not a valid axis value"); }
-                pitchAxisMapping = value;
+                if (!isValidAxis(value)) { throw new Exception("Pitch Axis Value is not a valid axis value"); }
+                controls.PitchAxisMapping = value;
             }
         }
 
         public String YawAxisMapping
         {
-            get { return yawAxisMapping; }
+            get { return controls.YawAxisMapping; }
             set
             {
-                if (!SkipValidation && !isValidAxis(value)) { throw new Exception("Yaw Axis Value is not a valid axis value"); }
-                yawAxisMapping = value;
+                if (!isValidAxis(value)) { throw new Exception("Yaw Axis Value is not a valid axis value"); }
+                controls.YawAxisMapping = value;
             }
         }
 
         public String GazAxisMapping
         {
-            get { return gazAxisMapping; }
+            get { return controls.GazAxisMapping; }
             set
             {
-                if (!SkipValidation && !isValidAxis(value)) { throw new Exception("Gaz Axis Value is not a valid axis value"); }
-                gazAxisMapping = value;
+                if (!isValidAxis(value)) { throw new Exception("Gaz Axis Value is not a valid axis value"); }
+                controls.GazAxisMapping = value;
             }
         }
 
         public String CameraSwapButton
         {
-            get { return cameraSwapButton; }
+            get { return controls.CameraSwapButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("Camera Swap Value is not a valid button value"); }
-                cameraSwapButton = value;
+                if (!isValidButton(value)) { throw new Exception("Camera Swap Value is not a valid button value"); }
+                controls.CameraSwapButton = value;
             }
         }
 
         public String TakeOffButton
         {
-            get { return takeOffButton; }
+            get { return controls.TakeOffButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("Take Off Value is not a valid button value"); }
-                takeOffButton = value;
+                if (!isValidButton(value)) { throw new Exception("Take Off Value is not a valid button value"); }
+                controls.TakeOffButton = value;
             }
         }
 
         public String LandButton
         {
-            get { return landButton; }
+            get { return controls.LandButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("Land Value is not a valid button value"); }
-                landButton = value;
+                if (!isValidButton(value)) { throw new Exception("Land Value is not a valid button value"); }
+                controls.LandButton = value;
             }
         }
 
         public String HoverButton
         {
-            get { return hoverButton; }
+            get { return controls.HoverButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("Hover Value is not a valid button value"); }
-                hoverButton = value;
+                if (!isValidButton(value)) { throw new Exception("Hover Value is not a valid button value"); }
+                controls.HoverButton = value;
             }
         }
 
         public String EmergencyButton
         {
-            get { return emergencyButton; }
+            get { return controls.EmergencyButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("Emergency Value is not a valid button value"); }
-                emergencyButton = value;
+                if (!isValidButton(value)) { throw new Exception("Emergency Value is not a valid button value"); }
+                controls.EmergencyButton = value;
             }
         }
 
         public String FlatTrimButton
         {
-            get { return flatTrimButton; }
+            get { return controls.FlatTrimButton; }
             set
             {
-                if (!SkipValidation && !isValidButton(value)) { throw new Exception("FlatTrim Value is not a valid button value"); }
-                flatTrimButton = value;
+                if (!isValidButton(value)) { throw new Exception("FlatTrim Value is not a valid button value"); }
+                controls.FlatTrimButton = value;
             }
         }
         
         public String DeviceName
         {
             get;set;
+        }
+
+        public InputControls Controls
+        {
+            get
+            {
+                return controls.Clone();
+            }
+        }
+    }
+
+    public class InputControls
+    {
+        public String RollAxisMapping = "";
+        public String PitchAxisMapping = "";
+        public String YawAxisMapping = "";
+        public String GazAxisMapping = "";
+
+        public String CameraSwapButton = "";
+        public String TakeOffButton = "";
+        public String LandButton = "";
+        public String HoverButton = "";
+        public String EmergencyButton = "";
+        public String FlatTrimButton = "";
+
+        public InputControls Clone()
+        {
+            InputControls controls = new InputControls();
+
+            controls.RollAxisMapping = RollAxisMapping; controls.PitchAxisMapping = PitchAxisMapping;
+            controls.YawAxisMapping = YawAxisMapping; controls.GazAxisMapping = GazAxisMapping;
+
+            controls.CameraSwapButton = CameraSwapButton; controls.TakeOffButton = TakeOffButton;
+            controls.LandButton = LandButton; controls.HoverButton = HoverButton;
+            controls.EmergencyButton = EmergencyButton; controls.FlatTrimButton = FlatTrimButton;
+
+            return controls;
         }
     }
 }

@@ -13,33 +13,6 @@ namespace ARDrone.Input
 
         Device device = null;
 
-        /// <summary>
-        /// Added to support serialization
-        /// </summary>
-        public KeyboardInput()
-            : base()
-        {
-            List<String> validAxes = new List<String>();
-            List<String> validButtons = new List<String>();
-            foreach (Key key in Enum.GetValues(typeof(Key)))
-            {
-                if (!validButtons.Contains(key.ToString()))
-                {
-                    validButtons.Add(key.ToString());
-                }
-            }
-        }
-
-        public override String DeviceName
-        {
-            get { return "Keyboard"; }
-        }
-
-        public override String FilePrefix
-        {
-            get { return "KB"; }
-        }
-
         public KeyboardInput(Device device) : base()
         {
             this.device = device;
@@ -54,18 +27,18 @@ namespace ARDrone.Input
                 }
             }
 
-            mapping = new InputMapping(validButtons, validAxes);
-            if (!LoadMapping())
-            {
-                // Initial mapping (if no saved mapping could be found)
-                mapping.SetAxisMappings("A-D", "W-S", "LeftArrow-Right", "DownArrow-Up");
-                mapping.SetButtonMappings("C", "Return", "Return", "NumPad0", "Space", "F");
-            }
+            CreateMapping(validButtons, validAxes);
         }
 
         public override void Dispose()
         {
             device.Unacquire();
+        }
+
+        protected override void CreateStandardMapping()
+        {
+            mapping.SetAxisMappings("A-D", "W-S", "LeftArrow-Right", "DownArrow-Up");
+            mapping.SetButtonMappings("C", "Return", "Return", "NumPad0", "Space", "F");
         }
 
         public override List<String> GetPressedButtons()
@@ -90,6 +63,16 @@ namespace ARDrone.Input
         public override Dictionary<String, float> GetAxisValues()
         {
             return new Dictionary<String, float>();
+        }
+
+        public override String DeviceName
+        {
+            get { return "Keyboard"; }
+        }
+
+        public override String FilePrefix
+        {
+            get { return "KB"; }
         }
     }
 }

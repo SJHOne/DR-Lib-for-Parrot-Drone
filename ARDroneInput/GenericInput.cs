@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace ARDrone.Input
 {
@@ -10,33 +11,96 @@ namespace ARDrone.Input
         protected InputMapping mapping = null;
         protected InputMapping backupMapping = null;
 
-        public InputMapping Mapping
-        {
-            get { return mapping; }
-            set {
-                // Copy the validation strings from the previous object 
-                value.CopyValidation(mapping);
-                value.SkipValidation = false;
-                mapping = value;
-            } 
-        }
-
-        public virtual string DeviceName
-        {
-            get { return string.Empty; } 
-        }
-
-        public virtual string FilePrefix
-        { 
-            get { return string.Empty; } 
-        }
-
         List<String> buttonsPressedBefore = new List<String>();
         Dictionary<String, float> buttonAxisValuesInitial = new Dictionary<String, float>();
 
         public GenericInput()
         {
             mapping = new InputMapping(new List<String>(), new List<String>());
+            backupMapping = mapping.Clone();
+        }
+
+        abstract public void Dispose();
+
+        protected void CreateMapping(List<String> validButtons, List<String> validAxes)
+        {
+            mapping = new InputMapping(validButtons, validAxes);
+            if (!LoadMapping())
+            {
+                CreateStandardMapping();
+            }
+            backupMapping = mapping.Clone();
+        }
+
+        protected abstract void CreateStandardMapping();
+
+        public void SetDefaultMapping()
+        {
+            CreateStandardMapping();
+            backupMapping = mapping.Clone();
+        }
+
+        public bool LoadMapping()
+        {
+            try
+            {
+                if (mapping == null)
+                {
+                    return false;
+                }
+
+                String mappingFilePath = GetMappingFilePath();
+                if (!File.Exists(mappingFilePath))
+                {
+                    return false;
+                }
+
+                InputControls loadedMapping;
+                using (TextReader textReader = new StreamReader(mappingFilePath))
+                {
+                    XmlSerializer deserializer = new XmlSerializer(typeof(InputControls));
+                    loadedMapping = (InputControls)deserializer.Deserialize(textReader);
+                    textReader.Close();
+                }
+
+                mapping.CopyMappingsFrom(loadedMapping);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public void SaveMapping()
+        {
+            backupMapping = mapping.Clone();
+
+            try
+            {
+                if (mapping == null)
+                {
+                    return;
+                }
+
+                String mappingFilePath = GetMappingFilePath();
+
+                XmlSerializer serializer = new XmlSerializer(typeof(InputControls));
+                using (System.IO.TextWriter textWriter = new System.IO.StreamWriter(mappingFilePath))
+                {
+                    serializer.Serialize(textWriter, mapping.Controls);
+                    textWriter.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("There was an error while writing the input mapping for device \"" + DeviceName + "\": " + e.Message);
+            }
+        }
+
+        public void RevertMapping()
+        {
+            mapping = backupMapping.Clone();
         }
 
         private String GetMappingFilePath()
@@ -52,48 +116,6 @@ namespace ARDrone.Input
             String mappingPath = Path.Combine(appFolder, FilePrefix + ".xml");
             return mappingPath;
         }
-
-        public bool LoadMapping()
-        {
-            if (mapping == null)
-            {
-                return false;
-            }
-
-            String mappingPath = GetMappingFilePath();
-            if (!File.Exists(mappingPath))
-            {
-                return false;
-            }
-
-            //TODO load mapping from file
-
-            return true;
-        }
-
-        public void SaveMapping()
-        {
-            if (mapping == null)
-            {
-                return;
-            }
-
-            String mappingPath = GetMappingFilePath();
-            if (!File.Exists(mappingPath))
-            {
-                File.Create(mappingPath);
-            }
-            File.OpenWrite(mappingPath);
-
-            // TODO write mapping to file
-        }
-
-        public void ResetMapping()
-        {
-            mapping = backupMapping.Clone();
-        }
-
-        abstract public void Dispose();
 
         public void InitCurrentlyInvokedInput()
         {
@@ -217,5 +239,23 @@ namespace ARDrone.Input
 
         abstract public List<String> GetPressedButtons();
         abstract public Dictionary<String, float> GetAxisValues();
+
+        public InputMapping Mapping
+        {
+            get
+            {
+                return mapping;
+            }
+        }
+
+        public virtual string DeviceName
+        {
+            get { return string.Empty; }
+        }
+
+        public virtual string FilePrefix
+        {
+            get { return string.Empty; }
+        }
     }
 }
