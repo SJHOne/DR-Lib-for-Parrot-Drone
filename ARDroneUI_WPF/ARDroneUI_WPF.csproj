@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -49,6 +50,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -113,6 +115,10 @@
     <ProjectReference Include="..\ARDroneInput\ARDroneInput.csproj">
       <Project>{104C0B70-4D35-4090-942A-9223222D0E6C}</Project>
       <Name>ARDroneInput</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AviationInstruments\AviationInstruments.csproj">
+      <Project>{A61853C5-1CFE-4858-9D4E-11C1D2622034}</Project>
+      <Name>AviationInstruments</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

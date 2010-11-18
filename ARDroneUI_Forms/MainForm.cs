@@ -47,12 +47,12 @@ namespace ARDrone.UI
             this.instrumentsManager.addInstrument(this.altimeterControl);
             this.instrumentsManager.addInstrument(this.headingControl);
             this.instrumentsManager.startManage();
-
         }
 
         public void DisposeControl()
         {
             videoRecorder.Dispose();
+            instrumentsManager.stopManage();
         }
 
         public void Init()
@@ -435,8 +435,7 @@ namespace ARDrone.UI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            videoRecorder.Dispose();
-            instrumentsManager.stopManage();
+            DisposeControl();
             Disconnect();
         }
 

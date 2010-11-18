@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using ARDrone.Control;
 using ARDrone.Capture;
 using ARDrone.Input;
+using AviationInstruments;
 
 namespace ARDrone.UI
 {
@@ -26,6 +27,7 @@ namespace ARDrone.UI
 
         private VideoRecorder videoRecorder = null;
         private SnapshotRecorder snapshotRecorder = null;
+        private InstrumentsManager instrumentsManager = null;
 
         ARDrone.Input.InputManager inputManager = null;
         private ARDroneControl arDroneControl = null;
@@ -45,6 +47,8 @@ namespace ARDrone.UI
             inputManager = new ARDrone.Input.InputManager(Utility.GetWindowHandle(this));
             arDroneControl = new ARDroneControl();
 
+            InitializeAviationControls();
+
             videoRecorder = new VideoRecorder();
             snapshotRecorder = new SnapshotRecorder();
 
@@ -55,6 +59,7 @@ namespace ARDrone.UI
         public void Dispose()
         {
             videoRecorder.Dispose();
+            instrumentsManager.stopManage();
         }
 
         public void InitializeTimers()
@@ -70,6 +75,15 @@ namespace ARDrone.UI
             timerVideoUpdate = new DispatcherTimer();
             timerVideoUpdate.Interval = new TimeSpan(0, 0, 0, 0, 50);
             timerVideoUpdate.Tick += new EventHandler(timerVideoUpdate_Tick);
+        }
+
+        public void InitializeAviationControls()
+        {
+            instrumentsManager = new InstrumentsManager(arDroneControl);
+            instrumentsManager.addInstrument(this.attitudeControl);
+            instrumentsManager.addInstrument(this.altimeterControl);
+            instrumentsManager.addInstrument(this.headingControl);
+            instrumentsManager.startManage();
         }
 
         public void Init()
@@ -459,7 +473,7 @@ namespace ARDrone.UI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            videoRecorder.Dispose();
+            Dispose();
             Disconnect();
         }
 
