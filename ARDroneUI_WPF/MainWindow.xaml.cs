@@ -304,10 +304,10 @@ namespace ARDrone.UI
 
         private void UpdateDroneState(InputState inputState)
         {
-            labelInputRoll.Content = String.Format("{0:+0.000;-0.000;0.000}", inputState.Roll);
-            labelInputPitch.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Pitch);
-            labelInputYaw.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Yaw);
-            labelInputGaz.Content = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Gaz);
+            labelInputRoll.Content = String.Format("{0:+0.000;-0.000;+0.000}", inputState.Roll);
+            labelInputPitch.Content = String.Format("{0:+0.000;-0.000;+0.000}", -inputState.Pitch);
+            labelInputYaw.Content = String.Format("{0:+0.000;-0.000;+0.000}", -inputState.Yaw);
+            labelInputGaz.Content = String.Format("{0:+0.000;-0.000;+0.000}", -inputState.Gaz);
 
             checkBoxInputTakeoff.IsChecked = inputState.TakeOff;
             checkBoxInputLand.IsChecked = inputState.Land;
