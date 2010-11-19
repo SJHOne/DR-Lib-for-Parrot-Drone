@@ -139,7 +139,16 @@ namespace ARDrone.Input
             // Nothing to do (for now)
         }
 
-        public override string DeviceName
+        public override bool IsDevicePresent
+        {
+            get
+            {
+                // TODO
+                return true;
+            }
+        }
+
+        public override String DeviceName
         {
             get
             {
@@ -154,6 +163,15 @@ namespace ARDrone.Input
             {
                 if (wiimote == null) { return string.Empty; }
                 else { return "WM"; }
+            }
+        }
+
+        public override String DeviceInstanceId
+        {
+            get
+            {
+                if (wiimote == null) { return string.Empty; }
+                else { return wiimote.ID.ToString(); }
             }
         }
     }

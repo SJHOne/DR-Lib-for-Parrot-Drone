@@ -12,7 +12,8 @@ namespace ARDrone.Input
         protected InputMapping backupMapping = null;
 
         List<String> buttonsPressedBefore = new List<String>();
-        Dictionary<String, float> buttonAxisValuesInitial = new Dictionary<String, float>();
+        Dictionary<String, float> lastAxisValues = new Dictionary<String, float>();
+        InputState lastInputState = new InputState();
 
         public GenericInput()
         {
@@ -103,6 +104,12 @@ namespace ARDrone.Input
             mapping = backupMapping.Clone();
         }
 
+        public void CopyMappingFrom(GenericInput input)
+        {
+            mapping = input.mapping.Clone();
+            backupMapping = input.backupMapping.Clone();
+        }
+
         private String GetMappingFilePath()
         {
             String appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -120,7 +127,7 @@ namespace ARDrone.Input
         public void InitCurrentlyInvokedInput()
         {
             Dictionary<String, float> axisValues = GetAxisValues();
-            buttonAxisValuesInitial = axisValues;
+            SetLastAxisValues(axisValues);
         }
 
         public String GetCurrentlyInvokedInput(out bool isAxis)
@@ -130,6 +137,9 @@ namespace ARDrone.Input
 
             List<String> buttonsPressedBefore = this.buttonsPressedBefore;
             SetButtonsPressedBefore(buttonsPressed);
+
+            Dictionary<String, float> lastAxisValues = this.lastAxisValues;
+            SetLastAxisValues(axisValues);
 
             while(buttonsPressed.Count > 0)
             {
@@ -149,7 +159,7 @@ namespace ARDrone.Input
                 String axis = keyValuePair.Key;
                 float axisValue = keyValuePair.Value;
 
-                if (buttonAxisValuesInitial.ContainsKey(axis) && Math.Abs(buttonAxisValuesInitial[axis] - axisValue) > 0.1f)
+                if (lastAxisValues.ContainsKey(axis) && Math.Abs(lastAxisValues[axis] - axisValue) > 0.1f)
                 {
                     isAxis = true;
                     return axis;
@@ -180,9 +190,17 @@ namespace ARDrone.Input
             bool emergency = IsFlightButtonPressed(mapping.EmergencyButton, buttonsPressed);
             bool flatTrim = IsFlightButtonPressed(mapping.FlatTrimButton, buttonsPressed);
 
-            SetButtonsPressedBefore(buttonsPressed);
-
-            return new InputState(roll, pitch, yaw, gaz, cameraSwap, takeOff, land, hover, emergency, flatTrim);
+            if (roll != lastInputState.Roll || pitch != lastInputState.Pitch || yaw != lastInputState.Yaw || gaz != lastInputState.Gaz ||
+                cameraSwap != lastInputState.CameraSwap || takeOff != lastInputState.TakeOff || land != lastInputState.Land || hover != lastInputState.Hover || emergency != lastInputState.Emergency || flatTrim != lastInputState.FlatTrim)
+            {
+                InputState newInputState = new InputState(roll, pitch, yaw, gaz, cameraSwap, takeOff, land, hover, emergency, flatTrim);
+                lastInputState = newInputState;
+                return newInputState;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private void SetButtonsPressedBefore(List<String> buttonsPressed)
@@ -191,6 +209,15 @@ namespace ARDrone.Input
             for (int i = 0; i < buttonsPressed.Count; i++)
             {
                 buttonsPressedBefore.Add(buttonsPressed[i]);
+            }
+        }
+
+        private void SetLastAxisValues(Dictionary<String, float> axisValues)
+        {
+            lastAxisValues = new Dictionary<String, float>();
+            foreach(KeyValuePair<String, float> keyValuePair in axisValues)
+            {
+                lastAxisValues.Add(keyValuePair.Key, keyValuePair.Value);
             }
         }
 
@@ -248,12 +275,22 @@ namespace ARDrone.Input
             }
         }
 
-        public virtual string DeviceName
+        public abstract bool IsDevicePresent
+        {
+            get;
+        }
+
+        public virtual String DeviceName
         {
             get { return string.Empty; }
         }
 
-        public virtual string FilePrefix
+        public virtual String FilePrefix
+        {
+            get { return string.Empty; }
+        }
+
+        public virtual String DeviceInstanceId
         {
             get { return string.Empty; }
         }

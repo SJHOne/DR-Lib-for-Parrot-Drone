@@ -20,7 +20,7 @@ namespace ARDrone.Input
 
         public InputState()
         {
-            Roll = 0; Pitch = 0; Gaz = 0;
+            Roll = 0.0f; Pitch = 0.0f; Gaz = 0.0f;
             TakeOff = false; Land = false; Emergency = false; FlatTrim = false;
         }
 
@@ -30,6 +30,19 @@ namespace ARDrone.Input
             CameraSwap = cameraSwapButton;
             TakeOff = takeOffButton; Land = landButton; Hover = hoverButton;
             Emergency = emergencyButton; FlatTrim = flatTrimButton;
+        }
+
+        public override String ToString()
+        {
+            String value = "Roll: " + Roll.ToString("0.000") + ", Pitch: " + Pitch.ToString("0.000") + ", Yaw: " + Yaw.ToString("0.000") + ", Gaz: " + Gaz.ToString("0.000");
+            if (CameraSwap) { value += ", Change Camera"; }
+            if (TakeOff) { value += ", Take Off"; }
+            if (Land) { value += ", Land"; }
+            if (Hover) { value += ", Hover"; }
+            if (Emergency) { value += ", Emergency"; }
+            if (FlatTrim) { value += ", Flat Trim"; }
+
+            return value;
         }
     }
 
@@ -78,6 +91,12 @@ namespace ARDrone.Input
         {
             validButtons = mappingToCopyFrom.ValidButtons;
             validAxes = mappingToCopyFrom.ValidAxes;
+        }
+
+        public void CopyMappingsFrom(InputMapping mapping)
+        {
+            SetButtonMappings(mapping.CameraSwapButton, mapping.TakeOffButton, mapping.LandButton, mapping.HoverButton, mapping.EmergencyButton, mapping.FlatTrimButton);
+            SetAxisMappings(mapping.RollAxisMapping, mapping.PitchAxisMapping, mapping.YawAxisMapping, mapping.GazAxisMapping);
         }
 
         public void CopyMappingsFrom(InputControls controls)

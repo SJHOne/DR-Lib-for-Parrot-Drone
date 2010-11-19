@@ -259,7 +259,7 @@ namespace ARDrone.UI
 
         private void UpdateInput()
         {
-            InputState inputState = inputManager.GetCurrentState();
+            InputState inputState = null; // inputManager.GetCurrentState();
 
             labelInputRoll.Text = String.Format("{0:+0.000;-0.000;0.000}", inputState.Roll);
             labelInputPitch.Text = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Pitch);

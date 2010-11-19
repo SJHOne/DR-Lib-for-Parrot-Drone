@@ -33,7 +33,7 @@
             </ComboBox>
         </StackPanel>
         
-        <Label Content="Double assignments are displayed red." Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="1"/>
+        <Label Name="labelDevicePresentInfo" Content="" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="1" Foreground="Red" />
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>

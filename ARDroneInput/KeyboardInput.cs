@@ -7,11 +7,9 @@ using Microsoft.DirectX.DirectInput;
 
 namespace ARDrone.Input
 {
-    class KeyboardInput : GenericInput
+    class KeyboardInput : DirectInputInput
     {
-        private ArrayList keysPressedBefore = new ArrayList();
-
-        Device device = null;
+        protected ArrayList keysPressedBefore = new ArrayList();
 
         public KeyboardInput(Device device) : base()
         {
@@ -28,11 +26,6 @@ namespace ARDrone.Input
             }
 
             CreateMapping(validButtons, validAxes);
-        }
-
-        public override void Dispose()
-        {
-            device.Unacquire();
         }
 
         protected override void CreateStandardMapping()
@@ -65,14 +58,38 @@ namespace ARDrone.Input
             return new Dictionary<String, float>();
         }
 
+        public override bool IsDevicePresent
+        {
+            get
+            {
+                try
+                {
+                    KeyboardState currentState = device.GetCurrentKeyboardState();
+                    return true;
+                }
+                catch (InputLostException)
+                {
+                    return false;
+                }
+            }
+        }
+
         public override String DeviceName
         {
-            get { return "Keyboard"; }
+            get
+            {
+                if (device == null) { return string.Empty; }
+                else { return "Keyboard"; }
+            }
         }
 
         public override String FilePrefix
         {
-            get { return "KB"; }
+            get
+            {
+                if (device == null) { return string.Empty; }
+                else { return "KB"; }
+            }
         }
     }
 }

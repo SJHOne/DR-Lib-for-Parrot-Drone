@@ -7,7 +7,7 @@ using Microsoft.DirectX.DirectInput;
 
 namespace ARDrone.Input
 {
-    public class JoystickInput : GenericInput
+    public class JoystickInput : DirectInputInput
     {
         enum Axis
         {
@@ -19,8 +19,6 @@ namespace ARDrone.Input
             Button_6, Button_7, Button_8, Button_9, Button_10,
             Button_11, Button_12, Button_13, Button_14, Button_15
         }
-
-        Device device = null;
 
         public JoystickInput(Device device) : base()
         {
@@ -55,38 +53,49 @@ namespace ARDrone.Input
             }
         }
 
-        public override void Dispose()
-        {
-            device.Unacquire();
-        }
-
         public override List<String> GetPressedButtons()
         {
-            JoystickState state = device.CurrentJoystickState;
-
             List<String> buttonsPressed = new List<String>();
-            byte[] buttons = state.GetButtons();
-            for (int j = 0; j < buttons.Length; j++)
+
+            try
             {
-                if (buttons[j] != 0)
+                JoystickState state = device.CurrentJoystickState;
+
+                byte[] buttons = state.GetButtons();
+                for (int j = 0; j < buttons.Length; j++)
                 {
-                    buttonsPressed.Add("Button_" + (j + 1));
+                    if (buttons[j] != 0)
+                    {
+                        buttonsPressed.Add("Button_" + (j + 1));
+                    }
                 }
+
+                return buttonsPressed;
             }
+            catch (Exception)
+            { }
 
             return buttonsPressed;
         }
 
         public override Dictionary<String, float> GetAxisValues()
         {
-            JoystickState state = device.CurrentJoystickState;
-
             Dictionary<String, float> axisValues = new Dictionary<String, float>();
-            axisValues[Axis.Axis_X.ToString()] = GetFloatValue(state.X);
-            axisValues[Axis.Axis_Y.ToString()] = GetFloatValue(state.Y);
-            axisValues[Axis.Axis_Z.ToString()] = GetFloatValue(state.Z);
-            axisValues[Axis.Axis_R.ToString()] = GetFloatValue(state.Rz);
-            axisValues[Axis.Axis_POV_1.ToString()] = CalculatePOVValue(state.GetPointOfView()[0]);
+            axisValues[Axis.Axis_X.ToString()] = axisValues[Axis.Axis_Y.ToString()] =axisValues[Axis.Axis_Z.ToString()] = axisValues[Axis.Axis_R.ToString()] = 0.0f;
+
+            try
+            {
+                JoystickState state = device.CurrentJoystickState;
+                axisValues[Axis.Axis_X.ToString()] = GetFloatValue(state.X);
+                axisValues[Axis.Axis_Y.ToString()] = GetFloatValue(state.Y);
+                axisValues[Axis.Axis_Z.ToString()] = GetFloatValue(state.Z);
+                axisValues[Axis.Axis_R.ToString()] = GetFloatValue(state.Rz);
+                axisValues[Axis.Axis_POV_1.ToString()] = CalculatePOVValue(state.GetPointOfView()[0]);
+
+                return axisValues;
+            }
+            catch (Exception)
+            { }
 
             return axisValues;
         }
@@ -103,7 +112,23 @@ namespace ARDrone.Input
             else return -1.0f;
         }
 
-        public override string DeviceName
+        public override bool IsDevicePresent
+        {
+            get
+            {
+                try
+                {
+                    JoystickState currentState = device.CurrentJoystickState;
+                    return true;
+                }
+                catch (InputLostException)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public override String DeviceName
         {
             get
             {
@@ -112,7 +137,7 @@ namespace ARDrone.Input
             }
         }
 
-        public override string FilePrefix
+        public override String FilePrefix
         {
             get
             {
