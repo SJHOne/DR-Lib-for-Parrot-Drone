@@ -74,9 +74,6 @@
             this.buttonCommandHover = new System.Windows.Forms.Button();
             this.panelRight = new System.Windows.Forms.Panel();
             this.groupBoxInstrument = new System.Windows.Forms.GroupBox();
-            this.altimeterControl = new AviationInstruments.AltimeterInstrumentControl();
-            this.headingControl = new AviationInstruments.HeadingIndicatorInstrumentControl();
-            this.attitudeControl = new AviationInstruments.AttitudeIndicatorInstrumentControl();
             this.groupBoxVideoAndSnapshots = new System.Windows.Forms.GroupBox();
             this.labelVideoStatus = new System.Windows.Forms.Label();
             this.checkBoxVideoCompress = new System.Windows.Forms.CheckBox();
@@ -90,6 +87,9 @@
             this.pictureBoxVideo = new System.Windows.Forms.PictureBox();
             this.timerVideoUpdate = new System.Windows.Forms.Timer(this.components);
             this.fileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.altimeterControl = new AviationInstruments.AltimeterInstrumentControl();
+            this.headingControl = new AviationInstruments.HeadingIndicatorInstrumentControl();
+            this.attitudeControl = new AviationInstruments.AttitudeIndicatorInstrumentControl();
             this.groupBoxInput.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.panelRight.SuspendLayout();
@@ -195,7 +195,6 @@
             // timerInputUpdate
             // 
             this.timerInputUpdate.Interval = 50;
-            this.timerInputUpdate.Tick += new System.EventHandler(this.timerInputUpdate_Tick);
             // 
             // checkBoxInputFlatTrim
             // 
@@ -562,30 +561,6 @@
             this.groupBoxInstrument.TabStop = false;
             this.groupBoxInstrument.Text = "Instrument";
             // 
-            // altimeterControl
-            // 
-            this.altimeterControl.Location = new System.Drawing.Point(8, 324);
-            this.altimeterControl.Name = "altimeterControl";
-            this.altimeterControl.Size = new System.Drawing.Size(140, 142);
-            this.altimeterControl.TabIndex = 5;
-            this.altimeterControl.Text = "altimeterInstrumentControl1";
-            // 
-            // headingControl
-            // 
-            this.headingControl.Location = new System.Drawing.Point(8, 175);
-            this.headingControl.Name = "headingControl";
-            this.headingControl.Size = new System.Drawing.Size(140, 142);
-            this.headingControl.TabIndex = 4;
-            this.headingControl.Text = "headingIndicatorInstrumentControl1";
-            // 
-            // attitudeControl
-            // 
-            this.attitudeControl.Location = new System.Drawing.Point(8, 18);
-            this.attitudeControl.Name = "attitudeControl";
-            this.attitudeControl.Size = new System.Drawing.Size(140, 142);
-            this.attitudeControl.TabIndex = 1;
-            this.attitudeControl.Text = "attitudeControl";
-            // 
             // groupBoxVideoAndSnapshots
             // 
             this.groupBoxVideoAndSnapshots.Controls.Add(this.labelVideoStatus);
@@ -653,7 +628,7 @@
             // 
             this.buttonInputSettings.Location = new System.Drawing.Point(3, 522);
             this.buttonInputSettings.Name = "buttonInputSettings";
-            this.buttonInputSettings.Size = new System.Drawing.Size(107, 23);
+            this.buttonInputSettings.Size = new System.Drawing.Size(184, 23);
             this.buttonInputSettings.TabIndex = 35;
             this.buttonInputSettings.Text = "Input Settings";
             this.buttonInputSettings.UseVisualStyleBackColor = true;
@@ -710,6 +685,30 @@
             this.timerVideoUpdate.Interval = 50;
             this.timerVideoUpdate.Tick += new System.EventHandler(this.timerVideoUpdate_Tick);
             // 
+            // altimeterControl
+            // 
+            this.altimeterControl.Location = new System.Drawing.Point(8, 324);
+            this.altimeterControl.Name = "altimeterControl";
+            this.altimeterControl.Size = new System.Drawing.Size(140, 142);
+            this.altimeterControl.TabIndex = 5;
+            this.altimeterControl.Text = "altimeterInstrumentControl1";
+            // 
+            // headingControl
+            // 
+            this.headingControl.Location = new System.Drawing.Point(8, 175);
+            this.headingControl.Name = "headingControl";
+            this.headingControl.Size = new System.Drawing.Size(140, 142);
+            this.headingControl.TabIndex = 4;
+            this.headingControl.Text = "headingIndicatorInstrumentControl1";
+            // 
+            // attitudeControl
+            // 
+            this.attitudeControl.Location = new System.Drawing.Point(8, 18);
+            this.attitudeControl.Name = "attitudeControl";
+            this.attitudeControl.Size = new System.Drawing.Size(140, 142);
+            this.attitudeControl.TabIndex = 1;
+            this.attitudeControl.Text = "attitudeControl";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -724,6 +723,7 @@
             this.Name = "MainForm";
             this.Text = "Drone Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);

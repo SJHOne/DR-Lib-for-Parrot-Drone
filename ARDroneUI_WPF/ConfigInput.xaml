@@ -67,7 +67,7 @@
             <TextBox Name="textBoxAxisGaz" Text="" Grid.Row="4" Grid.Column="1" Style="{StaticResource styleContentTextBox}" IsReadOnly="True" GotFocus="textBoxControl_GotFocus" LostFocus="textBoxControl_LostFocus" IsEnabled="False" />
 
             <Label Content="Take Off:" Grid.Row="1" Grid.Column="2" Style="{StaticResource styleContentLabel}" />
-            <TextBox Name="textBoxButtonTakeoff" Text="" Grid.Row="1" Grid.Column="3" Style="{StaticResource styleContentTextBox}" IsReadOnly="True" GotFocus="textBoxControl_GotFocus" LostFocus="textBoxControl_LostFocus" IsEnabled="False" />
+            <TextBox Name="textBoxButtonTakeOff" Text="" Grid.Row="1" Grid.Column="3" Style="{StaticResource styleContentTextBox}" IsReadOnly="True" GotFocus="textBoxControl_GotFocus" LostFocus="textBoxControl_LostFocus" IsEnabled="False" />
             <Label Content="Land:" Grid.Row="2" Grid.Column="2" Style="{StaticResource styleContentLabel}" />
             <TextBox Name="textBoxButtonLand" Text="" Grid.Row="2" Grid.Column="3" Style="{StaticResource styleContentTextBox}" IsReadOnly="True" GotFocus="textBoxControl_GotFocus" LostFocus="textBoxControl_LostFocus" IsEnabled="False" />
             <Label Content="Hover:" Grid.Row="3" Grid.Column="2" Style="{StaticResource styleContentLabel}" />

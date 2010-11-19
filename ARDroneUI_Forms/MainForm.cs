@@ -14,9 +14,11 @@ namespace ARDrone.UI
 {
     public partial class MainForm : Form
     {
+        private delegate void OutputEventHandler(String output);
+
         private VideoRecorder videoRecorder = null;
         private SnapshotRecorder snapshotRecorder = null;
-        private InstrumentsManager instrumentsManager;
+        private InstrumentsManager instrumentsManager = null;
 
         ARDrone.Input.InputManager inputManager = null;
         private ARDroneControl arDroneControl = null;
@@ -25,43 +27,63 @@ namespace ARDrone.UI
         DateTime lastFrameRateCaptureTime;
         int averageFrameRate = 0;
 
+        String snapshotFilePath = string.Empty;
+        int snapshotFileCount = 0;
+
         public MainForm()
         {
             InitializeComponent();
+            InitializeInputManager();
 
-            inputManager = new ARDrone.Input.InputManager(this.Handle);
             arDroneControl = new ARDroneControl();
+
+            InitializeAviationControls();
 
             videoRecorder = new VideoRecorder();
             snapshotRecorder = new SnapshotRecorder();
 
             videoRecorder.CompressionComplete += new EventHandler(videoRecorder_CompressionComplete);
             videoRecorder.CompressionError += new ErrorEventHandler(videoRecorder_CompressionError);
-
-            timerStatusUpdate.Start();
-            timerInputUpdate.Start();
-            UpdateUI();
-
-            this.instrumentsManager = new InstrumentsManager(arDroneControl);
-            this.instrumentsManager.addInstrument(this.attitudeControl);
-            this.instrumentsManager.addInstrument(this.altimeterControl);
-            this.instrumentsManager.addInstrument(this.headingControl);
-            this.instrumentsManager.startManage();
         }
 
         public void DisposeControl()
         {
+            inputManager.Dispose();
             videoRecorder.Dispose();
             instrumentsManager.stopManage();
         }
 
+        public void InitializeInputManager()
+        {
+            inputManager = new ARDrone.Input.InputManager(this.Handle);
+            AddInputListeners();
+        }
+
+        private void AddInputListeners()
+        {
+            inputManager.NewInputState += new NewInputStateHandler(inputManager_NewInputState);
+        }
+
+        private void RemoveInputListeners()
+        {
+            inputManager.NewInputState -= new NewInputStateHandler(inputManager_NewInputState);
+        }
+
+        public void InitializeAviationControls()
+        {
+            instrumentsManager = new InstrumentsManager(arDroneControl);
+            instrumentsManager.addInstrument(this.attitudeControl);
+            instrumentsManager.addInstrument(this.altimeterControl);
+            instrumentsManager.addInstrument(this.headingControl);
+            instrumentsManager.startManage();
+        }
+
         public void Init()
         {
-            timerInputUpdate.Start();
             timerStatusUpdate.Start();
 
             UpdateStatus();
-            UpdateUI();
+            UpdateInteractiveElements();
         }
 
         private void Connect()
@@ -70,17 +92,15 @@ namespace ARDrone.UI
 
             if (arDroneControl.Connect())
             {
-                AddOutput("Connected to Drone");
+                UpdateUISync("Connected to Drone");
             }
             else
             {
-                AddOutput("Error initializing drone");
+                UpdateUISync("Error initializing drone");
             }
 
             timerVideoUpdate.Start();
             lastFrameRateCaptureTime = DateTime.Now;
-
-            UpdateUI();
         }
 
         private void Disconnect()
@@ -95,14 +115,12 @@ namespace ARDrone.UI
 
             if (arDroneControl.Shutdown())
             {
-                AddOutput("Shutdown Drone");
+                UpdateUIAsync("Shutdown Drone");
             }
             else
             {
-                AddOutput("Error shutting down Drone");
+                UpdateUIAsync("Error shutting down Drone");
             }
-
-            UpdateUI();
         }
 
         private void ChangeCamera()
@@ -110,9 +128,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanChangeCamera && !videoRecorder.IsVideoCaptureRunning) { return; }
 
             arDroneControl.ChangeCamera();
-            AddOutput("Changing camera");
-
-            UpdateUI();
+            UpdateUIAsync("Changing camera");
         }
 
         private void Takeoff()
@@ -120,9 +136,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanTakeoff) { return; }
 
             arDroneControl.Takeoff();
-            AddOutput("Taking off");
-
-            UpdateUI();
+            UpdateUIAsync("Taking off");
         }
 
         private void Land()
@@ -130,9 +144,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanLand) { return; }
 
             arDroneControl.Land();
-            AddOutput("Landing");
-
-            UpdateUI();
+            UpdateUIAsync("Landing");
         }
 
         private void Emergency()
@@ -140,9 +152,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanCallEmergency) { return; }
 
             arDroneControl.Emergency();
-            AddOutput("Emergency button hit");
-
-            UpdateUI();
+            UpdateUIAsync("Emergency button hit");
         }
 
         private void FlatTrim()
@@ -150,9 +160,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanSendFlatTrim) { return; }
 
             arDroneControl.FlatTrim();
-            AddOutput("Sending flat trim");
-
-            UpdateUI();
+            UpdateUIAsync("Sending flat trim");
         }
 
         private void EnterHoverMode()
@@ -160,9 +168,7 @@ namespace ARDrone.UI
             if (!arDroneControl.CanEnterHoverMode) { return; }
 
             arDroneControl.EnterHoverMode();
-            AddOutput("Entering hover mode");
-
-            UpdateUI();
+            UpdateUIAsync("Entering hover mode");
         }
 
         private void LeaveHoverMode()
@@ -170,24 +176,28 @@ namespace ARDrone.UI
             if (!arDroneControl.CanLeaveHoverMode) { return; }
 
             arDroneControl.LeaveHoverMode();
-            AddOutput("Leaving hover mode");
-
-            UpdateUI();
+            UpdateUIAsync("Leaving hover mode");
         }
 
         private void Navigate(float roll, float pitch, float yaw, float gaz)
         {
             if (!arDroneControl.CanFlyFreely) { return; }
 
-             arDroneControl.SetFlightData(roll, pitch, gaz, yaw);
+            arDroneControl.SetFlightData(roll, pitch, gaz, yaw);
         }
 
-        private void AddOutput(String output)
+        private void UpdateUIAsync(String message)
         {
-            textBoxOutput.AppendText(output + "\r\n");
+            this.BeginInvoke(new OutputEventHandler(UpdateUISync), message);
         }
 
-        private void UpdateUI()
+        private void UpdateUISync(String message)
+        {
+            textBoxOutput.AppendText(message + "\r\n");
+            UpdateInteractiveElements();
+        }
+
+        private void UpdateInteractiveElements()
         {
             inputManager.SetFlags(arDroneControl.IsConnected, arDroneControl.IsEmergency, arDroneControl.IsFlying, arDroneControl.IsHovering);
 
@@ -209,10 +219,10 @@ namespace ARDrone.UI
             if (CanCaptureVideo && !videoRecorder.IsVideoCaptureRunning && !videoRecorder.IsCompressionRunning) { buttonVideoStart.Enabled = true; } else { buttonVideoStart.Enabled = false; }
             if (CanCaptureVideo && videoRecorder.IsVideoCaptureRunning && !videoRecorder.IsCompressionRunning) { buttonVideoEnd.Enabled = true; } else { buttonVideoEnd.Enabled = false; }
 
-            
-            if      (videoRecorder.IsCompressionRunning)  { labelVideoStatus.Text = "Compressing"; }
+
+            if (videoRecorder.IsCompressionRunning) { labelVideoStatus.Text = "Compressing"; }
             else if (videoRecorder.IsVideoCaptureRunning) { labelVideoStatus.Text = "Recording"; }
-            else    { labelVideoStatus.Text = "Idling ..."; }
+            else { labelVideoStatus.Text = "Idling ..."; }
         }
 
         private void UpdateStatus()
@@ -229,7 +239,7 @@ namespace ARDrone.UI
             }
             else
             {
-                ARDroneControl.DroneData data  = new ARDroneControl.DroneData();
+                ARDroneControl.DroneData data = new ARDroneControl.DroneData();
                 data = arDroneControl.GetCurrentDroneData();
                 int frameRate = GetCurrentFrameRate();
 
@@ -254,13 +264,22 @@ namespace ARDrone.UI
             labelStatusConnected.Text = arDroneControl.IsConnected.ToString();
             labelStatusFlying.Text = arDroneControl.IsFlying.ToString();
             labelStatusHovering.Text = arDroneControl.IsHovering.ToString();
-            labelStatusEmergency.Text = arDroneControl.IsEmergency.ToString();
         }
 
-        private void UpdateInput()
+        private int GetCurrentFrameRate()
         {
-            InputState inputState = null; // inputManager.GetCurrentState();
+            int timePassed = (int)(DateTime.Now - lastFrameRateCaptureTime).TotalMilliseconds;
+            int frameRate = frameCountSinceLastCapture * 1000 / timePassed;
+            averageFrameRate = (averageFrameRate + frameRate) / 2;
 
+            lastFrameRateCaptureTime = DateTime.Now;
+            frameCountSinceLastCapture = 0;
+
+            return averageFrameRate;
+        }
+
+        private void UpdateDroneState(InputState inputState)
+        {
             labelInputRoll.Text = String.Format("{0:+0.000;-0.000;0.000}", inputState.Roll);
             labelInputPitch.Text = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Pitch);
             labelInputYaw.Text = String.Format("{0:+0.000;-0.000;0.000}", -inputState.Yaw);
@@ -272,7 +291,10 @@ namespace ARDrone.UI
             checkBoxInputEmergency.Checked = inputState.Emergency;
             checkBoxInputFlatTrim.Checked = inputState.FlatTrim;
             checkBoxInputChangeCamera.Checked = inputState.CameraSwap;
+        }
 
+        private void SendDroneCommands(InputState inputState)
+        {
             if (inputState.CameraSwap)
             {
                 ChangeCamera();
@@ -335,11 +357,16 @@ namespace ARDrone.UI
 
         private void TakeSnapshot()
         {
-            String snapshotFilePath = ShowFileDialog(".png", "PNG files (.png)|*.png");
-            if (snapshotFilePath == null) { return; }
+            if (snapshotFilePath == string.Empty)
+            {
+                snapshotFilePath = ShowFileDialog(".png", "PNG files (.png)|*.png");
+                if (snapshotFilePath == null) { return; }
+            }
 
             System.Drawing.Bitmap currentImage = (System.Drawing.Bitmap)arDroneControl.GetDisplayedImage();
-            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath);
+            snapshotRecorder.SaveSnapshot(currentImage, snapshotFilePath.Replace(".png", "_" + snapshotFileCount.ToString() + ".png"));
+            UpdateUISync("Saved image #" + snapshotFileCount.ToString());
+            snapshotFileCount++;
         }
 
         private void StartVideoCapture()
@@ -360,7 +387,7 @@ namespace ARDrone.UI
             }
 
             videoRecorder.StartVideo(videoFilePath, averageFrameRate, size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb, 4, checkBoxVideoCompress.Checked == true ? true : false);
-            UpdateUI();
+            UpdateInteractiveElements();
         }
 
         private void EndVideoCapture()
@@ -372,7 +399,7 @@ namespace ARDrone.UI
 
             videoRecorder.EndVideo();
 
-            UpdateUI();
+            UpdateInteractiveElements();
         }
 
         private String ShowFileDialog(String extension, String filter)
@@ -381,10 +408,10 @@ namespace ARDrone.UI
             fileDialog.DefaultExt = extension;
             fileDialog.Filter = filter;
 
-            DialogResult result = fileDialog.ShowDialog();
-            
+            DialogResult = fileDialog.ShowDialog();
+
             String fileName = null;
-            if (result == DialogResult.OK)
+            if (DialogResult == DialogResult.OK)
             {
                 fileName = fileDialog.FileName;
             }
@@ -405,18 +432,15 @@ namespace ARDrone.UI
             return fileName;
         }
 
-        private int GetCurrentFrameRate()
+        private void OpenConfigDialog()
         {
-            int timePassed = (int)(DateTime.Now - lastFrameRateCaptureTime).TotalMilliseconds;
-            int frameRate = frameCountSinceLastCapture * 1000 / timePassed;
-            averageFrameRate = (averageFrameRate + frameRate) / 2;
+            RemoveInputListeners();
 
-            lastFrameRateCaptureTime = DateTime.Now;
-            frameCountSinceLastCapture = 0;
+            ConfigInput configInput = new ConfigInput(inputManager);
+            configInput.ShowDialog();
 
-            return averageFrameRate;
+            AddInputListeners();
         }
-
 
         private bool CanCaptureVideo
         {
@@ -428,12 +452,12 @@ namespace ARDrone.UI
 
         // Event handlers
 
-        private void Window_Loaded(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             Init();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisposeControl();
             Disconnect();
@@ -505,8 +529,7 @@ namespace ARDrone.UI
 
         private void buttonInputSettings_Click(object sender, EventArgs e)
         {
-            ConfigInput configInput = new ConfigInput(inputManager);
-            configInput.ShowDialog();
+            OpenConfigDialog();
         }
 
         private void timerStatusUpdate_Tick(object sender, EventArgs e)
@@ -514,44 +537,44 @@ namespace ARDrone.UI
             UpdateStatus();
         }
 
-        private void timerInputUpdate_Tick(object sender, EventArgs e)
-        {
-            UpdateInput();
-        }
-
         private void timerVideoUpdate_Tick(object sender, EventArgs e)
         {
             SetNewVideoImage();
         }
 
-        private void videoRecoderSync_CompressionComplete(object sender, EventArgs e)
+        private void inputManager_NewInputState(object sender, NewInputStateEventArgs e)
         {
-            MessageBox.Show(this, "Successfully compressed video!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            UpdateUI();
+            SendDroneCommands(e.CurrentInputState);
+            this.BeginInvoke(new NewInputStateHandler(inputManagerSync_NewInputState), this, e);
+
+            Console.WriteLine(e.CurrentInputState.ToString());
+        }
+
+        private void inputManagerSync_NewInputState(object sender, NewInputStateEventArgs e)
+        {
+            UpdateDroneState(e.CurrentInputState);
         }
 
         private void videoRecorder_CompressionComplete(object sender, EventArgs e)
         {
-            BeginInvoke(new EventHandler(videoRecoderSync_CompressionComplete), this, e);
+            this.BeginInvoke(new EventHandler(videoRecoderSync_CompressionComplete), this, e);
+        }
+
+        private void videoRecoderSync_CompressionComplete(object sender, EventArgs e)
+        {
+            MessageBox.Show(this, "Successfully compressed video!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            UpdateInteractiveElements();
+        }
+
+        private void videoRecorder_CompressionError(object sender, ErrorEventArgs e)
+        {
+            this.BeginInvoke(new ErrorEventHandler(videoRecoderSync_CompressionError), this, e);
         }
 
         private void videoRecoderSync_CompressionError(object sender, ErrorEventArgs e)
         {
             MessageBox.Show(this, e.GetException().Message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            UpdateUI();
-        }
-
-        private void videoRecorder_CompressionError(object sender, ErrorEventArgs e)
-        {
-            BeginInvoke(new ErrorEventHandler(videoRecoderSync_CompressionError), this, e);
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-            videoRecorder.Dispose();
-            instrumentsManager.stopManage();
-            Disconnect();
+            UpdateInteractiveElements();
         }
     }
 }

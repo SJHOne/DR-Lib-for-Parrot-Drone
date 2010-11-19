@@ -28,12 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.buttonSubmit = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.comboBoxDevices = new System.Windows.Forms.ComboBox();
             this.labelDevicesInfo = new System.Windows.Forms.Label();
-            this.labelDoubleAssignmentsInfo = new System.Windows.Forms.Label();
+            this.labelDevicePresentInfo = new System.Windows.Forms.Label();
             this.textBoxButtonChangeCamera = new System.Windows.Forms.TextBox();
             this.labelButtonChangeCameraInfo = new System.Windows.Forms.Label();
             this.textBoxButtonFlatTrim = new System.Windows.Forms.TextBox();
@@ -56,7 +55,6 @@
             this.textBoxAxisPitch = new System.Windows.Forms.TextBox();
             this.labelAxisRollInfo = new System.Windows.Forms.Label();
             this.textBoxAxisRoll = new System.Windows.Forms.TextBox();
-            this.timerInputUpdate = new System.Windows.Forms.Timer(this.components);
             this.buttonReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -91,7 +89,7 @@
             this.comboBoxDevices.Name = "comboBoxDevices";
             this.comboBoxDevices.Size = new System.Drawing.Size(201, 21);
             this.comboBoxDevices.TabIndex = 6;
-            this.comboBoxDevices.SelectedValueChanged += new System.EventHandler(this.comboBoxDevices_SelectedValueChanged);
+            this.comboBoxDevices.SelectedIndexChanged += new System.EventHandler(this.comboBoxDevices_SelectedIndexChanged);
             // 
             // labelDevicesInfo
             // 
@@ -102,14 +100,14 @@
             this.labelDevicesInfo.TabIndex = 5;
             this.labelDevicesInfo.Text = "Device:";
             // 
-            // labelDoubleAssignmentsInfo
+            // labelDevicePresentInfo
             // 
-            this.labelDoubleAssignmentsInfo.AutoSize = true;
-            this.labelDoubleAssignmentsInfo.Location = new System.Drawing.Point(349, 9);
-            this.labelDoubleAssignmentsInfo.Name = "labelDoubleAssignmentsInfo";
-            this.labelDoubleAssignmentsInfo.Size = new System.Drawing.Size(186, 13);
-            this.labelDoubleAssignmentsInfo.TabIndex = 7;
-            this.labelDoubleAssignmentsInfo.Text = "Double assignments are shown in red.";
+            this.labelDevicePresentInfo.ForeColor = System.Drawing.Color.Red;
+            this.labelDevicePresentInfo.Location = new System.Drawing.Point(349, 9);
+            this.labelDevicePresentInfo.Name = "labelDevicePresentInfo";
+            this.labelDevicePresentInfo.Size = new System.Drawing.Size(186, 18);
+            this.labelDevicePresentInfo.TabIndex = 7;
+            this.labelDevicePresentInfo.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxButtonChangeCamera
             // 
@@ -119,8 +117,8 @@
             this.textBoxButtonChangeCamera.ReadOnly = true;
             this.textBoxButtonChangeCamera.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonChangeCamera.TabIndex = 46;
-            this.textBoxButtonChangeCamera.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonChangeCamera.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonChangeCamera.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonChangeCamera.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // labelButtonChangeCameraInfo
             // 
@@ -139,8 +137,8 @@
             this.textBoxButtonFlatTrim.ReadOnly = true;
             this.textBoxButtonFlatTrim.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonFlatTrim.TabIndex = 44;
-            this.textBoxButtonFlatTrim.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonFlatTrim.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonFlatTrim.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonFlatTrim.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // textBoxButtonEmergency
             // 
@@ -150,8 +148,8 @@
             this.textBoxButtonEmergency.ReadOnly = true;
             this.textBoxButtonEmergency.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonEmergency.TabIndex = 43;
-            this.textBoxButtonEmergency.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonEmergency.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonEmergency.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonEmergency.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // textBoxButtonHover
             // 
@@ -161,8 +159,8 @@
             this.textBoxButtonHover.ReadOnly = true;
             this.textBoxButtonHover.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonHover.TabIndex = 42;
-            this.textBoxButtonHover.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonHover.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonHover.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonHover.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // textBoxButtonLand
             // 
@@ -172,8 +170,8 @@
             this.textBoxButtonLand.ReadOnly = true;
             this.textBoxButtonLand.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonLand.TabIndex = 41;
-            this.textBoxButtonLand.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonLand.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonLand.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonLand.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // textBoxButtonTakeOff
             // 
@@ -183,8 +181,8 @@
             this.textBoxButtonTakeOff.ReadOnly = true;
             this.textBoxButtonTakeOff.Size = new System.Drawing.Size(162, 20);
             this.textBoxButtonTakeOff.TabIndex = 40;
-            this.textBoxButtonTakeOff.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxButtonTakeOff.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxButtonTakeOff.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxButtonTakeOff.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // labelButtonFlatTrimInfo
             // 
@@ -266,8 +264,8 @@
             this.textBoxAxisGaz.ReadOnly = true;
             this.textBoxAxisGaz.Size = new System.Drawing.Size(162, 20);
             this.textBoxAxisGaz.TabIndex = 31;
-            this.textBoxAxisGaz.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxAxisGaz.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxAxisGaz.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxAxisGaz.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // labelAxisYawInfo
             // 
@@ -286,8 +284,8 @@
             this.textBoxAxisYaw.ReadOnly = true;
             this.textBoxAxisYaw.Size = new System.Drawing.Size(162, 20);
             this.textBoxAxisYaw.TabIndex = 29;
-            this.textBoxAxisYaw.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxAxisYaw.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxAxisYaw.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxAxisYaw.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // labelAxisPitchInfo
             // 
@@ -306,8 +304,8 @@
             this.textBoxAxisPitch.ReadOnly = true;
             this.textBoxAxisPitch.Size = new System.Drawing.Size(162, 20);
             this.textBoxAxisPitch.TabIndex = 27;
-            this.textBoxAxisPitch.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxAxisPitch.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxAxisPitch.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxAxisPitch.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // labelAxisRollInfo
             // 
@@ -326,13 +324,8 @@
             this.textBoxAxisRoll.ReadOnly = true;
             this.textBoxAxisRoll.Size = new System.Drawing.Size(162, 20);
             this.textBoxAxisRoll.TabIndex = 25;
-            this.textBoxAxisRoll.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxAxisRoll.Leave += new System.EventHandler(this.textBox_Leave);
-            // 
-            // timerInputUpdate
-            // 
-            this.timerInputUpdate.Interval = 50;
-            this.timerInputUpdate.Tick += new System.EventHandler(this.timerInputUpdate_Tick);
+            this.textBoxAxisRoll.Enter += new System.EventHandler(this.textBoxControl_Enter);
+            this.textBoxAxisRoll.Leave += new System.EventHandler(this.textBoxControl_Leave);
             // 
             // buttonReset
             // 
@@ -373,7 +366,7 @@
             this.Controls.Add(this.textBoxAxisPitch);
             this.Controls.Add(this.labelAxisRollInfo);
             this.Controls.Add(this.textBoxAxisRoll);
-            this.Controls.Add(this.labelDoubleAssignmentsInfo);
+            this.Controls.Add(this.labelDevicePresentInfo);
             this.Controls.Add(this.labelDevicesInfo);
             this.Controls.Add(this.comboBoxDevices);
             this.Controls.Add(this.buttonCancel);
@@ -396,7 +389,7 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ComboBox comboBoxDevices;
         private System.Windows.Forms.Label labelDevicesInfo;
-        private System.Windows.Forms.Label labelDoubleAssignmentsInfo;
+        private System.Windows.Forms.Label labelDevicePresentInfo;
         private System.Windows.Forms.TextBox textBoxButtonChangeCamera;
         private System.Windows.Forms.Label labelButtonChangeCameraInfo;
         private System.Windows.Forms.TextBox textBoxButtonFlatTrim;
@@ -419,7 +412,6 @@
         private System.Windows.Forms.TextBox textBoxAxisPitch;
         private System.Windows.Forms.Label labelAxisRollInfo;
         private System.Windows.Forms.TextBox textBoxAxisRoll;
-        private System.Windows.Forms.Timer timerInputUpdate;
         private System.Windows.Forms.Button buttonReset;
     }
 }

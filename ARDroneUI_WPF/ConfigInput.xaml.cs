@@ -68,7 +68,7 @@ namespace ARDrone.UI
             nameControlMap.Add(textBoxAxisRoll.Name, Control.AxisRoll); nameControlMap.Add(textBoxAxisPitch.Name, Control.AxisPitch);
             nameControlMap.Add(textBoxAxisYaw.Name, Control.AxisYaw); nameControlMap.Add(textBoxAxisGaz.Name, Control.AxisGaz);
 
-            nameControlMap.Add(textBoxButtonTakeoff.Name, Control.ButtonTakeoff); nameControlMap.Add(textBoxButtonLand.Name, Control.ButtonLand);
+            nameControlMap.Add(textBoxButtonTakeOff.Name, Control.ButtonTakeoff); nameControlMap.Add(textBoxButtonLand.Name, Control.ButtonLand);
             nameControlMap.Add(textBoxButtonHover.Name, Control.ButtonHover); nameControlMap.Add(textBoxButtonEmergency.Name, Control.ButtonEmergency);
             nameControlMap.Add(textBoxButtonFlatTrim.Name, Control.ButtonFlatTrim); nameControlMap.Add(textBoxButtonChangeCamera.Name, Control.ButtonChangeCamera);
 
@@ -273,7 +273,7 @@ namespace ARDrone.UI
             textBoxAxisRoll.IsEnabled = enabled; textBoxAxisPitch.IsEnabled = enabled;
             textBoxAxisYaw.IsEnabled = enabled; textBoxAxisGaz.IsEnabled = enabled;
 
-            textBoxButtonTakeoff.IsEnabled = enabled; textBoxButtonLand.IsEnabled = enabled;
+            textBoxButtonTakeOff.IsEnabled = enabled; textBoxButtonLand.IsEnabled = enabled;
             textBoxButtonHover.IsEnabled = enabled; textBoxButtonEmergency.IsEnabled = enabled;
             textBoxButtonFlatTrim.IsEnabled = enabled; textBoxButtonChangeCamera.IsEnabled = enabled;
         }
@@ -317,7 +317,7 @@ namespace ARDrone.UI
             textBoxAxisYaw.Text = mapping.YawAxisMapping;
             textBoxAxisGaz.Text = mapping.GazAxisMapping;
 
-            textBoxButtonTakeoff.Text = mapping.TakeOffButton;
+            textBoxButtonTakeOff.Text = mapping.TakeOffButton;
             textBoxButtonLand.Text = mapping.LandButton;
             textBoxButtonHover.Text = mapping.HoverButton;
             textBoxButtonEmergency.Text = mapping.EmergencyButton;
@@ -348,12 +348,12 @@ namespace ARDrone.UI
 
             inputValues.AddRange(textBoxAxisRoll.Text.Split('-')); inputValues.AddRange(textBoxAxisPitch.Text.Split('-'));
             inputValues.AddRange(textBoxAxisYaw.Text.Split('-')); inputValues.AddRange(textBoxAxisGaz.Text.Split('-'));
-            inputValues.Add(textBoxButtonTakeoff.Text); inputValues.Add(textBoxButtonLand.Text); inputValues.Add(textBoxButtonHover.Text);
+            inputValues.Add(textBoxButtonTakeOff.Text); inputValues.Add(textBoxButtonLand.Text); inputValues.Add(textBoxButtonHover.Text);
             inputValues.Add(textBoxButtonEmergency.Text); inputValues.Add(textBoxButtonFlatTrim.Text); inputValues.Add(textBoxButtonChangeCamera.Text);
 
             CheckDoubleInputEntry(textBoxAxisRoll, inputValues); CheckDoubleInputEntry(textBoxAxisPitch, inputValues);
             CheckDoubleInputEntry(textBoxAxisYaw, inputValues); CheckDoubleInputEntry(textBoxAxisGaz, inputValues);
-            CheckDoubleInputEntry(textBoxButtonTakeoff, inputValues); CheckDoubleInputEntry(textBoxButtonLand, inputValues); CheckDoubleInputEntry(textBoxButtonHover, inputValues);
+            CheckDoubleInputEntry(textBoxButtonTakeOff, inputValues); CheckDoubleInputEntry(textBoxButtonLand, inputValues); CheckDoubleInputEntry(textBoxButtonHover, inputValues);
             CheckDoubleInputEntry(textBoxButtonEmergency, inputValues); CheckDoubleInputEntry(textBoxButtonFlatTrim, inputValues); CheckDoubleInputEntry(textBoxButtonChangeCamera, inputValues);
         }
 

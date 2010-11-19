@@ -21,16 +21,19 @@ namespace ARDrone.UI
         private ARDrone.Input.InputManager inputManager = null;
 
         private GenericInput selectedDevice = null;
+        private bool isSelectedDevicePresent = false;
+
         private Control selectedControl = Control.None;
         private ControlType selectedControlType = ControlType.None;
 
         private String tempAxisInput = "";
 
-        Dictionary<String, GenericInput> devices = null;
+        List<GenericInput> devices = null;
 
         public ConfigInput()
         {
             InitializeComponent();
+            comboBoxDevices.SelectedIndex = 0;
 
             inputManager = new ARDrone.Input.InputManager(this.Handle);
             Init(inputManager);
@@ -39,17 +42,20 @@ namespace ARDrone.UI
         public ConfigInput(ARDrone.Input.InputManager inputManager)
         {
             InitializeComponent();
+            comboBoxDevices.SelectedIndex = 0;
+
             Init(inputManager);
+        }
+
+        public void DisposeControl()
+        {
+            RemoveInputListeners();
         }
 
         public void Init(ARDrone.Input.InputManager inputManager)
         {
-            comboBoxDevices.SelectedIndex = 0;
-            InitializeTimers();
-
             InitializeControlMap();
-
-            this.inputManager = inputManager;
+            InitializeInputManager(inputManager);
             InitializeDeviceList();
         }
 
@@ -74,47 +80,167 @@ namespace ARDrone.UI
             controlTypeMap.Add(Control.ButtonFlatTrim, ControlType.Button); controlTypeMap.Add(Control.ButtonChangeCamera, ControlType.Button);
         }
 
-        public void InitializeTimers()
+        public void InitializeInputManager(ARDrone.Input.InputManager inputManager)
         {
-            timerInputUpdate.Start();
+            this.inputManager = inputManager;
+            AddInputListeners();
+        }
+
+        private void AddInputListeners()
+        {
+            inputManager.NewInputDevice += new NewInputDeviceHandler(inputManager_NewInputDevice);
+            inputManager.InputDeviceLost += new InputDeviceLostHandler(inputManager_InputDeviceLost);
+            inputManager.RawInputReceived += new RawInputReceivedHandler(inputManager_RawInputReceived);
+        }
+
+        private void RemoveInputListeners()
+        {
+            inputManager.NewInputDevice -= new NewInputDeviceHandler(inputManager_NewInputDevice);
+            inputManager.InputDeviceLost -= new InputDeviceLostHandler(inputManager_InputDeviceLost);
+            inputManager.RawInputReceived -= new RawInputReceivedHandler(inputManager_RawInputReceived);
         }
 
         public void InitializeDeviceList()
         {
-            devices = new Dictionary<String, GenericInput>();
+            devices = new List<GenericInput>();
 
             foreach (GenericInput inputDevice in inputManager.InputDevices)
             {
-                devices.Add(inputDevice.DeviceName, inputDevice);
+                AddDeviceToDeviceList(inputDevice);
+            }
+        }
+
+        private void HandleNewDevice(String deviceId, GenericInput inputDevice)
+        {
+            AddDeviceToDeviceList(inputDevice);
+
+            if (selectedDevice != null && selectedDevice.DeviceInstanceId == inputDevice.DeviceInstanceId)
+            {
+                inputDevice.CopyMappingFrom(selectedDevice);
+                selectedDevice = inputDevice;
+
+                isSelectedDevicePresent = true;
+                UpdateCurrentDeviceDescription();
+            }
+        }
+
+        private void HandleLostDevice(String deviceId)
+        {
+            if (selectedDevice != null && selectedDevice.DeviceInstanceId == deviceId)
+            {
+                isSelectedDevicePresent = false;
+                UpdateCurrentDeviceDescription();
+            }
+            else
+            {
+                RemoveDeviceFromDeviceList(deviceId);
+            }
+        }
+
+        private void AddDeviceToDeviceList(GenericInput inputDevice)
+        {
+            bool foundReplacement = false;
+            for (int i = 0; i < devices.Count; i++)
+            {
+                if (devices[i].DeviceInstanceId == inputDevice.DeviceInstanceId)
+                {
+                    inputDevice.CopyMappingFrom(devices[i]);
+                    devices[i] = inputDevice;
+
+                    foundReplacement = true;
+                    break;
+                }
+            }
+
+            if (!foundReplacement)
+            {
+                devices.Add(inputDevice);
                 comboBoxDevices.Items.Add(inputDevice.DeviceName);
             }
         }
 
-        private void ChangeInputDevice()
+        private void RemoveDeviceFromDeviceList(String deviceId)
         {
-            String selectedDeviceName = (String)comboBoxDevices.Items[comboBoxDevices.SelectedIndex];
-            
-            if (selectedDeviceName == "-- No device selected --")
-            {
-                return;
-            }
-            if ((String)comboBoxDevices.Items[0] == "-- No device selected --")
-            {
-                comboBoxDevices.Items.RemoveAt(0);
-            }
+            GenericInput inputDevice = GetDeviceById(deviceId);
 
-            if (selectedDeviceName != null)
+            if (inputDevice != null)
             {
-                SetMappingEnabledState(true);
+                devices.Remove(inputDevice);
 
-                selectedDevice = devices[selectedDeviceName];
-                selectedDevice.InitCurrentlyInvokedInput();
-
-                TakeOverMapping(selectedDevice.Mapping);
+                for (int i = 0; i < comboBoxDevices.Items.Count; i++)
+                {
+                    if ((String)(comboBoxDevices.Items[i]) == inputDevice.DeviceName)
+                    {
+                        comboBoxDevices.Items.RemoveAt(i);
+                        break;
+                    }
+                }
             }
         }
 
-        private void Focus(TextBox textBox)
+        private GenericInput GetDeviceById(String deviceId)
+        {
+            GenericInput input = null;
+            for (int i = 0; i < devices.Count; i++)
+            {
+                if (devices[i].DeviceInstanceId == deviceId)
+                {
+                    input = devices[i];
+                    break;
+                }
+            }
+
+            return input;
+        }
+
+        private void ChangeInputDevice()
+        {
+            String comboBoxContent = (String)comboBoxDevices.Items[comboBoxDevices.SelectedIndex];
+
+            if (comboBoxDevices.SelectedIndex != 0 && (String)comboBoxDevices.Items[0] == "-- No device selected --")
+            {
+                comboBoxDevices.Items.Remove(0);
+            }
+
+            if (comboBoxContent != "-- No device selected --" && comboBoxContent != null)
+            {
+                RemoveSelectedButNotPresentDevice();
+                SetMappingEnabledState(true);
+
+                String selectedDeviceName = comboBoxContent.ToString();
+
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    if (devices[i].DeviceName == selectedDeviceName)
+                    {
+                        selectedDevice = devices[i];
+                    }
+                }
+
+                if (selectedDevice != null)
+                {
+                    TakeOverMapping(selectedDevice.Mapping);
+                    isSelectedDevicePresent = true;
+                    UpdateCurrentDeviceDescription();
+                }
+            }
+        }
+
+        private void RemoveSelectedButNotPresentDevice()
+        {
+            if (selectedDevice != null && !isSelectedDevicePresent)
+            {
+                selectedDevice.SaveMapping();
+                RemoveDeviceFromDeviceList(selectedDevice.DeviceInstanceId);
+            }
+        }
+
+        private void UpdateCurrentDeviceDescription()
+        {
+            labelDevicePresentInfo.Text = isSelectedDevicePresent ? "" : "The device is not connected!";
+        }
+
+        private void FocusInputElement(TextBox textBox)
         {
             if (textBox != null && nameControlMap.ContainsKey(textBox.Name))
             {
@@ -126,7 +252,7 @@ namespace ARDrone.UI
             }
         }
 
-        private void Unfocus(TextBox textBox)
+        private void UnfocusInputElement(TextBox textBox)
         {
             if (textBox != null && nameControlMap.ContainsKey(textBox.Name))
             {
@@ -153,28 +279,28 @@ namespace ARDrone.UI
 
             if (enabled)
             {
-                textBoxAxisRoll.BackColor = Color.White; textBoxAxisPitch.BackColor = Color.White;
-                textBoxAxisYaw.BackColor = Color.White; textBoxAxisGaz.BackColor = Color.White;
+                textBoxAxisRoll.BackColor = enabled ? Color.White : SystemColors.Control; textBoxAxisPitch.BackColor = enabled ? Color.White : SystemColors.Control;
+                textBoxAxisYaw.BackColor = enabled ? Color.White : SystemColors.Control; textBoxAxisGaz.BackColor = enabled ? Color.White : SystemColors.Control;
 
-                textBoxButtonTakeOff.BackColor = Color.White; textBoxButtonLand.BackColor = Color.White;
-                textBoxButtonHover.BackColor = Color.White; textBoxButtonEmergency.BackColor = Color.White;
-                textBoxButtonFlatTrim.BackColor = Color.White; textBoxButtonChangeCamera.BackColor = Color.White;
+                textBoxButtonTakeOff.BackColor = enabled ? Color.White : SystemColors.Control; textBoxButtonLand.BackColor = enabled ? Color.White : SystemColors.Control;
+                textBoxButtonHover.BackColor = enabled ? Color.White : SystemColors.Control; textBoxButtonEmergency.BackColor = enabled ? Color.White : SystemColors.Control;
+                textBoxButtonFlatTrim.BackColor = enabled ? Color.White : SystemColors.Control; textBoxButtonChangeCamera.BackColor = enabled ? Color.White : SystemColors.Control;
             }
         }
 
         private void SaveMapping()
         {
-            if (selectedDevice != null)
+            for (int i = 0; i < devices.Count; i++)
             {
-                selectedDevice.SaveMapping();
+                devices[i].SaveMapping();
             }
         }
 
         private void RevertMapping()
         {
-            if (selectedDevice != null)
+            for (int i = 0; i < devices.Count; i++)
             {
-                selectedDevice.RevertMapping();
+                devices[i].SaveMapping();
             }
         }
 
@@ -265,18 +391,14 @@ namespace ARDrone.UI
             }
         }
 
-        private void UpdateInputDevice()
+        private void UpdateInputs(String deviceId, String inputValue, bool isAxis)
         {
             bool mappingSet = false;
 
-            if (selectedDevice == null || selectedControl == Control.None)
+            if (selectedDevice == null || selectedControl == Control.None || selectedDevice.DeviceInstanceId != deviceId)
             {
                 return;
             }
-
-            bool isAxis = false;
-            String inputValue = selectedDevice.GetCurrentlyInvokedInput(out isAxis);
-
 
             if (inputValue != null)
             {
@@ -318,6 +440,7 @@ namespace ARDrone.UI
 
         private void ConfigInput_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DisposeControl();
             RevertMapping();
         }
 
@@ -326,24 +449,19 @@ namespace ARDrone.UI
             buttonSubmit.Focus();
         }
 
-        private void comboBoxDevices_SelectedValueChanged(object sender, EventArgs e)
+        private void comboBoxDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeInputDevice();
         }
 
-        private void textBox_Enter(object sender, EventArgs e)
+        private void textBoxControl_Enter(object sender, EventArgs e)
         {
-            Focus((TextBox)sender);
+            FocusInputElement((TextBox)sender);
         }
 
-        private void textBox_Leave(object sender, EventArgs e)
+        private void textBoxControl_Leave(object sender, EventArgs e)
         {
-            Unfocus((TextBox)sender);
-        }
-
-        private void timerInputUpdate_Tick(object sender, EventArgs e)
-        {
-            UpdateInputDevice();
+            UnfocusInputElement((TextBox)sender);
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
@@ -361,6 +479,39 @@ namespace ARDrone.UI
         {
             SaveMapping();
             Close();
+        }
+
+        private void inputManager_NewInputDevice(object sender, NewInputDeviceEventArgs e)
+        {
+            Console.WriteLine("New device: " + e.DeviceId);
+            this.BeginInvoke(new NewInputDeviceHandler(inputManagerSync_NewInputDevice), this, e);
+        }
+
+        private void inputManagerSync_NewInputDevice(object sender, NewInputDeviceEventArgs e)
+        {
+            HandleNewDevice(e.DeviceId, e.Input);
+        }
+
+        private void inputManager_InputDeviceLost(object sender, InputDeviceLostEventArgs e)
+        {
+            Console.WriteLine("Device lost: " + e.DeviceId);
+            this.BeginInvoke(new InputDeviceLostHandler(inputManagerSync_InputDeviceLost), this, e);
+        }
+
+        private void inputManagerSync_InputDeviceLost(object sender, InputDeviceLostEventArgs e)
+        {
+            HandleLostDevice(e.DeviceId);
+        }
+
+        private void inputManager_RawInputReceived(object sender, RawInputReceivedEventArgs e)
+        {
+            Console.WriteLine("Raw input received from device " + e.DeviceId + ": " + e.InputString);
+            this.BeginInvoke(new RawInputReceivedHandler(inputManagerSync_RawInputReceived), this, e);
+        }
+
+        private void inputManagerSync_RawInputReceived(object sender, RawInputReceivedEventArgs e)
+        {
+            UpdateInputs(e.DeviceId, e.InputString, e.IsAxis);
         }
     }
 }
