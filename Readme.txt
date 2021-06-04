@@ -2,6 +2,9 @@
 ARDrone.Net library for the Parrot AR Drone
 Stephen Hobley, Thomas Endres and Julien Vinel November 2010
 -----------------------------------------------------------------
+
+https://www.youtube.com/watch?v=4V5B-DPWdOQ
+
 The first thing to do is download the SDK from the Parrot development site - this will 
 require that you install the DirectX library and the SDL library. 
 
